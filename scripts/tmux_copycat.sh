@@ -51,8 +51,50 @@ generate_results() {
 	reverse_and_create_results_file "$scrollback_filename" "${scrollback_filename}_result" "$grep_pattern"
 }
 
+get_line_number() {
+	local string=$1
+	echo $(echo "$string" | cut -f1 -d:)
+}
+
+get_match() {
+	local string=$1
+	local full_match=$(echo "$string" | cut -f2-99 -d:)
+	local remove_trailing_char="${full_match%?}"
+	printf "$remove_trailing_char"
+}
+
+tmux_copy_mode_jump_to_line() {
+	local line_number="$1"
+	tmux copy-mode
+	tmux send-keys :
+	tmux send-keys "$line_number"
+	tmux send-keys C-m
+}
+
+tmux_find_and_select() {
+	local match="$1"
+	local length="${#match}"
+	tmux send-keys 0
+	tmux send-keys /
+	tmux send-keys "$match"
+	tmux send-keys C-m
+	tmux send-keys Space
+	tmux send-keys "$length"
+	tmux send-keys l
+}
+
+find_result() {
+	local result_filename="$(get_scrollback_filename)_result"
+	local result=$(head -1 "$result_filename" | tail -1)
+	local line_number=$(get_line_number "$result")
+	local match=$(get_match "$result")
+	tmux_copy_mode_jump_to_line "$line_number"
+	tmux_find_and_select "$match"
+}
+
 main() {
 	url_pattern="'https\?://[^ ]*'"
 	generate_results "$url_pattern"
+	find_result
 }
 main
