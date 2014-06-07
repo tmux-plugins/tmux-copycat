@@ -19,20 +19,30 @@ get_tmux_option() {
 # Multiple bindings can be set.
 set_bindings() {
 	local key_bindings="$(get_tmux_option "$tmux_option" "$default_key_bindings")"
+	local key
 	for key in "$key_bindings"; do
 		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/tmux_copycat.sh"
 	done
 }
 
 extend_copy_mode_cancel_bindings() {
-	tmux bind-key -t vi-copy C-c copy-pipe "$CURRENT_DIR/scripts/handle_copy_mode_quit.sh"
-	tmux bind-key -t vi-copy q   copy-pipe "$CURRENT_DIR/scripts/handle_copy_mode_quit.sh"
-	tmux bind-key -t vi-copy C-j copy-pipe "$CURRENT_DIR/scripts/handle_copy_mode_quit.sh"
-	tmux bind-key -t vi-copy C-m copy-pipe "$CURRENT_DIR/scripts/handle_copy_mode_quit.sh"
+	# all these keys 'C-c q C-j C-m y' are enhanced because they exit vi copy mode.
+	# NOTE: y is often set to copy selection in copy-mode. This binding enhances that.
+	local cancel_mode_bindings="C-c q C-j C-m y"
+	local key
+	for key in $cancel_mode_bindings; do
+		tmux bind-key -n "$key" run-shell "$CURRENT_DIR/scripts/handle_copy_mode_quit.sh '$key'"
+	done
+}
+
+set_copycat_mode_bindins() {
+	tmux bind-key -n '*' run-shell "$CURRENT_DIR/scripts/copycat_extended_asterisk.sh"
+	# tmux bind-key -n '#' run-shell "$CURRENT_DIR/scripts/copycat_extended_hash.sh"
 }
 
 main() {
 	set_bindings
+	set_copycat_mode_bindins
 	extend_copy_mode_cancel_bindings
 }
 main

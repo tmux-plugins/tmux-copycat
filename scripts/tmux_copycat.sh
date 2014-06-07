@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+FILE_NAME=$(basename "${BASH_SOURCE[0]}")
+CURRENT_SCRIPT="$CURRENT_DIR/$FILE_NAME"
 
 get_tmp_dir() {
 	if [ -n "$TMPDIR" ]; then
@@ -36,20 +38,12 @@ get_scrollback_filename() {
 	echo "$(get_tmp_dir)tmux_scrollback_$(pane_unique_id)"
 }
 
-# simplest solution, taken from here: http://unix.stackexchange.com/a/81689
-remove_empty_lines_from_end_of_file() {
-	local file=$1
-	local temp=$(cat $file)
-	printf '%s\n' "$temp" > "$file"
-}
-
 capture_pane() {
 	local file=$1
 	# copying 9M lines back will hopefully fetch the whole scrollback
 	tmux capture-pane -S -9000000
 	tmux save-buffer "$file"
 	tmux delete-buffer
-	remove_empty_lines_from_end_of_file "$file"
 }
 
 # doing 2 things in 1 step so that we don't write to disk too much
@@ -64,15 +58,24 @@ reverse_and_create_results_file() {
 generate_results() {
 	local grep_pattern=$1
 	local scrollback_filename=$(get_scrollback_filename)
-	capture_pane "$scrollback_filename"
-	reverse_and_create_results_file "$scrollback_filename" "${scrollback_filename}_result" "$grep_pattern"
+	local pane_id="$(pane_unique_id)"
+	local results_variable="@copycat_results_$pane_id"
+	local results_var_value=$(get_tmux_option "$results_variable" "false")
+	if [ "$results_var_value" == "false" ]; then
+		capture_pane "$scrollback_filename"
+		reverse_and_create_results_file "$scrollback_filename" "${scrollback_filename}_result" "$grep_pattern"
+		set_tmux_option "$results_variable" "true"
+	fi
 }
 
 # ---
 
 get_line_number() {
 	local string=$1
-	echo $(echo "$string" | cut -f1 -d:)
+	# grep line number index starts from 1, tmux line number index starts from 0
+	local grep_line_number="$(echo "$string" | cut -f1 -d:)"
+	local tmux_line_number="$(($grep_line_number - 1))"
+	echo "$tmux_line_number"
 }
 
 get_match() {
@@ -85,6 +88,8 @@ get_match() {
 tmux_copy_mode_jump_to_line() {
 	local line_number="$1"
 	tmux copy-mode
+	# first go to the "bottom" in copy mode so that jumps are consistent
+	tmux send-keys G
 	tmux send-keys :
 	tmux send-keys "$line_number"
 	tmux send-keys C-m
