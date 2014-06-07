@@ -10,6 +10,23 @@ get_tmp_dir() {
 	fi
 }
 
+get_tmux_option() {
+	local option=$1
+	local default_value=$2
+	local option_value=$(tmux show-option -gqv "$option")
+	if [ -z "$option_value" ]; then
+		echo "$default_value"
+	else
+		echo "$option_value"
+	fi
+}
+
+set_tmux_option() {
+	local option=$1
+	local value=$2
+	tmux set-option -gq "$option" "$value"
+}
+
 # returns a string unique to current pane
 pane_unique_id() {
 	tmux display-message -p "#{session_name}_#{window_index}_#{pane_index}"
@@ -51,6 +68,8 @@ generate_results() {
 	reverse_and_create_results_file "$scrollback_filename" "${scrollback_filename}_result" "$grep_pattern"
 }
 
+# ---
+
 get_line_number() {
 	local string=$1
 	echo $(echo "$string" | cut -f1 -d:)
@@ -74,23 +93,41 @@ tmux_copy_mode_jump_to_line() {
 tmux_find_and_select() {
 	local match="$1"
 	local length="${#match}"
+	# search for a match
 	tmux send-keys 0
 	tmux send-keys /
 	tmux send-keys "$match"
 	tmux send-keys C-m
+	# select a match
 	tmux send-keys Space
 	tmux send-keys "$length"
 	tmux send-keys l
 }
 
+get_jump_variable() {
+	local pane_id="$(pane_unique_id)"
+	echo "@copycat_$pane_id"
+}
+
+get_next_jump_number() {
+	local jump_variable="$(get_jump_variable)"
+	# next jump is 1, if the variable isn't set at all
+	local next_jump=$(get_tmux_option "$jump_variable" "1")
+	set_tmux_option "$jump_variable" $((next_jump + 1))
+	echo "$next_jump"
+}
+
 find_result() {
 	local result_filename="$(get_scrollback_filename)_result"
-	local result=$(head -1 "$result_filename" | tail -1)
+	local jump_number="$(get_next_jump_number)"
+	local result=$(head -"$jump_number" "$result_filename" | tail -1)
 	local line_number=$(get_line_number "$result")
 	local match=$(get_match "$result")
 	tmux_copy_mode_jump_to_line "$line_number"
 	tmux_find_and_select "$match"
 }
+
+# ---
 
 main() {
 	url_pattern="'https\?://[^ ]*'"

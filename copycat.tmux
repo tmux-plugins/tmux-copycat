@@ -24,8 +24,16 @@ set_bindings() {
 	done
 }
 
+extend_copy_mode_cancel_bindings() {
+	tmux bind-key -t vi-copy C-c copy-pipe "$CURRENT_DIR/scripts/handle_copy_mode_quit.sh"
+	tmux bind-key -t vi-copy q   copy-pipe "$CURRENT_DIR/scripts/handle_copy_mode_quit.sh"
+	tmux bind-key -t vi-copy C-j copy-pipe "$CURRENT_DIR/scripts/handle_copy_mode_quit.sh"
+	tmux bind-key -t vi-copy C-m copy-pipe "$CURRENT_DIR/scripts/handle_copy_mode_quit.sh"
+}
+
 main() {
 	set_bindings
+	extend_copy_mode_cancel_bindings
 }
 main
 
