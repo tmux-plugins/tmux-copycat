@@ -5,25 +5,15 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 default_key_bindings='*'
 tmux_option="@copycat_key"
 
+source "$CURRENT_DIR/scripts/helpers.sh"
 source "$CURRENT_DIR/scripts/key_extend_helper.sh"
-
-get_tmux_option() {
-	local option=$1
-	local default_value=$2
-	local option_value=$(tmux show-option -gqv "$option")
-	if [ -z "$option_value" ]; then
-		echo "$default_value"
-	else
-		echo "$option_value"
-	fi
-}
 
 # Multiple bindings can be set.
 set_bindings() {
 	local key_bindings="$(get_tmux_option "$tmux_option" "$default_key_bindings")"
 	local key
 	for key in "$key_bindings"; do
-		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/tmux_copycat.sh"
+		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_mode_start.sh"
 	done
 }
 
@@ -37,14 +27,14 @@ extend_copy_mode_cancel_bindings() {
 	done
 }
 
-set_copycat_mode_bindins() {
+set_copycat_mode_bindings() {
 	extend_key "*" "$CURRENT_DIR/scripts/copycat_jump.sh 'next'"
 	extend_key "#" "$CURRENT_DIR/scripts/copycat_jump.sh 'prev'"
 }
 
 main() {
 	set_bindings
-	set_copycat_mode_bindins
+	set_copycat_mode_bindings
 	extend_copy_mode_cancel_bindings
 }
 main
