@@ -86,3 +86,8 @@ _get_tmp_dir() {
 		echo "/tmp/"
 	fi
 }
+
+# returns a string unique to current pane
+_pane_unique_id() {
+	tmux display-message -p "#{session_name}_#{window_index}_#{pane_index}"
+}

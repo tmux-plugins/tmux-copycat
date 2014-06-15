@@ -25,9 +25,11 @@ get_new_position_number() {
 }
 
 main() {
-	local copycat_file="$(get_copycat_filename)"
-	local position_number="$(get_new_position_number)"
-	do_next_jump "$copycat_file" "$position_number"
-	set_copycat_position "$position_number"
+	if in_copycat_mode; then
+		local copycat_file="$(get_copycat_filename)"
+		local position_number="$(get_new_position_number)"
+		do_next_jump "$copycat_file" "$position_number"
+		set_copycat_position "$position_number"
+	fi
 }
 main

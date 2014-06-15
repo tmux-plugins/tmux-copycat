@@ -5,6 +5,8 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 default_key_bindings='*'
 tmux_option="@copycat_key"
 
+source "$CURRENT_DIR/scripts/key_extend_helper.sh"
+
 get_tmux_option() {
 	local option=$1
 	local default_value=$2
@@ -31,13 +33,13 @@ extend_copy_mode_cancel_bindings() {
 	local cancel_mode_bindings="C-c q C-j C-m y"
 	local key
 	for key in $cancel_mode_bindings; do
-		tmux bind-key -n "$key" run-shell "$CURRENT_DIR/scripts/handle_copy_mode_quit.sh '$key'"
+		extend_key "$key" "$CURRENT_DIR/scripts/copycat_mode_quit.sh"
 	done
 }
 
 set_copycat_mode_bindins() {
-	tmux bind-key -n '*' run-shell "$CURRENT_DIR/scripts/copycat_extend.sh '*'"
-	tmux bind-key -n '#' run-shell "$CURRENT_DIR/scripts/copycat_extend.sh '#'"
+	extend_key "*" "$CURRENT_DIR/scripts/copycat_jump.sh 'next'"
+	extend_key "#" "$CURRENT_DIR/scripts/copycat_jump.sh 'prev'"
 }
 
 main() {
