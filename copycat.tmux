@@ -12,8 +12,9 @@ source "$CURRENT_DIR/scripts/key_extend_helper.sh"
 set_bindings() {
 	local key_bindings="$(get_tmux_option "$tmux_option" "$default_key_bindings")"
 	local key
+	local url_pattern="https\?://[^ ]*"
 	for key in "$key_bindings"; do
-		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_mode_start.sh"
+		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_mode_start.sh '$url_pattern'"
 	done
 }
 
