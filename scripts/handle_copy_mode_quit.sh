@@ -11,6 +11,6 @@ main() {
 	local key="$1"
 	reset_copycat_position
 	unset_copycat_mode
-	tmux send-key "$key"
+	tmux send-keys "$key"
 }
 main "$key_pressed"

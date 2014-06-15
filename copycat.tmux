@@ -36,8 +36,8 @@ extend_copy_mode_cancel_bindings() {
 }
 
 set_copycat_mode_bindins() {
-	tmux bind-key -n '*' run-shell "$CURRENT_DIR/scripts/copycat_extended_asterisk.sh"
-	# tmux bind-key -n '#' run-shell "$CURRENT_DIR/scripts/copycat_extended_hash.sh"
+	tmux bind-key -n '*' run-shell "$CURRENT_DIR/scripts/copycat_extend.sh '*'"
+	tmux bind-key -n '#' run-shell "$CURRENT_DIR/scripts/copycat_extend.sh '#'"
 }
 
 main() {
