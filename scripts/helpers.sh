@@ -1,4 +1,4 @@
-# helper methods used in multiple scripts
+# === general helpers ===
 
 get_tmux_option() {
 	local option=$1
@@ -17,15 +17,7 @@ set_tmux_option() {
 	tmux set-option -gq "$option" "$value"
 }
 
-# returns a string unique to current pane
-pane_unique_id() {
-	tmux display-message -p "#{session_name}_#{window_index}_#{pane_index}"
-}
-
-_copycat_mode_var() {
-	local pane_id="$(pane_unique_id)"
-	echo "@copycat_mode_$pane_id"
-}
+# === copycat mode specific helpers ===
 
 set_copycat_mode() {
 	set_tmux_option "$(_copycat_mode_var)" "true"
@@ -48,10 +40,7 @@ not_in_copycat_mode() {
 	fi
 }
 
-_copycat_position_var() {
-	local pane_id="$(pane_unique_id)"
-	echo "@copycat_position_$pane_id"
-}
+# === copycat mode position ===
 
 get_copycat_position() {
 	local copycat_position_variable=$(_copycat_position_var)
@@ -68,18 +57,32 @@ reset_copycat_position() {
 	set_copycat_position "0"
 }
 
+# === scrollback and results position ===
+
+get_scrollback_filename() {
+	echo "$(_get_tmp_dir)tmux_scrollback_$(_pane_unique_id)"
+}
+
+get_copycat_filename() {
+	echo "$(_get_tmp_dir)tmux_copycat_$(_pane_unique_id)"
+}
+
+# === 'private' functions ===
+
+_copycat_mode_var() {
+	local pane_id="$(_pane_unique_id)"
+	echo "@copycat_mode_$pane_id"
+}
+
+_copycat_position_var() {
+	local pane_id="$(_pane_unique_id)"
+	echo "@copycat_position_$pane_id"
+}
+
 _get_tmp_dir() {
 	if [ -n "$TMPDIR" ]; then
 		echo "$TMPDIR"
 	else
 		echo "/tmp/"
 	fi
-}
-
-get_scrollback_filename() {
-	echo "$(_get_tmp_dir)tmux_scrollback_$(pane_unique_id)"
-}
-
-get_copycat_filename() {
-	echo "$(_get_tmp_dir)tmux_copycat_$(pane_unique_id)"
 }
