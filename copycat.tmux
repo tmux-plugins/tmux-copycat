@@ -7,6 +7,7 @@ tmux_option="@copycat_key"
 
 source "$CURRENT_DIR/scripts/helpers.sh"
 source "$CURRENT_DIR/scripts/key_extend_helper.sh"
+source "$CURRENT_DIR/scripts/quit_copy_mode_helper.sh"
 
 # Multiple bindings can be set.
 set_bindings() {
@@ -19,9 +20,8 @@ set_bindings() {
 }
 
 extend_copy_mode_cancel_bindings() {
-	# all these keys 'C-c q C-j C-m y' are enhanced because they exit vi copy mode.
-	# NOTE: y is often set to copy selection in copy-mode. This binding enhances that.
-	local cancel_mode_bindings="C-c q C-j C-m y"
+	# keys that quit copy mode are enhanced to quit copycat mode as well.
+	local cancel_mode_bindings=$(quit_copy_mode_keys)
 	local key
 	for key in $cancel_mode_bindings; do
 		extend_key "$key" "$CURRENT_DIR/scripts/copycat_mode_quit.sh"
@@ -39,4 +39,3 @@ main() {
 	extend_copy_mode_cancel_bindings
 }
 main
-
