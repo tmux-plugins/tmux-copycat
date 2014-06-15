@@ -46,6 +46,9 @@ _copycat_jump() {
 
 _copycat_jump_to_line() {
 	local line_number="$1"
+	tmux copy-mode
+	# first go to the "bottom" in copy mode so that jumps are consistent
+	tmux send-keys G
 	tmux send-keys :
 	tmux send-keys "$line_number"
 	tmux send-keys C-m
