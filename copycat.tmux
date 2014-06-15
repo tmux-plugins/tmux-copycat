@@ -2,19 +2,24 @@
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-default_key_bindings='*'
-tmux_option="@copycat_key"
+default_key='*'
+tmux_option="@copycat"
+
+default_next_key='*'
+tmux_option_next="@copycat_next"
+
+default_prev_key='#'
+tmux_option_prev="@copycat_prev"
 
 source "$CURRENT_DIR/scripts/helpers.sh"
 source "$CURRENT_DIR/scripts/key_extend_helper.sh"
 source "$CURRENT_DIR/scripts/quit_copy_mode_helper.sh"
 
-# Multiple bindings can be set.
-set_bindings() {
-	local key_bindings="$(get_tmux_option "$tmux_option" "$default_key_bindings")"
+set_start_bindings() {
+	local keys="$(get_tmux_option "$tmux_option" "$default_key")"
 	local key
 	local url_pattern="https\?://[^ ]*"
-	for key in "$key_bindings"; do
+	for key in "$keys"; do
 		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_mode_start.sh '$url_pattern'"
 	done
 }
@@ -29,12 +34,14 @@ extend_copy_mode_cancel_bindings() {
 }
 
 set_copycat_mode_bindings() {
-	extend_key "*" "$CURRENT_DIR/scripts/copycat_jump.sh 'next'"
-	extend_key "#" "$CURRENT_DIR/scripts/copycat_jump.sh 'prev'"
+	local next_key="$(get_tmux_option "$tmux_option_next" "$default_next_key")"
+	local prev_key="$(get_tmux_option "$tmux_option_prev" "$default_prev_key")"
+	extend_key "$next_key" "$CURRENT_DIR/scripts/copycat_jump.sh 'next'"
+	extend_key "$prev_key" "$CURRENT_DIR/scripts/copycat_jump.sh 'prev'"
 }
 
 main() {
-	set_bindings
+	set_start_bindings
 	set_copycat_mode_bindings
 	extend_copy_mode_cancel_bindings
 }
