@@ -8,40 +8,6 @@ source "$CURRENT_DIR/helpers.sh"
 # global var for this file
 NEXT_PREV="$1"
 
-get_new_position_number() {
-	local current_position=$(get_copycat_position)
-	local new_position
-	if [ "$NEXT_PREV" == "next" ]; then
-		new_position="$((current_position + 1))"
-	elif [ "$NEXT_PREV" == "prev" ]; then
-		new_position="$((current_position - 1))"
-		# position can't go below 1
-		if [ "$new_position" -lt "1" ]; then
-			new_position="1"
-		fi
-	fi
-	echo "$new_position"
-}
-
-do_next_jump() {
-	local copycat_file="$1"
-	local position_number="$2"
-	local result="$(_get_result_line "$copycat_file" "$position_number")"
-	_jump_to_result "$result"
-}
-
-main() {
-	if in_copycat_mode; then
-		local copycat_file="$(get_copycat_filename)"
-		local position_number="$(get_new_position_number)"
-		do_next_jump "$copycat_file" "$position_number"
-		set_copycat_position "$position_number"
-	fi
-}
-main
-
-# all functions below are "private", called from `do_next_jump` function
-
 _get_result_line() {
 	local file="$1"
 	local number="$2"
@@ -103,3 +69,37 @@ _copycat_select() {
 	tmux send-keys "$length"
 	tmux send-keys l
 }
+
+# all functions above are "private", called from `do_next_jump` function
+
+get_new_position_number() {
+	local current_position=$(get_copycat_position)
+	local new_position
+	if [ "$NEXT_PREV" == "next" ]; then
+		new_position="$((current_position + 1))"
+	elif [ "$NEXT_PREV" == "prev" ]; then
+		new_position="$((current_position - 1))"
+		# position can't go below 1
+		if [ "$new_position" -lt "1" ]; then
+			new_position="1"
+		fi
+	fi
+	echo "$new_position"
+}
+
+do_next_jump() {
+	local copycat_file="$1"
+	local position_number="$2"
+	local result="$(_get_result_line "$copycat_file" "$position_number")"
+	_jump_to_result "$result"
+}
+
+main() {
+	if in_copycat_mode; then
+		local copycat_file="$(get_copycat_filename)"
+		local position_number="$(get_new_position_number)"
+		do_next_jump "$copycat_file" "$position_number"
+		set_copycat_position "$position_number"
+	fi
+}
+main
