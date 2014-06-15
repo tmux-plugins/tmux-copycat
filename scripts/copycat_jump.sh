@@ -8,8 +8,7 @@ source "$CURRENT_DIR/helpers.sh"
 # global var for this file
 NEXT_PREV="$1"
 
-# 'vi' or 'emacs'
-# this variable used as a global file constant
+# 'vi' or 'emacs', this variable used as a global file constant
 TMUX_COPY_MODE="$(tmux_copy_mode)"
 
 _get_result_line() {
@@ -101,15 +100,27 @@ _copycat_select() {
 # all functions above are "private", called from `do_next_jump` function
 
 get_new_position_number() {
+	local copycat_file="$1"
 	local current_position=$(get_copycat_position)
 	local new_position
+
+	# doing a forward/up jump
 	if [ "$NEXT_PREV" == "next" ]; then
-		new_position="$((current_position + 1))"
+		local number_of_results=$(wc -l "$copycat_file" | awk '{ print $1 }')
+		if [ "$current_position" -eq "$number_of_results" ]; then
+			# position can't go beyond the last result
+			new_position="$current_position"
+		else
+			new_position="$((current_position + 1))"
+		fi
+
+	# doing a backward/down jump
 	elif [ "$NEXT_PREV" == "prev" ]; then
-		new_position="$((current_position - 1))"
-		# position can't go below 1
-		if [ "$new_position" -lt "1" ]; then
+		if [ "$current_position" -eq "1" ]; then
+			# position can't go below 1
 			new_position="1"
+		else
+			new_position="$((current_position - 1))"
 		fi
 	fi
 	echo "$new_position"
@@ -125,7 +136,7 @@ do_next_jump() {
 main() {
 	if in_copycat_mode; then
 		local copycat_file="$(get_copycat_filename)"
-		local position_number="$(get_new_position_number)"
+		local position_number="$(get_new_position_number "$copycat_file")"
 		do_next_jump "$copycat_file" "$position_number"
 		set_copycat_position "$position_number"
 	fi
