@@ -8,6 +8,10 @@ source "$CURRENT_DIR/helpers.sh"
 # global var for this file
 NEXT_PREV="$1"
 
+# 'vi' or 'emacs'
+# this variable used as a global file constant
+TMUX_COPY_MODE="$(tmux_copy_mode)"
+
 _get_result_line() {
 	local file="$1"
 	local number="$2"
@@ -47,17 +51,31 @@ _copycat_jump() {
 _copycat_jump_to_line() {
 	local line_number="$1"
 	tmux copy-mode
-	# first go to the "bottom" in copy mode so that jumps are consistent
-	tmux send-keys G
-	tmux send-keys :
+	# first goes to the "bottom" in copy mode so that jumps are consistent
+	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+		# vi copy mode
+		tmux send-keys G
+		tmux send-keys :
+	else
+		# emacs copy mode
+		tmux send-keys "M->"
+		tmux send-keys g
+	fi
 	tmux send-keys "$line_number"
 	tmux send-keys C-m
 }
 
 _copycat_find() {
 	local match="$1"
-	tmux send-keys 0
-	tmux send-keys /
+	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+		# vi copy mode
+		tmux send-keys 0
+		tmux send-keys /
+	else
+		# emacs copy mode
+		tmux send-keys C-a
+		tmux send-keys C-s
+	fi
 	tmux send-keys "$match"
 	tmux send-keys C-m
 }
@@ -65,9 +83,19 @@ _copycat_find() {
 _copycat_select() {
 	local match="$1"
 	local length="${#match}"
-	tmux send-keys Space
-	tmux send-keys "$length"
-	tmux send-keys l
+	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+		# vi copy mode
+		tmux send-keys Space
+		tmux send-keys "$length"
+		tmux send-keys l
+	else
+		# emacs copy mode
+		tmux send-keys C-Space
+		# emacs doesn't have repeat, so we're manually looping :(
+		for (( c=1; c<="$length"; c++ )); do
+			tmux send-keys C-f
+		done
+	fi
 }
 
 # all functions above are "private", called from `do_next_jump` function

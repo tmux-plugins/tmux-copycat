@@ -17,6 +17,10 @@ set_tmux_option() {
 	tmux set-option -gq "$option" "$value"
 }
 
+tmux_copy_mode() {
+	tmux show-option -gwv mode-keys
+}
+
 # === copycat mode specific helpers ===
 
 set_copycat_mode() {
