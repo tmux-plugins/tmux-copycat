@@ -42,14 +42,30 @@ _get_match() {
 _copycat_jump() {
 	local line_number="$1"
 	local match="$2"
+	_copycat_enter_mode
+	_copycat_exit_select_mode
 	_copycat_jump_to_line "$line_number"
 	_copycat_find "$match"
 	_copycat_select "$match"
 }
 
+_copycat_enter_mode() {
+	tmux copy-mode
+}
+
+# clears selection from a previous match
+_copycat_exit_select_mode() {
+	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+		# vi mode
+		tmux send-keys Escape
+	else
+		# emacs mode
+		tmux send-keys C-g
+	fi
+}
+
 _copycat_jump_to_line() {
 	local line_number="$1"
-	tmux copy-mode
 	# first goes to the "bottom" in copy mode so that jumps are consistent
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
