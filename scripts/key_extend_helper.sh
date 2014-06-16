@@ -5,8 +5,10 @@ extend_key() {
 	local key="$1"
 	local script="$2"
 
-	tmux bind-key -n "$key" run-shell " \
-		tmux send-keys '$key'; \
-		$script; \
-		true"
+	# 1. 'key' is sent to tmux. This ensures the default key action is done.
+	# 2. Script is executed.
+	# 3. `true` command ensures an exit status 0 is returned. This ensures a
+	#	 user never gets an error msg - even if the script file from step 2 is
+	#	 deleted.
+	tmux bind-key -n "$key" run-shell "tmux send-keys '$key'; $script; true"
 }
