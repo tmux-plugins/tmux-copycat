@@ -31,10 +31,20 @@ generate_copycat_file() {
 	reverse_and_create_copycat_file "$scrollback_filename" "$copycat_filename" "$grep_pattern"
 }
 
+if_no_results_exit_with_message() {
+	local copycat_filename="$(get_copycat_filename)"
+	# check for empty filename
+	if ! [ -s "$copycat_filename" ]; then
+		display_message "No results!"
+		exit 0
+	fi
+}
+
 main() {
 	local grep_pattern="$1"
 	if not_in_copycat_mode; then
 		generate_copycat_file "$grep_pattern"
+		if_no_results_exit_with_message
 		set_copycat_mode
 	fi
 }
