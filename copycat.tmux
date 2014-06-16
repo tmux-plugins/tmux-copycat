@@ -2,8 +2,9 @@
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-default_key='*'
 tmux_option="@copycat"
+default_jumps="*|https\?://[^[:space:]]*"
+#              ^ url
 
 default_next_key='*'
 tmux_option_next="@copycat_next"
@@ -14,13 +15,17 @@ tmux_option_prev="@copycat_prev"
 source "$CURRENT_DIR/scripts/helpers.sh"
 source "$CURRENT_DIR/scripts/key_extend_helper.sh"
 source "$CURRENT_DIR/scripts/quit_copy_mode_helper.sh"
+source "$CURRENT_DIR/scripts/jump_patterns_helper.sh"
 
 set_start_bindings() {
-	local keys="$(get_tmux_option "$tmux_option" "$default_key")"
+	local key_pattern_list="$(create_key_patterns_list "$tmux_option" "$default_jumps")"
+	local jump
 	local key
-	local url_pattern="https\?://[^ ]*"
-	for key in "$keys"; do
-		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_mode_start.sh '$url_pattern'"
+	local pattern
+	for jump in "$key_pattern_list"; do
+		key=$(echo "$jump" | cut -d\| -f1)
+		pattern=$(echo "$jump" | cut -d\| -f2-99)
+		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_mode_start.sh '$pattern'"
 	done
 }
 
