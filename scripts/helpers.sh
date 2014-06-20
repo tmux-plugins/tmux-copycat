@@ -96,10 +96,6 @@ display_message() {
 	tmux set-option -gq display-time "$saved_display_time"
 }
 
-#
-
-
-
 # === 'private' functions ===
 
 _copycat_mode_var() {
