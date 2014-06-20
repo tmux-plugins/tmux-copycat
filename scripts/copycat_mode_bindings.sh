@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-source "$CURRENT_DIR/scripts/helpers.sh"
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source "$CURRENT_DIR/helpers.sh"
 
 # Extends a keyboard key.
 # Benefits: tmux won't report errors and everything will work fine even if the
@@ -32,6 +34,7 @@ copycat_mode_bindings() {
 }
 
 main() {
+	copycat_increase_counter
 	copycat_mode_bindings
 	copycat_cancel_bindings
 }

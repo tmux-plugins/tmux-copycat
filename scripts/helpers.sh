@@ -1,13 +1,13 @@
 # config options
 
-default_next_key='n'
-tmux_option_next='@copycat_next'
+default_next_key="n"
+tmux_option_next="@copycat_next"
 
-default_prev_key='N'
-tmux_option_prev='@copycat_prev'
+default_prev_key="N"
+tmux_option_prev="@copycat_prev"
 
 # keeps track of number of panes in copycat mode
-tmux_option_counter='@copycat_counter'
+tmux_option_counter="@copycat_counter"
 
 # === general helpers ===
 
@@ -110,13 +110,18 @@ display_message() {
 # === counter functions ===
 
 copycat_increase_counter() {
-	local counter="$(get_tmux_option "$tmux_option_counter" "0")"
-	set_tmux_option "$tmux_option_counter" "$((counter + 1))"
+	local count=$(get_tmux_option "$tmux_option_counter" "0")
+	local new_count="$((count + 1))"
+	set_tmux_option "$tmux_option_counter" "$new_count"
 }
 
 copycat_decrease_counter() {
-	local counter="$(get_tmux_option "$tmux_option_counter" "1")"
-	set_tmux_option "$tmux_option_counter" "$((counter - 1))"
+	local count="$(get_tmux_option "$tmux_option_counter" "0")"
+	if [ "$count" -gt "0" ]; then
+		# decreasing the counter only if it won't go below 0
+		local new_count="$((count - 1))"
+		set_tmux_option "$tmux_option_counter" "$new_count"
+	fi
 }
 
 copycat_counter_zero() {
