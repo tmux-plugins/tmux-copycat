@@ -1,3 +1,14 @@
+# config options
+
+default_next_key='n'
+tmux_option_next='@copycat_next'
+
+default_prev_key='N'
+tmux_option_prev='@copycat_prev'
+
+# keeps track of number of panes in copycat mode
+tmux_option_counter='@copycat_counter'
+
 # === general helpers ===
 
 get_tmux_option() {
@@ -94,6 +105,44 @@ display_message() {
 
 	# restores original 'display-time' value
 	tmux set-option -gq display-time "$saved_display_time"
+}
+
+# === counter functions ===
+
+copycat_increase_counter() {
+	local counter="$(get_tmux_option "$tmux_option_counter" "0")"
+	set_tmux_option "$tmux_option_counter" "$((counter + 1))"
+}
+
+copycat_decrease_counter() {
+	local counter="$(get_tmux_option "$tmux_option_counter" "1")"
+	set_tmux_option "$tmux_option_counter" "$((counter - 1))"
+}
+
+copycat_counter_zero() {
+	local counter="$(get_tmux_option "$tmux_option_counter" "0")"
+	return [ "$counter" == "0" ]
+}
+
+# === key binding functions ===
+
+copycat_next_key() {
+	echo "$(get_tmux_option "$tmux_option_next" "$default_next_key")"
+}
+
+copycat_prev_key() {
+	echo "$(get_tmux_option "$tmux_option_prev" "$default_prev_key")"
+}
+
+# function expected output: 'C-c C-j Enter q'
+copycat_quit_copy_mode_keys() {
+	local commands_that_quit_copy_mode="cancel\|copy-selection"
+	local copy_mode="$(tmux_copy_mode)-copy"
+	tmux list-keys -t "$copy_mode" |
+		grep "$commands_that_quit_copy_mode" |
+		awk '{ print $4}' |
+		sort -u |
+		xargs echo
 }
 
 # === 'private' functions ===

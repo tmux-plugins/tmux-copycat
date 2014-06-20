@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-default_next_key='n'
-tmux_option_next='@copycat_next'
-
-default_prev_key='N'
-tmux_option_prev='@copycat_prev'
-
 source "$CURRENT_DIR/scripts/helpers.sh"
 
 # Extends a keyboard key.
@@ -23,20 +17,9 @@ extend_key() {
 	tmux bind-key -n "$key" run-shell "tmux send-keys '$key'; $script; true"
 }
 
-# function expected output: 'C-c C-j Enter q'
-quit_copy_mode_keys() {
-	local commands_that_quit_copy_mode="cancel\|copy-selection"
-	local copy_mode="$(tmux_copy_mode)-copy"
-	tmux list-keys -t "$copy_mode" |
-		grep "$commands_that_quit_copy_mode" |
-		awk '{ print $4}' |
-		sort -u |
-		xargs echo
-}
-
 copycat_cancel_bindings() {
 	# keys that quit copy mode are enhanced to quit copycat mode as well.
-	local cancel_mode_bindings=$(quit_copy_mode_keys)
+	local cancel_mode_bindings=$(copycat_quit_copy_mode_keys)
 	local key
 	for key in $cancel_mode_bindings; do
 		extend_key "$key" "$CURRENT_DIR/copycat_mode_quit.sh"
@@ -44,10 +27,8 @@ copycat_cancel_bindings() {
 }
 
 copycat_mode_bindings() {
-	local next_key="$(get_tmux_option "$tmux_option_next" "$default_next_key")"
-	local prev_key="$(get_tmux_option "$tmux_option_prev" "$default_prev_key")"
-	extend_key "$next_key" "$CURRENT_DIR/copycat_jump.sh 'next'"
-	extend_key "$prev_key" "$CURRENT_DIR/copycat_jump.sh 'prev'"
+	extend_key "$(copycat_next_key)" "$CURRENT_DIR/copycat_jump.sh 'next'"
+	extend_key "$(copycat_prev_key)" "$CURRENT_DIR/copycat_jump.sh 'prev'"
 }
 
 main() {
