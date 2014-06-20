@@ -3,8 +3,12 @@
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 tmux_option="@copycat"
-default_jumps="C-u|https\?://[^[:space:]]* C-r|^Processing[[:space:]]by[[:space:]][^[:space:]]* C-f|file C-f|[[:space:]]\([[:alnum:]]\|[~_]\)*/[^[:space:]:]*"
-#              ^ url					   ^ rails request												 ^ simple file matcher
+
+url_jump="C-u|https\?://[^[:space:]]*"
+rails_request_jump="C-r|^Processing[[:space:]]by[[:space:]][^[:space:]]*"
+file_match_jump="C-f|file C-f|[[:space:]]\([[:alnum:]]\|[~_]\)*/[^[:space:]:]*"
+
+default_jumps="$url_jump $rails_request_jump $file_match_jump"
 
 default_next_key='*'
 tmux_option_next="@copycat_next"
