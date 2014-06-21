@@ -75,11 +75,11 @@ reset_copycat_position() {
 # === scrollback and results position ===
 
 get_scrollback_filename() {
-	echo "$(_get_tmp_dir)tmux_scrollback_$(_pane_unique_id)"
+	echo "$(_get_tmp_dir)/tmux_scrollback_$(_pane_unique_id)"
 }
 
 get_copycat_filename() {
-	echo "$(_get_tmp_dir)tmux_copycat_$(_pane_unique_id)"
+	echo "$(_get_tmp_dir)/tmux_copycat_$(_pane_unique_id)"
 }
 
 # Ensures a message is displayed for 5 seconds in tmux prompt.
