@@ -29,7 +29,7 @@ main() {
 		copycat_decrease_counter
 		# removing all bindings only if no panes are in copycat mode
 		if copycat_counter_zero; then
-			unbind_all_bindings;
+			unbind_all_bindings
 		fi
 	fi
 }

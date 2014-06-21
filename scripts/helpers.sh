@@ -125,8 +125,8 @@ copycat_decrease_counter() {
 }
 
 copycat_counter_zero() {
-	local counter="$(get_tmux_option "$tmux_option_counter" "0")"
-	return [ "$counter" == "0" ]
+	local count="$(get_tmux_option "$tmux_option_counter" "0")"
+	[ "$count" -eq "0" ]
 }
 
 # === key binding functions ===
