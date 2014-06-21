@@ -57,7 +57,7 @@ unsupported_version_message() {
 	if [ -n "$UNSUPPORTED_MSG" ]; then
 		echo "$UNSUPPORTED_MSG"
 	else
-		echo "Error! This Tmux version is unsupported. Please install Tmux version $VERSION or greater!"
+		echo "Error, Tmux version unsupported! Please install Tmux version $VERSION or greater!"
 	fi
 }
 
