@@ -57,6 +57,7 @@ _copycat_jump() {
 	_copycat_exit_select_mode
 	_copycat_jump_to_line "$line_number"
 	_copycat_find "$match"
+	_copycat_clear_search
 	_copycat_select "$match"
 }
 
@@ -104,6 +105,30 @@ _copycat_find() {
 	fi
 	tmux send-keys "$match"
 	tmux send-keys C-m
+}
+
+_copycat_clear_search() {
+	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+		# vi copy mode
+		# clean forward search
+		tmux send-keys /
+		tmux send-keys C-u
+		tmux send-keys C-m
+		# clean backward search
+		tmux send-keys ?
+		tmux send-keys C-u
+		tmux send-keys C-m
+	else
+		# emacs copy mode
+		# clean forward search
+		tmux send-keys C-s
+		tmux send-keys C-u
+		tmux send-keys C-m
+		# clean backward search
+		tmux send-keys C-r
+		tmux send-keys C-u
+		tmux send-keys C-m
+	fi
 }
 
 _copycat_select() {
