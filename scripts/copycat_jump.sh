@@ -94,6 +94,12 @@ _copycat_jump_to_line() {
 
 _copycat_find() {
 	local match="$1"
+	# We're removing the first match letter here. Why?
+	# In tmux copy mode - search won't match the string at the beginning of the
+	# line if cursor is in the same line at the beginning.
+	# To compente for that, we're doing a search without the first charactere.
+	# After the search, we're "compensating back" for this.
+	local match_wo_first_letter=$(echo "$match" | cut -c2-999)
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
 		tmux send-keys 0
@@ -103,8 +109,15 @@ _copycat_find() {
 		tmux send-keys C-a
 		tmux send-keys C-s
 	fi
-	tmux send-keys "$match"
+	tmux send-keys "$match_wo_first_letter"
 	tmux send-keys C-m
+
+	# This is "compensating back" for the above problem.
+	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+		tmux send-keys h
+	else
+		tmux send-keys C-f
+	fi
 }
 
 _copycat_clear_search() {
