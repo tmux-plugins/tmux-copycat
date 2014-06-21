@@ -46,6 +46,7 @@ main() {
 		generate_copycat_file "$grep_pattern"
 		if_no_results_exit_with_message
 		set_copycat_mode
+		copycat_increase_counter
 	fi
 }
 main "$search_pattern"

@@ -34,7 +34,6 @@ copycat_mode_bindings() {
 }
 
 main() {
-	copycat_increase_counter
 	copycat_mode_bindings
 	copycat_cancel_bindings
 }
