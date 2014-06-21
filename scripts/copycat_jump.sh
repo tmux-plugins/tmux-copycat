@@ -17,18 +17,29 @@ _get_result_line() {
 	echo "$(head -"$number" "$file" | tail -1)"
 }
 
-_jump_to_result() {
-	local result="$1"
-	local line_number=$(_get_line_number "$result")
-	local match=$(_get_match "$result")
-	_copycat_jump "$line_number" "$match"
+_string_starts_with_digit() {
+	local string="$1"
+	echo "$string" |
+		grep -q '^[[:digit:]]'
 }
 
 _get_line_number() {
-	local string=$1
-	# grep line number index starts from 1, tmux line number index starts from 0
-	local grep_line_number="$(echo "$string" | cut -f1 -d:)"
-	local tmux_line_number="$(($grep_line_number - 1))"
+	local string="$1"
+	local copycat_file="$2"			# args 2 & 3 used to handle bug in OSX grep
+	local position_number="$3"
+	if _string_starts_with_digit "$string"; then
+		# we have a number!
+		local grep_line_number="$(echo "$string" | cut -f1 -d:)"
+		# grep line number index starts from 1, tmux line number index starts from 0
+		local tmux_line_number="$((grep_line_number - 1))"
+	else
+		# no number in the results line This is a bug in OSX grep.
+		# Fetching a number from a previous line.
+		local previous_line_num="$((position_number - 1))"
+		local result_line="$(_get_result_line "$copycat_file" "$previous_line_num")"
+		# recursively invoke this same function
+		tmux_line_number="$(_get_line_number "$result_line" "$copycat_file" "$previous_line_num")"
+	fi
 	echo "$tmux_line_number"
 }
 
@@ -145,8 +156,10 @@ get_new_position_number() {
 do_next_jump() {
 	local copycat_file="$1"
 	local position_number="$2"
-	local result="$(_get_result_line "$copycat_file" "$position_number")"
-	_jump_to_result "$result"
+	local result_line="$(_get_result_line "$copycat_file" "$position_number")"
+	local line_number=$(_get_line_number "$result_line" "$copycat_file" "$position_number")
+	local match=$(_get_match "$result_line")
+	_copycat_jump "$line_number" "$match"
 }
 
 main() {
