@@ -20,7 +20,7 @@ reverse_and_create_copycat_file() {
 	local copycat_file=$2
 	local grep_pattern="'$3'" # making sure grep regex is quoted
 	# The below line had to be eval-ed, otherwise it doesn't work
-	eval "tail -r "$file" | grep -oni "$grep_pattern" > "$copycat_file""
+	eval "cat "$file" | (tac 2> /dev/null || tail -r) | grep -oni "$grep_pattern" > "$copycat_file""
 }
 
 generate_copycat_file() {
