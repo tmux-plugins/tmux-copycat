@@ -10,6 +10,9 @@ file_match_jump="C-f|\(^\|[[:space:]]\)\([[:alnum:]]\|[~_]\)*/[^[:space:]:]*"
 
 default_jumps="$url_jump $rails_request_jump $file_match_jump"
 
+default_copycat_search_key="/"
+copycat_search_option="@copycat_search"
+
 source "$CURRENT_DIR/scripts/helpers.sh"
 source "$CURRENT_DIR/scripts/jump_patterns_helper.sh"
 
@@ -25,7 +28,16 @@ set_start_bindings() {
 	done
 }
 
+set_copycat_search_binding() {
+	local key_bindings=$(get_tmux_option "$copycat_search_option" "$default_copycat_search_key")
+	local key
+	for key in $key_bindings; do
+		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_search.sh"
+	done
+}
+
 main() {
 	set_start_bindings
+	set_copycat_search_binding
 }
 main
