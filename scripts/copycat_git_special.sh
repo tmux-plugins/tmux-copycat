@@ -12,17 +12,18 @@ git_status_files() {
 
 formatted_git_status() {
 	local raw_gist_status="$(git_status_files)"
-	echo "$(echo "$raw_gist_status" | cut -c 4-999 | xargs echo)"
+	echo "$(echo "$raw_gist_status" | cut -c 4-999)"
 }
 
 concatenate_files() {
-	local result="$1"           # populating the result with first file
-	shift;			            # removing first argument
-	local files="$*"
-	local file_separator="\|" # this is just an escaped pipe (logic `or` in regex)
-	for file in $files; do
-		result="${result}${file_separator}${file}"
-	done
+	local git_status_files="$(formatted_git_status)"
+	local result=""
+	# Undefined until later within a while loop.
+	local file_separator
+	while read -r line; do
+		result="${result}${file_separator}${line}"
+		file_separator="\|"
+	done <<< "$git_status_files"
 	echo "$result"
 }
 
@@ -32,8 +33,7 @@ concatenate_files() {
 # output regex will be:
 # `\(foo.txt\|bar.txt\)
 git_status_files_regex() {
-	local git_status_files="$(formatted_git_status)"
-	local concatenated_files="$(concatenate_files $git_status_files)"
+	local concatenated_files="$(concatenate_files)"
 	local regex_result="\(${concatenated_files}\)"
 	echo "$regex_result"
 }
