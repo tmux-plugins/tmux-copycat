@@ -11,6 +11,11 @@ NEXT_PREV="$1"
 # 'vi' or 'emacs', this variable used as a global file constant
 TMUX_COPY_MODE="$(tmux_copy_mode)"
 
+_file_number_of_lines() {
+	local file="$1"
+	echo "$(wc -l $file | awk '{print $1}')"
+}
+
 _get_result_line() {
 	local file="$1"
 	local number="$2"
@@ -64,9 +69,10 @@ _copycat_jump() {
 	local line_number="$1"
 	local match_line_position="$2"
 	local match="$3"
+	local scrollback_line_number="$4"
 	_copycat_enter_mode
 	_copycat_exit_select_mode
-	_copycat_jump_to_line "$line_number"
+	_copycat_jump_to_line "$line_number" "$scrollback_line_number"
 	_copycat_position_to_match_start "$match_line_position"
 	_copycat_clear_search
 	_copycat_select "$match"
@@ -87,9 +93,25 @@ _copycat_exit_select_mode() {
 	fi
 }
 
-_copycat_jump_to_line() {
+# "manually" go up in the scrollback for a number of lines
+_copycat_manually_go_up() {
 	local line_number="$1"
-	# first goes to the "bottom" in copy mode so that jumps are consistent
+	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+		# vi copy mode
+		tmux send-keys "$line_number"
+		tmux send-keys k
+	else
+		# emacs copy mode
+		for (( c=1; c<="$line_number"; c++ )); do
+			tmux send-keys C-p
+		done
+	fi
+}
+
+# performs a jump to go to line
+_copycat_go_to_line_with_jump() {
+	local line_number="$1"
+	# first jumps to the "bottom" in copy mode so that jumps are consistent
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
 		tmux send-keys G
@@ -103,17 +125,57 @@ _copycat_jump_to_line() {
 	tmux send-keys C-m
 }
 
+# maximum line number that can be reached via tmux 'jump'
+_get_max_jump() {
+	local scrollback_line_number="$1"
+	local window_height="$2"
+	local max_jump=$((scrollback_line_number - $window_height))
+	# max jump can't be lower than zero
+	if [ "$max_jump" -lt "0" ]; then
+		max_jump="0"
+	fi
+	echo "$max_jump"
+}
+
+_copycat_jump_to_line() {
+	local line_number="$1"
+	local scrollback_line_number="$2"
+	local window_height="150" # guessing maximum terminal window height
+	local correct_line_number
+
+	local max_jump=$(_get_max_jump "$scrollback_line_number" "$window_height")
+	local correction="0"
+
+	if [ "$line_number" -gt "$max_jump" ]; then
+		# We need to "reach" a line number that is not accessible via 'jump'.
+		# Introducing "correction"
+		correct_line_number="$max_jump"
+		correction=$((line_number - $correct_line_number))
+	else
+		# we can reach the desired line number via 'jump'. Correction not needed.
+		correct_line_number="$line_number"
+	fi
+
+	_copycat_go_to_line_with_jump "$correct_line_number"
+
+	if [ "$correction" -gt "0" ]; then
+		_copycat_manually_go_up "$correction"
+	fi
+}
+
 _copycat_position_to_match_start() {
 	local match_line_position="$1"
 	[ "$match_line_position" -eq "0" ] && return 0
 
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
+		tmux send-keys 0
 		tmux send-keys "$match_line_position"
 		tmux send-keys l
 	else
 		# emacs copy mode
 		# emacs doesn't have repeat, so we're manually looping :(
+		tmux send-keys C-a
 		for (( c=1; c<="$match_line_position"; c++ )); do
 			tmux send-keys C-f
 		done
@@ -200,11 +262,12 @@ do_next_jump() {
 	local copycat_file="$2"
 	local scrollback_file="$3"
 
+	local scrollback_line_number=$(_file_number_of_lines "$scrollback_file")
 	local result_line="$(_get_result_line "$copycat_file" "$position_number")"
 	local line_number=$(_get_line_number "$result_line" "$copycat_file" "$position_number")
 	local match=$(_get_match "$result_line")
 	local match_line_position=$(_get_match_line_position "$scrollback_file" "$line_number" "$match")
-	_copycat_jump "$line_number" "$match_line_position" "$match"
+	_copycat_jump "$line_number" "$match_line_position" "$match" "$scrollback_line_number"
 }
 
 main() {
