@@ -12,6 +12,7 @@ Start "copycat mode" with pre-defined searches:
 
 - `prefix + C-f` - jumps to a *f*ile
 - `prefix + C-u` - jumps to a *u*rl
+- `prefix + C-d` - jumps to a number (mnemonic d, as digit)
 - `prefix + C-r` - jumps to last "*r*ails server" request
 
 **Copycat mode bindings**
