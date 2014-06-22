@@ -3,6 +3,9 @@
 Adds "copycat mode" to Tmux. Enables:
 - regex searches
 - search result highlighting
+- predefined searches
+
+You can finally stop using mouse with Tmux!
 
 ### Usage
 
