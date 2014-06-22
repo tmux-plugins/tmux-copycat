@@ -6,16 +6,29 @@ Adds "copycat mode" to Tmux. Enables:
 
 ### Usage
 
-**Predefined jumps**
+#### Search
 
-Start "copycat mode" with pre-defined searches:
+- `prefix + /` - regex search (strings work too)
 
-- `prefix + C-f` - jumps to a *f*ile
-- `prefix + C-u` - jumps to a *u*rl
-- `prefix + C-d` - jumps to a number (mnemonic d, as digit)
-- `prefix + C-r` - jumps to last "*r*ails server" request
+Example searches entries:
 
-**Copycat mode bindings**
+- `foo` - searchs for string `foo`
+- `[0-9]\\+` - regex search for numbers (**notice `+` is escaped with 2 x `\`**)
+
+Grep is used for searching.<br/>
+Escape regex characters with 2 backslashes.<br/>
+Searches are case insensitive.<br/>
+
+#### Predefined searches
+
+- `prefix + C-f` - simple *f*ile search
+- `prefix + C-u` - *u*rl search
+- `prefix + C-d` - number search (mnemonic d, as digit)
+- `prefix + C-r` - "*r*ails server" request search
+
+These start "copycat mode" and jump to first match.
+
+#### Copycat mode bindings
 
 These are enabled when in copycat mode:
 
@@ -36,8 +49,8 @@ This plugin tries hard to consistently enable "marketed" features. It uses some
 hacks to go beyond the APIs Tmux provides. Because of this, it might have some
 "rough edges" and there's nothing that can be done.
 
-Some of the examples are: non-perfect file and url matching and selection. That
-said, usage should be fine in +90% cases.
+Examples: non-perfect file and url matching and selection. That said, usage
+should be fine in +90% cases.
 
 ### Installation with [Tmux Plugin Manager](https://github.com/bruno-/tpm) (recommended)
 
