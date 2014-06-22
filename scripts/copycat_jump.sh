@@ -111,6 +111,8 @@ _copycat_find() {
 	tmux send-keys C-m
 }
 
+# This is cleaned so there's no conflicts between default Tmux and copycat key
+# bindings of `n` and `N` keys.
 _copycat_clear_search() {
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode

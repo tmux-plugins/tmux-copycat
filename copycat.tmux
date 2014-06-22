@@ -9,7 +9,7 @@ rails_request_jump="C-r|^Processing[[:space:]]by[[:space:]][^[:space:]]*"
 file_match_jump="C-f|\(^\|[[:space:]]\)\([[:alnum:]]\|[~_]\)*/[^[:space:]:]*"
 digit_jump="C-d|[[:digit:]]\+"
 
-default_jumps="$url_jump $rails_request_jump $file_match_jump"
+default_jumps="$url_jump $rails_request_jump $file_match_jump $digit_jump"
 
 default_copycat_search_key="/"
 copycat_search_option="@copycat_search"
