@@ -50,13 +50,25 @@ _get_match() {
 	printf "$remove_trailing_char"
 }
 
+_get_match_line_position() {
+	local file="$1"
+	local line_number="$2"
+	local match="$3"
+	local adjusted_line_num=$((line_number + 1))
+	local result_line=$(tail -"$adjusted_line_num" "$file" | head -1)
+	local index=$(awk -v a="$result_line" -v b="$match" 'BEGIN{print index(a,b)}')
+	local zero_index=$((index - 1))
+	echo "$zero_index"
+}
+
 _copycat_jump() {
 	local line_number="$1"
-	local match="$2"
+	local match_line_position="$2"
+	local match="$3"
 	_copycat_enter_mode
 	_copycat_exit_select_mode
 	_copycat_jump_to_line "$line_number"
-	_copycat_find "$match"
+	_copycat_position_to_match_start "$match_line_position"
 	_copycat_clear_search
 	_copycat_select "$match"
 }
@@ -92,23 +104,21 @@ _copycat_jump_to_line() {
 	tmux send-keys C-m
 }
 
-# Goes to the end of the line 'above' the match, then does a search.
-# This is done to enable matches that start at the beginning of the line.
-_copycat_find() {
-	local match="$1"
+_copycat_position_to_match_start() {
+	local match_line_position="$1"
+	[ "$match_line_position" -eq "0" ] && return 0
+
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
-		tmux send-keys k
-		tmux send-keys $
-		tmux send-keys /
+		tmux send-keys "$match_line_position"
+		tmux send-keys l
 	else
 		# emacs copy mode
-		tmux send-keys C-p
-		tmux send-keys C-e
-		tmux send-keys C-s
+		# emacs doesn't have repeat, so we're manually looping :(
+		for (( c=1; c<="$match_line_position"; c++ )); do
+			tmux send-keys C-f
+		done
 	fi
-	tmux send-keys "$match"
-	tmux send-keys C-m
 }
 
 # This is cleaned so there's no conflicts between default Tmux and copycat key
@@ -185,19 +195,23 @@ get_new_position_number() {
 }
 
 do_next_jump() {
-	local copycat_file="$1"
-	local position_number="$2"
+	local position_number="$1"
+	local copycat_file="$2"
+	local scrollback_file="$3"
+
 	local result_line="$(_get_result_line "$copycat_file" "$position_number")"
 	local line_number=$(_get_line_number "$result_line" "$copycat_file" "$position_number")
 	local match=$(_get_match "$result_line")
-	_copycat_jump "$line_number" "$match"
+	local match_line_position=$(_get_match_line_position "$scrollback_file" "$line_number" "$match")
+	_copycat_jump "$line_number" "$match_line_position" "$match"
 }
 
 main() {
 	if in_copycat_mode; then
 		local copycat_file="$(get_copycat_filename)"
+		local scrollback_file="$(get_scrollback_filename)"
 		local position_number="$(get_new_position_number "$copycat_file")"
-		do_next_jump "$copycat_file" "$position_number"
+		do_next_jump "$position_number" "$copycat_file" "$scrollback_file"
 		set_copycat_position "$position_number"
 	fi
 }
