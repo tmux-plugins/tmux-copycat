@@ -22,6 +22,7 @@ Searches are case insensitive.<br/>
 #### Predefined searches
 
 - `prefix + C-f` - simple *f*ile search
+- `prefix + C-g` - jumping over *g*it status files (best used after `git status` command)
 - `prefix + C-u` - *u*rl search
 - `prefix + C-d` - number search (mnemonic d, as digit)
 - `prefix + C-r` - "*r*ails server" request search
