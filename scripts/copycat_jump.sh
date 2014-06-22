@@ -154,6 +154,7 @@ _copycat_select() {
 		tmux send-keys Space
 		tmux send-keys "$length"
 		tmux send-keys l
+		tmux send-keys h # selection correction for 1 char
 	else
 		# emacs copy mode
 		tmux send-keys C-Space
@@ -161,6 +162,7 @@ _copycat_select() {
 		for (( c=1; c<="$length"; c++ )); do
 			tmux send-keys C-f
 		done
+		tmux send-keys C-b # selection correction for 1 char
 	fi
 }
 
