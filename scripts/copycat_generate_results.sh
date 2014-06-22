@@ -23,9 +23,15 @@ reverse_and_create_copycat_file() {
 	eval "cat "$file" | (tac 2> /dev/null || tail -r) | grep -oni "$grep_pattern" > "$copycat_file""
 }
 
+delete_old_files() {
+	local scrollback_filename="$(get_scrollback_filename)"
+	local copycat_filename="$(get_copycat_filename)"
+	rm "$scrollback_filename" "$copycat_filename"
+}
+
 generate_copycat_file() {
 	local grep_pattern="$1"
-	local scrollback_filename=$(get_scrollback_filename)
+	local scrollback_filename="$(get_scrollback_filename)"
 	local copycat_filename="$(get_copycat_filename)"
 	capture_pane "$scrollback_filename"
 	reverse_and_create_copycat_file "$scrollback_filename" "$copycat_filename" "$grep_pattern"
@@ -43,6 +49,7 @@ if_no_results_exit_with_message() {
 main() {
 	local grep_pattern="$1"
 	if not_in_copycat_mode; then
+		delete_old_files
 		generate_copycat_file "$grep_pattern"
 		if_no_results_exit_with_message
 		set_copycat_mode
