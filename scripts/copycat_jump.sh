@@ -20,7 +20,7 @@ _get_result_line() {
 _string_starts_with_digit() {
 	local string="$1"
 	echo "$string" |
-		grep -q '^[[:digit:]]'
+		grep -q '^[[:digit:]]\+:'
 }
 
 _get_line_number() {
