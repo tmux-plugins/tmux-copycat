@@ -7,7 +7,7 @@ tmux_option="@copycat"
 
 url_jump="C-u|https\?://[^[:space:]]*"
 rails_request_jump="C-r|^Processing[[:space:]]by[[:space:]][^[:space:]]*"
-file_match_jump="C-f|\(^\|[[:space:]]\)\([[:alnum:]]\|[~_]\)*/[^[:space:]:]*"
+file_match_jump="C-f|\(^\|[[:space:]]\)\([[:alnum:]]\|[~_.]\)*/[^[:space:]:]*"
 digit_jump="C-d|[[:digit:]]\+"
 
 default_jumps="$url_jump $rails_request_jump $file_match_jump $digit_jump"
