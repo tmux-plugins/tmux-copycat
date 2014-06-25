@@ -24,8 +24,10 @@ RUN echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVmzBG5v7cO9IScGLIzlhGlHNFhXzy87
 RUN add-apt-repository ppa:pi-rho/dev
 RUN apt-get update
 RUN apt-get install -y tmux=1.9a-1~ppa1~t
-RUN git clone https://github.com/bruno-/tpm ~/.tmux/plugins/tpm
+RUN apt-get install -y vim
 
+# install tmux plugin manager
+RUN git clone https://github.com/bruno-/tpm ~/.tmux/plugins/tpm
 RUN echo "set -g @tpm_plugins 'bruno-/tpm'" >> ~/.tmux.conf
 RUN echo "run-shell ~/.tmux/plugins/tpm/tpm" >> ~/.tmux.conf
 
