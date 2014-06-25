@@ -1,21 +1,20 @@
 # Tmux copycat
 
-Adds "copycat mode" to Tmux. Enables:
+This plugin strives to reduce mouse usage with Tmux. It enables:
+
 - regex searches
 - search result highlighting
 - predefined searches
 
-You can finally stop using mouse with Tmux!
-
-### Usage
+It works even better when paired with [tmux yank](https://github.com/bruno-/tmux_yank).
 
 #### Search
 
 - `prefix + /` - regex search (strings work too)
 
-Example searches entries:
+Example search entries:
 
-- `foo` - searchs for string `foo`
+- `foo` - searches for string `foo`
 - `[0-9]\\+` - regex search for numbers (**notice `+` is escaped with 2 x `\`**)
 
 Grep is used for searching.<br/>
@@ -32,9 +31,9 @@ Searches are case insensitive.<br/>
 
 These start "copycat mode" and jump to first match.
 
-#### Copycat mode bindings
+#### "Copycat mode" bindings
 
-These are enabled when in copycat mode:
+These are enabled when you search with copycat:
 
 - `n` - jumps to the next match
 - `N` - jumps to the previous match
@@ -46,6 +45,9 @@ To copy a highlighted match:
 
 Copying a highlighted match will take you "out" of copycat mode. Paste with
 `prefix + ]` (this is Tmux default paste).
+
+Copying highlighted matches can be enhanced with
+[tmux yank](https://github.com/bruno-/tmux_yank).
 
 ### Limitations
 
@@ -85,21 +87,14 @@ Reload TMUX environment:
 
 You should now be able to use the plugin.
 
-### Other plugins
+### Other goodies
 
 You might also find these useful:
 
-- [pain control](https://github.com/bruno-/tmux_pain_control) - useful standard
-  bindings for controlling panes
 - [logging](https://github.com/bruno-/tmux_logging) - easy logging and
   screen capturing for Tmux panes
 - [goto session](https://github.com/bruno-/tmux_goto_session) - faster session
   switching
-- [battery osx](https://github.com/bruno-/tmux_battery_osx) - battery status
-  for OSX in Tmux `status-right`
-- [online status](https://github.com/bruno-/tmux_online_status) - online status
-  indicator in Tmux `status-right`. Useful when on flaky connection to see if
-  you're online.
 
 ### License
 
