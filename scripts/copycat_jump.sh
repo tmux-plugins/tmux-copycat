@@ -108,6 +108,18 @@ _copycat_manually_go_up() {
 	fi
 }
 
+_copycat_center_result_on_the_screen() {
+	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+		# vi copy mode
+		tmux send-keys "C-d"     # go half-page down
+		tmux send-keys M		 # center cursor on a page
+	else
+		# emacs copy mode
+		tmux send-keys "M-Down"
+		tmux send-keys "M-r"
+	fi
+}
+
 # performs a jump to go to line
 _copycat_go_to_line_with_jump() {
 	local line_number="$1"
@@ -160,6 +172,14 @@ _copycat_jump_to_line() {
 
 	if [ "$correction" -gt "0" ]; then
 		_copycat_manually_go_up "$correction"
+	fi
+
+	local half_window_height="$((window_height / 2))"
+	# if
+	# 1. no corrections (meaning result is not at the top of scrollback)
+	# 2. and the result is not near the bottom of scrollback (can't center result then)
+	if [ "$correction" -eq "0" ] && [ "$line_number" -gt "$half_window_height" ]; then
+		_copycat_center_result_on_the_screen
 	fi
 }
 
