@@ -120,6 +120,33 @@ _copycat_center_result_on_the_screen() {
 	fi
 }
 
+_copycat_create_padding_below_result() {
+	local number_of_lines="$1"
+	local padding
+	# maximum padding should be 25 lines or less
+	if [ "$number_of_lines" -gt "25" ]; then
+		padding="25"
+	else
+		padding="$number_of_lines"
+	fi
+
+	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+		# vi copy mode
+		tmux send-keys "$padding" # go down a number of lines
+		tmux send-keys j
+		tmux send-keys "$padding" # go up a number of lines
+		tmux send-keys k
+	else
+		# emacs copy mode
+		for (( c=1; c<="$padding"; c++ )); do
+			tmux send-keys C-n
+		done
+		for (( c=1; c<="$padding"; c++ )); do
+			tmux send-keys C-p
+		done
+	fi
+}
+
 # performs a jump to go to line
 _copycat_go_to_line_with_jump() {
 	local line_number="$1"
@@ -178,8 +205,13 @@ _copycat_jump_to_line() {
 	# if
 	# 1. no corrections (meaning result is not at the top of scrollback)
 	# 2. and the result is not near the bottom of scrollback (can't center result then)
-	if [ "$correction" -eq "0" ] && [ "$line_number" -gt "$half_window_height" ]; then
-		_copycat_center_result_on_the_screen
+	if [ "$correction" -eq "0" ]; then
+		if [ "$line_number" -gt "$half_window_height" ]; then
+			_copycat_center_result_on_the_screen
+		else
+			# can't center result, creating as much padding as possible
+			_copycat_create_padding_below_result "$line_number"
+		fi
 	fi
 }
 
