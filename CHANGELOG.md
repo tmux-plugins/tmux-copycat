@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.0.2, Jun 26, 2014
 - search results are always at the bottom of the page. If possible center the
   result, or provide maximum possible padding.
 - refactoring in `copycat_jump.sh` - extract 2 constants to file global variables
