@@ -1,10 +1,13 @@
 # Tmux copycat
 
-This plugin strives to reduce mouse usage with Tmux. It enables:
+This plugin enables:
 
 - regex searches
 - search result highlighting
 - predefined searches
+
+Plugin killer feature is predefined searches. It speeds the workflow and
+reduces mouse usage with Tmux.
 
 It works even better when paired with [tmux yank](https://github.com/bruno-/tmux_yank).
 
