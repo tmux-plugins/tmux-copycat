@@ -4,6 +4,9 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source "$CURRENT_DIR/helpers.sh"
 
+WINDOW_HEIGHT="150"    # guessing maximum terminal window height
+MAXIMUM_PADDING="25"   # maximum padding below the result when it can't be centered
+
 # jump to 'next' or 'prev' match
 # global var for this file
 NEXT_PREV="$1"
@@ -124,8 +127,8 @@ _copycat_create_padding_below_result() {
 	local number_of_lines="$1"
 	local padding
 	# maximum padding should be 25 lines or less
-	if [ "$number_of_lines" -gt "25" ]; then
-		padding="25"
+	if [ "$number_of_lines" -gt "$MAXIMUM_PADDING" ]; then
+		padding="$MAXIMUM_PADDING"
 	else
 		padding="$number_of_lines"
 	fi
@@ -179,7 +182,7 @@ _get_max_jump() {
 _copycat_jump_to_line() {
 	local line_number="$1"
 	local scrollback_line_number="$2"
-	local window_height="150" # guessing maximum terminal window height
+	local window_height="$WINDOW_HEIGHT"
 	local correct_line_number
 
 	local max_jump=$(_get_max_jump "$scrollback_line_number" "$window_height")
