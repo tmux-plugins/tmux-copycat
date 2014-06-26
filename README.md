@@ -61,6 +61,9 @@ hacks to go beyond the APIs Tmux provides. Because of this, it might have some
 Examples: non-perfect file and url matching and selection. That said, usage
 should be fine in +90% cases.
 
+Also, feel free to report search cases you think should work, but are not
+(provide examples pls!). I'm open to the idea of adding more saved searches.
+
 ### Installation with [Tmux Plugin Manager](https://github.com/bruno-/tpm) (recommended)
 
 Add plugin to the list of TPM plugins in `.tmux.conf`:
