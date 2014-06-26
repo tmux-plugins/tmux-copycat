@@ -287,7 +287,7 @@ _copycat_select() {
 
 get_new_position_number() {
 	local copycat_file="$1"
-	local current_position=$(get_copycat_position)
+	local current_position="$2"
 	local new_position
 
 	# doing a forward/up jump
@@ -325,13 +325,30 @@ do_next_jump() {
 	_copycat_jump "$line_number" "$match_line_position" "$match" "$scrollback_line_number"
 }
 
+notify_about_first_last_match() {
+	local current_position="$1"
+	local next_position="$2"
+	local message_duration="1500"
+
+	# if position didn't change, we are either on a 'first' or 'last' match
+	if [ "$current_position" -eq "$next_position" ]; then
+		if [ "$NEXT_PREV" == "next" ]; then
+			display_message "Last match!" "$message_duration"
+		elif [ "$NEXT_PREV" == "prev" ]; then
+			display_message "First match!" "$message_duration"
+		fi
+	fi
+}
+
 main() {
 	if in_copycat_mode; then
 		local copycat_file="$(get_copycat_filename)"
 		local scrollback_file="$(get_scrollback_filename)"
-		local position_number="$(get_new_position_number "$copycat_file")"
-		do_next_jump "$position_number" "$copycat_file" "$scrollback_file"
-		set_copycat_position "$position_number"
+		local current_position="$(get_copycat_position)"
+		local next_position="$(get_new_position_number "$copycat_file" "$current_position")"
+		do_next_jump "$next_position" "$copycat_file" "$scrollback_file"
+		notify_about_first_last_match "$current_position" "$next_position"
+		set_copycat_position "$next_position"
 	fi
 }
 main
