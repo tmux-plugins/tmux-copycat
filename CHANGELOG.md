@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.0.3, Jun 29, 2014
 - add notifications about the first and last match
 - improve "jump correction" handling by fetching the precise window height
 - improve result vertical centering & fix a related bug
