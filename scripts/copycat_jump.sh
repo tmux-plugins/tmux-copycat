@@ -4,7 +4,6 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source "$CURRENT_DIR/helpers.sh"
 
-WINDOW_HEIGHT="150"    # guessing maximum terminal window height
 MAXIMUM_PADDING="25"   # maximum padding below the result when it can't be centered
 
 # jump to 'next' or 'prev' match
@@ -182,15 +181,15 @@ _get_max_jump() {
 _copycat_jump_to_line() {
 	local line_number="$1"
 	local scrollback_line_number="$2"
-	local window_height="$WINDOW_HEIGHT"
+	local window_height="$(tmux display-message -p '#{pane_height}')"
 	local correct_line_number
 
 	local max_jump=$(_get_max_jump "$scrollback_line_number" "$window_height")
 	local correction="0"
 
 	if [ "$line_number" -gt "$max_jump" ]; then
-		# We need to "reach" a line number that is not accessible via 'jump'.
-		# Introducing "correction"
+		# We need to 'reach' a line number that is not accessible via 'jump'.
+		# Introducing 'correction'
 		correct_line_number="$max_jump"
 		correction=$((line_number - $correct_line_number))
 	else
@@ -204,11 +203,11 @@ _copycat_jump_to_line() {
 		_copycat_manually_go_up "$correction"
 	fi
 
-	local half_window_height="$((window_height / 2))"
 	# if
 	# 1. no corrections (meaning result is not at the top of scrollback)
 	# 2. and the result is not near the bottom of scrollback (can't center result then)
 	if [ "$correction" -eq "0" ]; then
+		local half_window_height="$((window_height / 2))"
 		if [ "$line_number" -gt "$half_window_height" ]; then
 			_copycat_center_result_on_the_screen
 		else
