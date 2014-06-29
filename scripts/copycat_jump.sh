@@ -110,24 +110,15 @@ _copycat_manually_go_up() {
 	fi
 }
 
-_copycat_center_result_on_the_screen() {
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
-		# vi copy mode
-		tmux send-keys "C-d"     # go half-page down
-		tmux send-keys M		 # center cursor on a page
-	else
-		# emacs copy mode
-		tmux send-keys "M-Down"
-		tmux send-keys "M-r"
-	fi
-}
-
 _copycat_create_padding_below_result() {
 	local number_of_lines="$1"
+	local maximum_padding="$2"
 	local padding
-	# maximum padding should be 25 lines or less
-	if [ "$number_of_lines" -gt "$MAXIMUM_PADDING" ]; then
-		padding="$MAXIMUM_PADDING"
+
+	# Padding should not be greater than half pane height
+	# (it wouldn't be centered then).
+	if [ "$number_of_lines" -gt "$maximum_padding" ]; then
+		padding="$maximum_padding"
 	else
 		padding="$number_of_lines"
 	fi
@@ -203,17 +194,12 @@ _copycat_jump_to_line() {
 		_copycat_manually_go_up "$correction"
 	fi
 
-	# if
-	# 1. no corrections (meaning result is not at the top of scrollback)
-	# 2. and the result is not near the bottom of scrollback (can't center result then)
+	# If no corrections (meaning result is not at the top of scrollback)
+	# we can then 'center' the result within a pane.
 	if [ "$correction" -eq "0" ]; then
 		local half_window_height="$((window_height / 2))"
-		if [ "$line_number" -gt "$half_window_height" ]; then
-			_copycat_center_result_on_the_screen
-		else
-			# can't center result, creating as much padding as possible
-			_copycat_create_padding_below_result "$line_number"
-		fi
+		# creating as much padding as possible, up to half pane height
+		_copycat_create_padding_below_result "$line_number" "$half_window_height"
 	fi
 }
 

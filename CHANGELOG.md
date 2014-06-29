@@ -3,6 +3,7 @@
 ### master
 - add notifications about the first and last match
 - improve "jump correction" handling by fetching the precise window height
+- improve result vertical centering & fix a related bug
 
 ### v0.0.2, Jun 26, 2014
 - search results are always at the bottom of the page. If possible center the
