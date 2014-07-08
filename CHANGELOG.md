@@ -1,6 +1,7 @@
 # Changelog
 
 ### master
+- bugfix for incorrect result highlighting
 
 ### v0.0.3, Jun 29, 2014
 - add notifications about the first and last match

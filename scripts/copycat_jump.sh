@@ -147,10 +147,12 @@ _copycat_go_to_line_with_jump() {
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
 		tmux send-keys G
+		tmux send-keys 0
 		tmux send-keys :
 	else
 		# emacs copy mode
 		tmux send-keys "M->"
+		tmux send-keys C-a
 		tmux send-keys g
 	fi
 	tmux send-keys "$line_number"
@@ -209,13 +211,11 @@ _copycat_position_to_match_start() {
 
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
-		tmux send-keys 0
 		tmux send-keys "$match_line_position"
 		tmux send-keys l
 	else
 		# emacs copy mode
 		# emacs doesn't have repeat, so we're manually looping :(
-		tmux send-keys C-a
 		for (( c=1; c<="$match_line_position"; c++ )); do
 			tmux send-keys C-f
 		done
