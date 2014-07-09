@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.0.4, Jul 9, 2014
 - bugfix for incorrect result highlighting
 - optimize and improve the function that centers the result vertically on the
   screen
