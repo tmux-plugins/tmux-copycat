@@ -51,8 +51,17 @@ _get_line_number() {
 }
 
 _get_match() {
-	local string=$1
-	local full_match=$(echo "$string" | cut -f2-99 -d:)
+	local string="$1"
+	local full_match
+	if _string_starts_with_digit "$string"; then
+		full_match="$(echo "$string" | cut -f2-99 -d:)"
+	else
+		# This scenario handles OS X grep bug "no number in the results line".
+		# When there's no number at the beginning of the line, we're taking the
+		# whole line as a match. This handles the result line like this:
+		# `http://www.example.com` (the `http` would otherwise get cut off)
+		full_match="$string"
+	fi
 	echo -n "$full_match"
 }
 
