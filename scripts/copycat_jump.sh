@@ -123,6 +123,11 @@ _copycat_create_padding_below_result() {
 		padding="$number_of_lines"
 	fi
 
+	# cannot create padding, exit function
+	if [ "$padding" -eq "0" ]; then
+		return
+	fi
+
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
 		tmux send-keys "$padding" # go down a number of lines

@@ -2,6 +2,8 @@
 
 ### master
 - bugfix for incorrect result highlighting
+- optimize and improve the function that centers the result vertically on the
+  screen
 
 ### v0.0.3, Jun 29, 2014
 - add notifications about the first and last match
