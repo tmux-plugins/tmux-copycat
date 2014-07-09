@@ -62,6 +62,15 @@ _get_match_line_position() {
 	local match="$3"
 	local adjusted_line_num=$((line_number + 1))
 	local result_line=$(tail -"$adjusted_line_num" "$file" | head -1)
+
+	# OS X awk cannot have `=` as the first char in the variable (bug in awk).
+	# If exists, changing the `=` character with `.` to avoid error.
+	local platform="$(uname)"
+	if [ "$platform" == "Darwin" ]; then
+		result_line="$(echo "$result_line" | sed 's/^=/./')"
+		match="$(echo "$match" | sed 's/^=/./')"
+	fi
+
 	local index=$(awk -v a="$result_line" -v b="$match" 'BEGIN{print index(a,b)}')
 	local zero_index=$((index - 1))
 	echo "$zero_index"
