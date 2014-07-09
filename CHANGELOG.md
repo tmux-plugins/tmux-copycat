@@ -1,6 +1,7 @@
 # Changelog
 
 ### master
+- improve stored file matching search
 
 ### v0.0.4, Jul 9, 2014
 - bugfix for incorrect result highlighting
