@@ -53,7 +53,7 @@ _get_line_number() {
 _get_match() {
 	local string=$1
 	local full_match=$(echo "$string" | cut -f2-99 -d:)
-	printf "$full_match"
+	echo -n "$full_match"
 }
 
 _get_match_line_position() {

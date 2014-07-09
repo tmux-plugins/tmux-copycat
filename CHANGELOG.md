@@ -5,6 +5,7 @@
 - optimize and improve the function that centers the result vertically on the
   screen
 - fix OS X awk bug: awk variable content can't start with `=` char
+- fix a bug with wrong result highlighting caused by using `printf`
 
 ### v0.0.3, Jun 29, 2014
 - add notifications about the first and last match
