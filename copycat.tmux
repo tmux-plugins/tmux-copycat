@@ -5,7 +5,7 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # predefined searches
 tmux_option="@copycat"
 
-url_jump="C-u|https\?://[^[:space:]]*"
+url_jump="C-u|https\?://[[:alnum:]?=%/_.:,;~@!$&()*+-]*"
 rails_request_jump="C-r|^Processing[[:space:]]by[[:space:]][^[:space:]]*"
 file_match_jump="C-f|\(^\|[[:space:]]\|[[:space:]]\.\)\([[:alnum:]]\|[~_]\)*/[^[:space:]:]*"
 digit_jump="C-d|[[:digit:]]\+"

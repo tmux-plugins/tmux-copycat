@@ -7,6 +7,7 @@
 - fix OS X awk bug: awk variable content can't start with `=` char
 - fix a bug with wrong result highlighting caused by using `printf`
 - fix a bug with wrong result highlighting caused by a bug in OSX `grep`
+- improve URL matching regex. Matches don't include quotes anymore.
 
 ### v0.0.3, Jun 29, 2014
 - add notifications about the first and last match
