@@ -65,6 +65,11 @@ _get_match() {
 	echo -n "$full_match"
 }
 
+_escape_backslash() {
+	local string="$1"
+	echo "$(echo "$string" | sed 's/\\/\\\\/g')"
+}
+
 _get_match_line_position() {
 	local file="$1"
 	local line_number="$2"
@@ -79,6 +84,12 @@ _get_match_line_position() {
 		result_line="$(echo "$result_line" | sed 's/^=/./')"
 		match="$(echo "$match" | sed 's/^=/./')"
 	fi
+
+	# awk treats \r, \n, \t etc as single characters and that messes up match
+	# highlighting. For that reason, we're escaping backslashes so above chars
+	# are treated literally.
+	result_line="$(_escape_backslash "$result_line")"
+	match="$(_escape_backslash "$match")"
 
 	local index=$(awk -v a="$result_line" -v b="$match" 'BEGIN{print index(a,b)}')
 	local zero_index=$((index - 1))
