@@ -4,6 +4,8 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 PANE_CURRENT_PATH="$1"
 
+source "$CURRENT_DIR/helpers.sh"
+
 git_status_files() {
 	local git_working_dir="$PANE_CURRENT_PATH"
 	local git_dir="$PANE_CURRENT_PATH/.git"
@@ -15,8 +17,18 @@ formatted_git_status() {
 	echo "$(echo "$raw_gist_status" | cut -c 4-999)"
 }
 
+exit_if_no_results() {
+	local results="$1"
+	if [ -z "$results" ]; then
+		display_message "No results!"
+		exit 0
+	fi
+}
+
 concatenate_files() {
 	local git_status_files="$(formatted_git_status)"
+	exit_if_no_results "$git_status_files"
+
 	local result=""
 	# Undefined until later within a while loop.
 	local file_separator
