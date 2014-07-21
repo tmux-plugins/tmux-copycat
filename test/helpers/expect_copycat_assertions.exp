@@ -11,6 +11,15 @@ proc assert_highlighted {text message} {
   }
 }
 
+proc irb_assert_highlighted {text message} {
+  set checker [ _generate_checker ]
+  _irb_display_highlighted_with_checker_text "$checker"
+  expect {
+    "$checker$text" { puts "  Success: $message" }
+    timeout         { puts "  Fail: $message"; exit_status_false }
+  }
+}
+
 # private functions
 
 proc _generate_checker {} {
@@ -26,6 +35,15 @@ proc _display_highlighted_with_checker_text {checker} {
   send "echo $checker"
   sleep 0.1
   _tmux_paste
+  send "\r"
+}
+
+proc _irb_display_highlighted_with_checker_text {checker} {
+  _copy_mode_copy
+  send "puts '$checker"
+  sleep 0.1
+  _tmux_paste
+  send "'"
   send "\r"
 }
 

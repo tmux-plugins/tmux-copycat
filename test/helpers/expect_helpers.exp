@@ -43,6 +43,23 @@ proc new_tmux_pane {} {
   sleep 1
 }
 
+proc enter_irb {} {
+  send "irb\r"
+  sleep 1
+}
+
+proc exit_irb {} {
+  send "\r"
+  sleep 0.1
+  send "exit\r"
+  sleep 0.5
+}
+
+proc irb_display_text {text} {
+  send "puts '$text'\r"
+  sleep 0.3
+}
+
 # private functions
 
 proc _kill_tmux_server {} {

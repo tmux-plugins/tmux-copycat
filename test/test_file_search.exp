@@ -32,4 +32,15 @@ sleep 0.1
 tmux_ctrl_f
 assert_highlighted " some/file.xyz" "middle of the pane relative path, pane bottom"
 
+# irb console searches
+#---------------------
+new_tmux_pane
+enter_irb
+irb_display_text "file/within/irb.rb"
+tmux_ctrl_f
+irb_assert_highlighted "file/within/irb.rb" "irb console relative path"
+exit_irb
+
+# quit
+#-----
 teardown_and_exit
