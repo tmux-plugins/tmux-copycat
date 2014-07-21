@@ -4,7 +4,7 @@ source "/vagrant/test/helpers/setup.exp"
 
 create_output
 clear_screen
-display_text "/this/is/some/path/and/file_at_the_end.txt"
+display_text "/this/is/some/file.txt"
 tmux_ctrl_f
 
-assert_highlighted "/this/is/some/path/and/file_at_the_end.txt"
+assert_highlighted "/this/is/some/file.txt"
