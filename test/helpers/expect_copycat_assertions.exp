@@ -1,0 +1,39 @@
+# tmux copycat assertion helpers
+
+# Asserts text that is crrently highlighted (in copy mode).
+proc assert_highlighted {text} {
+  set checker "Highlighted text:"
+  # Asserted text first has to be 'yanked' and displayed before `expect`.
+  _display_highlighted_with_checker_text "$checker"
+  expect {
+    "$checker$text" { _kill_tmux_server; exit 0 }
+    timeout         { _kill_tmux_server; exit 1 }
+  }
+}
+
+# private functions
+
+proc _display_highlighted_with_checker_text {checker} {
+  _copy_mode_copy
+  send "echo $checker"
+  sleep 0.1
+  _tmux_paste
+  send "\r"
+}
+
+proc _copy_mode_copy {} {
+  send "y"
+  sleep 0.2
+}
+
+proc _tmux_paste {} {
+  send "]"
+  sleep 0.1
+}
+
+proc _kill_tmux_server {} {
+  send ""
+  sleep 0.1
+  send "tmux kill-server\r"
+  sleep 0.2
+}

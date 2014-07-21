@@ -1,0 +1,5 @@
+# steps for starting tmux within an expect script
+
+spawn tmux
+# delay with sleep to compensate for tmux starting time
+sleep 1

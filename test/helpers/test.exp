@@ -1,0 +1,4 @@
+#!/usr/bin/env expect
+
+spawn bash
+send "/vagrant/test/helpers/setup_tmux_conf.sh\r"

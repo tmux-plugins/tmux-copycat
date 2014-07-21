@@ -1,0 +1,28 @@
+# a set of expect helpers
+
+# basic setup for each script
+proc expect_setup {} {
+  # disables script output
+  log_user 0
+  # standard timeout
+  set timeout 5
+}
+
+proc create_output {} {
+  # `yes` command just outputs `yes`
+  send "yes\r"
+  sleep 0.1
+  # stop `yes` command
+  send ""
+  sleep 0.1
+}
+
+proc clear_screen {} {
+  send ""
+  sleep 0.1
+}
+
+proc display_text {text} {
+  send "echo $text\r"
+  sleep 0.1
+}

@@ -24,7 +24,9 @@ run_test() {
 
 	# handling exit value
 	local exit_value="$?"
-	if ! [ "$exit_value" == 0 ]; then
+	if [ "$exit_value" == 0 ]; then
+		echo "Success"
+	else
 		echo "Test failed!"
 		set_global_exit_val_to_false
 	fi

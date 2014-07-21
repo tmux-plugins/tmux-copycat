@@ -1,0 +1,6 @@
+# a set of tmux specific helpers
+
+proc tmux_ctrl_f {} {
+  send ""
+  sleep 0.7
+}
