@@ -1,13 +1,13 @@
 # tmux copycat assertion helpers
 
 # Asserts text that is crrently highlighted (in copy mode).
-proc assert_highlighted {text} {
+proc assert_highlighted {text message} {
   set checker _generate_checker
   # Asserted text first has to be 'yanked' and displayed before `expect`.
   _display_highlighted_with_checker_text "$checker"
   expect {
-    "$checker$text" {}
-    timeout         { exit_status_false }
+    "$checker$text" { puts "  Success: $message" }
+    timeout         { puts "  Fail: $message"; exit_status_false }
   }
 }
 
