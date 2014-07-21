@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# This script:
+# - starts VM
+# - starts the test suite witin a VM
+# - stops the VM after the test suite is done
+
+run_vagrant() {
+	vagrant up
+}
+
+# Halt vagrant after tests are done running, unless KEEP_RUNNING environment
+# variable is set to 'true'.
+stop_vagrant() {
+	if [ -z "$KEEP_RUNNING" ]; then
+		vagrant halt
+	else
+		echo
+		echo "KEEP_RUNNING is set. Vagrant not halted."
+	fi
+}
+
+run_tests() {
+	local test_file="/vagrant/test/run-tests-within-vm"
+	echo "Running test suite from: $test_file"
+	echo
+	vagrant ssh -c "$test_file"
+}
+
+exit_message() {
+	local exit_val="$1"
+	echo
+	if [ $exit_val == 0 ]; then
+		echo "Success, tests pass!"
+	else
+		echo "Tests failed!" 1>&2
+	fi
+}
+
+main() {
+	run_vagrant
+	run_tests
+	local tests_exit_value="$?"
+	stop_vagrant
+	exit_message "$tests_exit_value"
+	exit "$tests_exit_value"
+}
+main
