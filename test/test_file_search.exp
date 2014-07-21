@@ -22,4 +22,14 @@ display_text "/this/is/some/file.txt"
 tmux_ctrl_f
 assert_highlighted "/this/is/some/file.txt" "middle of the pane absolute path"
 
+display_text "another/file.txt"
+tmux_ctrl_f
+assert_highlighted "another/file.txt" "middle of the pane relative path"
+
+create_output
+send "some/file.xyz "
+sleep 0.1
+tmux_ctrl_f
+assert_highlighted " some/file.xyz" "middle of the pane relative path, pane bottom"
+
 teardown_and_exit
