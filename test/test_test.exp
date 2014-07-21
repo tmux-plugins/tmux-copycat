@@ -1,12 +1,6 @@
 #!/usr/bin/env expect
 
-source "/vagrant/test/helpers/expect_helpers.exp"
-source "/vagrant/test/helpers/expect_copycat_helpers.exp"
-source "/vagrant/test/helpers/expect_copycat_assertions.exp"
-expect_setup
-
-exec   "/vagrant/test/helpers/setup_tmux_conf.sh"
-source "/vagrant/test/helpers/run_tmux.exp"
+source "/vagrant/test/helpers/setup.exp"
 
 create_output
 clear_screen

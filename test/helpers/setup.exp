@@ -1,0 +1,11 @@
+# sourcing helper functions
+source "/vagrant/test/helpers/expect_helpers.exp"
+source "/vagrant/test/helpers/expect_copycat_helpers.exp"
+source "/vagrant/test/helpers/expect_copycat_assertions.exp"
+
+# .tmux.conf
+exec   "/vagrant/test/helpers/setup_tmux_conf.sh"
+expect_setup
+
+# run tmux (doesn't work when within a proc)
+source "/vagrant/test/helpers/run_tmux.exp"
