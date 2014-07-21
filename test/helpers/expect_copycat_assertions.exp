@@ -2,7 +2,7 @@
 
 # Asserts text that is crrently highlighted (in copy mode).
 proc assert_highlighted {text message} {
-  set checker _generate_checker
+  set checker [ _generate_checker ]
   # Asserted text first has to be 'yanked' and displayed before `expect`.
   _display_highlighted_with_checker_text "$checker"
   expect {
@@ -16,11 +16,13 @@ proc assert_highlighted {text message} {
 proc _generate_checker {} {
   set random [ expr { rand()*10000 } ]
   set checker "Checker $random:"
-  return checker
+  return $checker
 }
 
 proc _display_highlighted_with_checker_text {checker} {
   _copy_mode_copy
+  send ""
+  sleep 0.1
   send "echo $checker"
   sleep 0.1
   _tmux_paste
