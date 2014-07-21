@@ -8,12 +8,14 @@ display_text "/top/of_the/pane/file.txt"
 tmux_ctrl_f
 assert_highlighted "/top/of_the/pane/file.txt" "top of the pane absolute path"
 
+new_tmux_pane
 display_text "another/top/of_the/pane/file.txt"
 tmux_ctrl_f
 assert_highlighted "another/top/of_the/pane/file.txt" "top of the pane relative path"
 
 # middle of pane searches
 #------------------------
+new_tmux_pane
 create_output
 clear_screen
 display_text "/this/is/some/file.txt"

@@ -38,6 +38,11 @@ proc display_text {text} {
   sleep 0.1
 }
 
+proc new_tmux_pane {} {
+  send "c"
+  sleep 1
+}
+
 # private functions
 
 proc _kill_tmux_server {} {
