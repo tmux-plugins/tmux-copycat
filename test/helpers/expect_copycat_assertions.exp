@@ -2,7 +2,7 @@
 
 # Asserts text that is crrently highlighted (in copy mode).
 proc assert_highlighted {text} {
-  set checker "Highlighted text:"
+  set checker _generate_checker
   # Asserted text first has to be 'yanked' and displayed before `expect`.
   _display_highlighted_with_checker_text "$checker"
   expect {
@@ -12,6 +12,12 @@ proc assert_highlighted {text} {
 }
 
 # private functions
+
+proc _generate_checker {} {
+  set random [ expr { rand()*10000 } ]
+  set checker "Checker $random:"
+  return checker
+}
 
 proc _display_highlighted_with_checker_text {checker} {
   _copy_mode_copy
