@@ -6,8 +6,8 @@ proc assert_highlighted {text} {
   # Asserted text first has to be 'yanked' and displayed before `expect`.
   _display_highlighted_with_checker_text "$checker"
   expect {
-    "$checker$text" { _kill_tmux_server; exit 0 }
-    timeout         { _kill_tmux_server; exit 1 }
+    "$checker$text" {}
+    timeout         { exit_status_false }
   }
 }
 
@@ -35,11 +35,4 @@ proc _copy_mode_copy {} {
 proc _tmux_paste {} {
   send "]"
   sleep 0.1
-}
-
-proc _kill_tmux_server {} {
-  send ""
-  sleep 0.1
-  send "tmux kill-server\r"
-  sleep 0.2
 }

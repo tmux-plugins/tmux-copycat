@@ -8,6 +8,17 @@ proc expect_setup {} {
   set timeout 5
 }
 
+proc exit_status_false {} {
+  global exit_status
+  set exit_status 1
+}
+
+proc teardown_and_exit {} {
+  global exit_status
+  _kill_tmux_server
+  exit $exit_status
+}
+
 proc create_output {} {
   # `yes` command just outputs `yes`
   send "yes\r"
@@ -25,4 +36,13 @@ proc clear_screen {} {
 proc display_text {text} {
   send "echo $text\r"
   sleep 0.1
+}
+
+# private functions
+
+proc _kill_tmux_server {} {
+  send ""
+  sleep 0.1
+  send "tmux kill-server\r"
+  sleep 0.2
 }
