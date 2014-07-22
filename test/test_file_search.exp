@@ -35,8 +35,9 @@ tmux_ctrl_f
 assert_highlighted " another/file.txt" "middle of the pane, relative path, not beginning of the line"
 
 create_output
-send "some/file.xyz "
-sleep 0.1
+sleep 0.2
+send " some/file.xyz "
+sleep 0.2
 tmux_ctrl_f
 assert_highlighted " some/file.xyz" "middle of the pane relative path, pane bottom"
 
