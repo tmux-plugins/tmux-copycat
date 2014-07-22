@@ -1,0 +1,88 @@
+#!/usr/bin/env expect
+
+source "/vagrant/test/helpers/setup.exp"
+
+# searches at the top of the pane
+#--------------------------------
+display_text "Processing by WelcomeController#index as HTML"
+tmux_ctrl_r
+assert_highlighted "Processing by WelcomeController#index" "top of the pane"
+
+# middle of pane searches
+#------------------------
+new_tmux_pane
+create_output
+clear_screen
+display_text "Processing by SomeController#index as JSON"
+tmux_ctrl_r
+assert_highlighted "Processing by SomeController#index" "middle of the pane"
+
+# search at the bottom of the pane (should fail, not at the beginning of the line)
+new_tmux_pane
+create_output
+sleep 0.2
+send "Processing by RandomController#index as HTML"
+sleep 0.2
+tmux_ctrl_r
+assert_on_screen "No results!" "No result when middle of the pane, pane bottom"
+
+# result navigation
+#------------------
+new_tmux_pane
+display_text "Processing by Test1Controller#index as HTML"
+display_text "Processing by Test2Controller#index as HTML"
+display_text "Processing by Test3Controller#index as HTML"
+tmux_ctrl_r
+# test3
+next_match
+# test3
+next_match
+# test2
+next_match
+# test2
+next_match
+# test1
+previous_match
+# test2
+assert_highlighted "Processing by Test2Controller#index" "result navigation at the top of the pane"
+
+create_output
+display_text "Processing by Example1Controller#index as HTML"
+display_text "Processing by Example2Controller#index as HTML"
+tmux_ctrl_r
+# example2
+next_match
+# example2
+next_match
+# example1
+previous_match
+# example2
+assert_highlighted "Processing by Example2Controller#index" "result navigation, middle of the pane"
+
+# no match, first and last match
+#-------------------------------
+new_tmux_pane
+tmux_ctrl_r
+assert_on_screen "No results!" "No results is displayed when no results"
+
+display_text "Processing by LastController#index as HTML"
+tmux_ctrl_r
+next_match
+next_match
+assert_on_screen "Last match!" "'Last match' is displayed when last match"
+# exit copycat mode
+send ""
+
+new_tmux_pane
+display_text "Processing by FirstController#index as HTML"
+tmux_ctrl_r
+next_match
+previous_match
+previous_match
+assert_on_screen "First match!" "'First match' is displayed when first match"
+# exit copycat mode
+send ""
+
+# quit
+#-----
+teardown_and_exit

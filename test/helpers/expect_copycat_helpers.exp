@@ -15,6 +15,11 @@ proc tmux_ctrl_u {} {
   sleep 0.7
 }
 
+proc tmux_ctrl_r {} {
+  send ""
+  sleep 0.7
+}
+
 proc next_match {} {
   send "n"
   sleep 0.7
