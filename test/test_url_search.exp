@@ -1,0 +1,158 @@
+#!/usr/bin/env expect
+
+source "/vagrant/test/helpers/setup.exp"
+
+# searches at the top of the pane
+#--------------------------------
+display_text "http://example1.com"
+tmux_ctrl_u
+assert_highlighted "http://example1.com" "top of the pane, http"
+
+new_tmux_pane
+display_text "https://example1.com"
+tmux_ctrl_u
+assert_highlighted "https://example1.com" "top of the pane, https"
+
+# middle of pane searches
+#------------------------
+new_tmux_pane
+create_output
+clear_screen
+display_text "http://example2.com"
+tmux_ctrl_u
+assert_highlighted "http://example2.com" "middle of the pane, http, beginning of the line"
+
+display_text "random http://example3.com"
+tmux_ctrl_u
+assert_highlighted "http://example3.com" "middle of the pane, http, not beginning of the line"
+
+display_text "https://example4.com"
+tmux_ctrl_u
+assert_highlighted "https://example4.com" "middle of the pane, https, beginning of the line"
+
+display_text "some text https://example5.com"
+tmux_ctrl_u
+assert_highlighted "https://example5.com" "middle of the pane, https, not beginning of the line"
+
+create_output
+sleep 0.2
+send " http://example6.com "
+sleep 0.2
+tmux_ctrl_u
+assert_highlighted "http://example6.com" "middle of the pane, http, pane bottom"
+
+# urls with parameters
+#---------------------
+new_tmux_pane
+display_text "http://example61.com?some=params"
+tmux_ctrl_u
+assert_highlighted "http://example61.com?some=params" "http, simple params"
+
+# long links break tests, that's why the below one is shortened
+new_tmux_pane
+display_text "'https://github.com/H/h/b/g.rb'"
+tmux_ctrl_u
+assert_highlighted "https://github.com/H/h/b/g.rb" "github link"
+
+# match selection when line contains escaped chars
+#-------------------------------------------------
+new_tmux_pane
+display_text "filename=test.csv\r\nContent-Type: http://example7.com\r\n"
+tmux_ctrl_u
+assert_highlighted "http://example7.com" "match selection when line contains escaped chars"
+
+# result navigation
+#------------------
+new_tmux_pane
+display_text "http://example81.com"
+display_text "http://example82.com"
+display_text "http://example83.com"
+tmux_ctrl_u
+# http://example83.com
+next_match
+# http://example83.com
+next_match
+# http://example82.com
+next_match
+# http://example82.com
+next_match
+# http://example81.com
+previous_match
+# http://example82.com
+assert_highlighted "http://example82.com" "result navigation at the top of the pane"
+
+create_output
+display_text "http://example91.com"
+display_text "http://example92.com"
+tmux_ctrl_u
+# http://example92.com
+next_match
+# http://example92.com
+next_match
+# http://example91.com
+previous_match
+# http://example92.com
+assert_highlighted "http://example92.com" "result navigation, middle of the pane"
+
+# 2 matches on the same line
+#---------------------------
+new_tmux_pane
+display_text "http://example101.com http://example102.com"
+tmux_ctrl_u
+assert_highlighted "http://example101.com" "2 matches on the same line, first match"
+
+display_text "http://example111.com http://example112.com"
+tmux_ctrl_u
+next_match
+assert_highlighted "http://example112.com" "2 matches on the same line, second match"
+
+# no match, first and last match
+#-------------------------------
+new_tmux_pane
+tmux_ctrl_u
+assert_on_screen "No results!" "No results is displayed when no results"
+
+display_text "http://example12.com"
+tmux_ctrl_u
+next_match
+next_match
+assert_on_screen "Last match!" "'Last match' is displayed when last match"
+# exit copycat mode
+send ""
+
+new_tmux_pane
+display_text "http://example13.com"
+tmux_ctrl_u
+next_match
+previous_match
+previous_match
+assert_on_screen "First match!" "'First match' is displayed when first match"
+# exit copycat mode
+send ""
+
+# irb console searches
+#---------------------
+new_tmux_pane
+enter_irb
+irb_display_text "http://example14.com"
+tmux_ctrl_u
+irb_assert_highlighted "http://example14.com" "irb console, beginning of line"
+exit_irb
+
+enter_irb
+irb_display_text "some text http://example15.com"
+tmux_ctrl_u
+irb_assert_highlighted "http://example15.com" "irb console, not beginning of line"
+exit_irb
+
+enter_irb
+irb_generate_output
+send "puts http://example16.com"
+sleep 0.1
+tmux_ctrl_u
+irb_assert_highlighted "http://example16.com" "irb console, pane bottom, not beginning of line"
+exit_irb
+
+# quit
+#-----
+teardown_and_exit
