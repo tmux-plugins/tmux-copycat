@@ -1,0 +1,104 @@
+#!/usr/bin/env expect
+
+source "/vagrant/test/helpers/setup.exp"
+
+clone_test_git_repo
+enter_git_repo
+
+# single file tests
+#------------------
+change_file "README.md"
+git_status
+tmux_ctrl_g
+assert_highlighted "README.md" "change commited file"
+clean_git_repo
+
+change_file "new_file.txt"
+git_status
+tmux_ctrl_g
+assert_highlighted "new_file.txt" "change new file"
+clean_git_repo
+
+change_file "another_file.txt"
+send "some_command another_file.txt"
+sleep 0.1
+tmux_ctrl_g
+assert_highlighted "another_file.txt" "search works for files just written on the command line"
+clean_git_repo
+
+# multile files changed
+#----------------------
+change_file "README.md"
+change_file "some_new_file.txt"
+git_status
+tmux_ctrl_g
+assert_highlighted "some_new_file.txt" "multiple files, first file"
+git_status
+tmux_ctrl_g
+next_match
+assert_highlighted "README.md" "multiple files, second file"
+clean_git_repo
+
+# navigation tests
+#-----------------
+change_file "README.md"
+change_file "random_file1.txt"
+change_file "random_file2.txt"
+
+git_status
+tmux_ctrl_g
+next_match
+next_match
+assert_highlighted "README.md" "navigation, last file"
+
+git_status
+tmux_ctrl_g
+next_match
+next_match
+next_match
+previous_match
+previous_match
+previous_match
+assert_highlighted "random_file2.txt" "navigation, first file"
+
+clean_git_repo
+
+# files with unusual names
+#-------------------------
+change_file "'file with spaces.txt'"
+git_status
+tmux_ctrl_g
+assert_highlighted "file with spaces.txt" "filenames with spaces"
+clean_git_repo
+
+# no match, first and last match
+#-------------------------------
+new_tmux_pane
+enter_git_repo
+tmux_ctrl_g
+assert_on_screen "No results!" "No results is displayed when no results"
+clean_git_repo
+
+new_tmux_pane
+enter_git_repo
+change_file "README.md"
+git_status
+tmux_ctrl_g
+next_match
+next_match
+assert_on_screen "Last match!" "'Last match' is displayed when last match"
+clean_git_repo
+
+new_tmux_pane
+enter_git_repo
+change_file "README.md"
+git_status
+tmux_ctrl_g
+previous_match
+assert_on_screen "First match!" "'First match' is displayed when first match"
+clean_git_repo
+
+# quit
+#-----
+remove_test_git_repo
+teardown_and_exit

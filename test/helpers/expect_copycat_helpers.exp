@@ -20,6 +20,11 @@ proc tmux_ctrl_r {} {
   sleep 0.7
 }
 
+proc tmux_ctrl_g {} {
+  send ""
+  sleep 0.7
+}
+
 proc next_match {} {
   send "n"
   sleep 0.7

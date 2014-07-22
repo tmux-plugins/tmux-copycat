@@ -67,6 +67,61 @@ proc irb_generate_output {} {
   sleep 0.5
 }
 
+proc clone_test_git_repo {} {
+  exec "/vagrant/test/helpers/clone_test_git_repo.sh"
+}
+
+proc enter_git_repo {} {
+  sleep 0.2
+  send "cd ~/tmux_example_plugin\r"
+  sleep 0.1
+  send "git checkout --quiet tags/v0.0.1\r"
+  sleep 0.2
+}
+
+proc git_status {} {
+  sleep 0.1
+  send "git status --short\r"
+  sleep 0.1
+}
+
+proc git_checkout {} {
+  sleep 0.1
+  send "git checkout -- .\r"
+  sleep 0.1
+}
+
+proc git_clean_fd {} {
+  sleep 0.1
+  send "git clean -f -d\r"
+  sleep 0.1
+}
+
+proc clean_git_repo {} {
+  git_checkout
+  git_clean_fd
+}
+
+proc change_file {file} {
+  sleep 0.1
+  send "echo 'change' > $file\r"
+  sleep 0.1
+}
+
+proc create_new_file_in_repo {} {
+  sleep 0.1
+  send "echo 'text' >> new_file.txt\r"
+  sleep 0.1
+}
+
+proc remove_test_git_repo {} {
+  sleep 0.1
+  send "cd ~\r"
+  sleep 0.1
+  send "rm -rf ~/tmux_example_plugin/\r"
+  sleep 0.1
+}
+
 # private functions
 
 proc _kill_tmux_server {} {
