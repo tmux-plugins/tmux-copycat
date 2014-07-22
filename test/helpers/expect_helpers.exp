@@ -39,6 +39,7 @@ proc display_text {text} {
 }
 
 proc new_tmux_pane {} {
+  sleep 0.3
   send "c"
   sleep 1
 }
@@ -58,6 +59,12 @@ proc exit_irb {} {
 proc irb_display_text {text} {
   send "puts '$text'\r"
   sleep 0.3
+}
+
+# Generates random output just to fill the screen.
+proc irb_generate_output {} {
+  send "puts 'output\n' * 200\r"
+  sleep 0.5
 }
 
 # private functions

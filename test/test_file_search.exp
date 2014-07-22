@@ -20,11 +20,19 @@ create_output
 clear_screen
 display_text "/this/is/some/file.txt"
 tmux_ctrl_f
-assert_highlighted "/this/is/some/file.txt" "middle of the pane absolute path"
+assert_highlighted "/this/is/some/file.txt" "middle of the pane, absolute path, beginning of the line"
+
+display_text "random /this/is/some/file.txt"
+tmux_ctrl_f
+assert_highlighted " /this/is/some/file.txt" "middle of the pane, absolute path, not beginning of the line"
 
 display_text "another/file.txt"
 tmux_ctrl_f
-assert_highlighted "another/file.txt" "middle of the pane relative path"
+assert_highlighted "another/file.txt" "middle of the pane, relative path, beginning of the line"
+
+display_text "some text another/file.txt"
+tmux_ctrl_f
+assert_highlighted " another/file.txt" "middle of the pane, relative path, not beginning of the line"
 
 create_output
 send "some/file.xyz "
@@ -32,13 +40,103 @@ sleep 0.1
 tmux_ctrl_f
 assert_highlighted " some/file.xyz" "middle of the pane relative path, pane bottom"
 
+# match selection when line contains escaped chars
+#-------------------------------------------------
+new_tmux_pane
+display_text "filename=test.csv\r\nContent-Type: text/csv\r\n"
+tmux_ctrl_f
+assert_highlighted " text/csv" "match selection when line contains escaped chars"
+
+# result navigation
+#------------------
+new_tmux_pane
+display_text "/file/1.txt"
+display_text "/file/2.txt"
+display_text "/file/3.txt"
+tmux_ctrl_f
+# /file/3.txt
+next_match
+# /file/3.txt
+next_match
+# /file/2.txt
+next_match
+# /file/2.txt
+next_match
+# /file/1.txt
+previous_match
+# /file/2.txt
+assert_highlighted " /file/2.txt" "result navigation at the top of the pane"
+
+create_output
+display_text "/file/1.txt"
+display_text "/file/2.txt"
+tmux_ctrl_f
+# /file/2.txt
+next_match
+# /file/2.txt
+next_match
+# /file/1.txt
+previous_match
+# /file/2.txt
+assert_highlighted " /file/2.txt" "result navigation, middle of the pane"
+
+# 2 matches on the same line
+#---------------------------
+new_tmux_pane
+display_text "/file/1.txt another/file/2.txt"
+tmux_ctrl_f
+assert_highlighted "/file/1.txt" "2 matches on the same line, first match"
+
+display_text "/file/1.txt another/file/2.txt"
+tmux_ctrl_f
+next_match
+assert_highlighted " another/file/2.txt" "2 matches on the same line, second match"
+
+# no match, first and last match
+#-------------------------------
+new_tmux_pane
+tmux_ctrl_f
+assert_on_screen "No results!" "No results is displayed when no results"
+
+display_text "last/match/file.txt"
+tmux_ctrl_f
+next_match
+next_match
+assert_on_screen "Last match!" "'Last match' is displayed when last match"
+# exit copycat mode
+send ""
+
+new_tmux_pane
+display_text "first/match/file.txt"
+tmux_ctrl_f
+next_match
+previous_match
+previous_match
+assert_on_screen "First match!" "'First match' is displayed when first match"
+# exit copycat mode
+send ""
+
 # irb console searches
 #---------------------
 new_tmux_pane
 enter_irb
 irb_display_text "file/within/irb.rb"
 tmux_ctrl_f
-irb_assert_highlighted "file/within/irb.rb" "irb console relative path"
+irb_assert_highlighted "file/within/irb.rb" "irb console relative path, beggining of line"
+exit_irb
+
+enter_irb
+irb_display_text "some text file/within/irb.rb"
+tmux_ctrl_f
+irb_assert_highlighted " file/within/irb.rb" "irb console relative path, not beggining of line"
+exit_irb
+
+enter_irb
+irb_generate_output
+send "puts /absolute/file/irb.rb"
+sleep 0.1
+tmux_ctrl_f
+irb_assert_highlighted " /absolute/file/irb.rb" "irb console absolute path, pane bottom, not beggining of line"
 exit_irb
 
 # quit

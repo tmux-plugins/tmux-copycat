@@ -4,3 +4,13 @@ proc tmux_ctrl_f {} {
   send ""
   sleep 0.7
 }
+
+proc next_match {} {
+  send "n"
+  sleep 0.7
+}
+
+proc previous_match {} {
+  send "N"
+  sleep 0.7
+}
