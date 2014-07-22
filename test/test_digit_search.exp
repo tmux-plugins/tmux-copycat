@@ -1,0 +1,140 @@
+#!/usr/bin/env expect
+
+source "/vagrant/test/helpers/setup.exp"
+
+# searches at the top of the pane
+#--------------------------------
+display_text "123"
+tmux_ctrl_d
+assert_highlighted "123" "top of the pane"
+
+# middle of pane searches
+#------------------------
+new_tmux_pane
+create_output
+clear_screen
+display_text "234"
+tmux_ctrl_d
+assert_highlighted "234" "middle of the pane, beginning of the line"
+
+display_text "some 345"
+tmux_ctrl_d
+assert_highlighted "345" "middle of the pane, not beginning of the line"
+
+create_output
+send "456"
+sleep 0.1
+tmux_ctrl_d
+assert_highlighted "456" "middle of the pane, pane bottom"
+
+# match selection when line contains escaped chars
+#-------------------------------------------------
+new_tmux_pane
+display_text "filename=test.csv\r\nContent-Type: 567\r\n"
+tmux_ctrl_d
+assert_highlighted "567" "match selection when line contains escaped chars"
+
+# result navigation
+#------------------
+new_tmux_pane
+display_text "678"
+display_text "789"
+display_text "890"
+tmux_ctrl_d
+# 890
+next_match
+# 890
+next_match
+# 789
+next_match
+# 789
+next_match
+# 678
+previous_match
+# 789
+assert_highlighted "789" "result navigation at the top of the pane"
+
+create_output
+display_text "012"
+display_text "123"
+tmux_ctrl_d
+# 123
+next_match
+# 123
+next_match
+# 012
+previous_match
+# 123
+assert_highlighted "123" "result navigation, middle of the pane"
+
+# 2 matches on the same line
+#---------------------------
+new_tmux_pane
+display_text "234 345"
+tmux_ctrl_d
+assert_highlighted "234" "2 matches on the same line, first match"
+
+display_text "456 567"
+tmux_ctrl_d
+next_match
+assert_highlighted "567" "2 matches on the same line, second match"
+
+# no match, first and last match
+#-------------------------------
+new_tmux_pane
+tmux_ctrl_d
+assert_on_screen "No results!" "No results is displayed when no results"
+
+display_text "678"
+tmux_ctrl_d
+next_match
+next_match
+assert_on_screen "Last match!" "'Last match' is displayed when last match"
+# exit copycat mode
+send ""
+
+new_tmux_pane
+display_text "789"
+tmux_ctrl_d
+next_match
+previous_match
+previous_match
+assert_on_screen "First match!" "'First match' is displayed when first match"
+# exit copycat mode
+send ""
+
+# irb console searches
+#---------------------
+new_tmux_pane
+enter_irb
+irb_display_text "890"
+tmux_ctrl_d
+# compensating for irb prompt numbers
+next_match
+next_match
+irb_assert_highlighted "890" "irb console, beggining of line"
+exit_irb
+
+enter_irb
+irb_display_text "901"
+tmux_ctrl_d
+# compensating for irb prompt numbers
+next_match
+next_match
+irb_assert_highlighted "901" "irb console, not beggining of line"
+exit_irb
+
+enter_irb
+irb_generate_output
+send "puts 012"
+sleep 0.1
+tmux_ctrl_d
+# compensating for irb prompt numbers
+next_match
+next_match
+irb_assert_highlighted "012" "irb console, pane bottom, not beggining of line"
+exit_irb
+
+# quit
+#-----
+teardown_and_exit
