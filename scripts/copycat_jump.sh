@@ -131,11 +131,13 @@ _copycat_manually_go_up() {
 		# vi copy mode
 		tmux send-keys "$line_number"
 		tmux send-keys k
+		tmux send-keys 0
 	else
 		# emacs copy mode
 		for (( c=1; c<="$line_number"; c++ )); do
 			tmux send-keys C-p
 		done
+		tmux send-keyx C-a
 	fi
 }
 
