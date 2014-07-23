@@ -1,0 +1,162 @@
+#!/usr/bin/env expect
+
+source "/vagrant/test/helpers/setup.exp"
+
+# searches at the top of the pane
+#--------------------------------
+new_tmux_pane
+display_text "something search me1"
+search "search me1"
+assert_highlighted "search me1" "top of the pane, literal search"
+
+new_tmux_pane
+display_text "something search me2"
+search "search me\[\[:alnum:]]"
+assert_highlighted "search me2" "top of the pane, search with \[\[:alnum:]]"
+
+new_tmux_pane
+display_text "something search me3"
+search "searc. me\[\[:digit:]]"
+assert_highlighted "search me3" "top of the pane, search with dot and \[\[:digit:]]"
+
+new_tmux_pane
+display_text "something search me4"
+search "sear\[^\[:space:]]* me.*$"
+assert_highlighted "search me4" "top of the pane, search with matching group, dot-star and end of line $"
+
+# middle of pane searches
+#------------------------
+new_tmux_pane
+create_output
+clear_screen
+display_text "something search me1"
+search "search me1"
+assert_highlighted "search me1" "middle of the pane, literal search"
+
+display_text "something search me2"
+search "search me\[\[:alnum:]]"
+assert_highlighted "search me2" "middle of the pane, search with \[\[:alnum:]]"
+
+display_text "something search me3"
+search "searc. me\[\[:digit:]]"
+assert_highlighted "search me3" "middle of the pane, search with dot and \[\[:digit:]]"
+
+display_text "something search me4"
+search "sear\[^\[:space:]]* me.*$"
+assert_highlighted "search me4" "middle of the pane, search with matching group, dot-star and end of line $"
+
+# bottom of the buffer searches
+#------------------------------
+new_tmux_pane
+create_output
+sleep 0.2
+send "something search me1"
+sleep 0.2
+search "search me1"
+assert_highlighted "search me1" "bottom of the pane, literal search"
+
+sleep 0.2
+send "something search me2"
+sleep 0.2
+search "search me\[\[:alnum:]]"
+assert_highlighted "search me2" "bottom of the pane, search with \[\[:alnum:]]"
+
+sleep 0.2
+send "something search me3"
+sleep 0.2
+search "searc. me\[\[:digit:]]"
+assert_highlighted "search me3" "bottom of the pane, search with dot and \[\[:digit:]]"
+
+sleep 0.2
+send "something search me4"
+sleep 0.2
+search "sear\[^\[:space:]]* me.*$"
+assert_highlighted "search me4" "bottom of the pane, search with matching group, dot-star and end of line $"
+
+# match selection when line contains escaped chars
+#-------------------------------------------------
+new_tmux_pane
+display_text "filename=test.csv\r\nContent-Type: text/csv\r\n"
+search "text/csv"
+assert_highlighted "text/csv" "match selection when line contains escaped chars"
+
+# result navigation
+#------------------
+new_tmux_pane
+display_text "match no1"
+display_text "match no2"
+display_text "match no3"
+search "match\[\[:space:]]no\[\[:digit:]]"
+# match no3
+next_match
+# match no3
+next_match
+# match no2
+next_match
+# match no2
+next_match
+# match no1
+previous_match
+# match no2
+assert_highlighted "match no2" "result navigation at the top of the pane"
+
+create_output
+display_text "match no1"
+display_text "match no2"
+search "match\[\[:space:]]no\[\[:digit:]]"
+# match no2
+next_match
+# match no2
+next_match
+# match no1
+previous_match
+# match no2
+assert_highlighted "match no2" "result navigation, middle of the pane"
+
+# 2 matches on the same line
+#---------------------------
+new_tmux_pane
+display_text "match1 match2"
+search "match\[\[:digit:]]"
+assert_highlighted "match1" "2 matches on the same line, first match"
+
+display_text "match1 match2"
+search "match\[\[:digit:]]"
+next_match
+assert_highlighted "match2" "2 matches on the same line, second match"
+
+# no match, first and last match
+#-------------------------------
+new_tmux_pane
+search "something\[\[:digit:]]"
+assert_on_screen "No results!" "No results is displayed when no results"
+
+new_tmux_pane
+display_text "something2"
+search "something\[\[:digit:]]"
+next_match
+next_match
+assert_on_screen "Last match!" "'Last match' is displayed when last match"
+# exit copycat mode
+send ""
+
+new_tmux_pane
+display_text "random3"
+search "random\[\[:digit:]]"
+previous_match
+assert_on_screen "First match!" "'First match' is displayed when first match"
+# exit copycat mode
+send ""
+
+# irb console searches
+#---------------------
+new_tmux_pane
+enter_irb
+irb_display_text "within irb1"
+search "within\[\[:space:]]irb\[\[:digit:]]"
+irb_assert_highlighted "within irb1" "irb console"
+exit_irb
+
+# quit
+#-----
+teardown_and_exit

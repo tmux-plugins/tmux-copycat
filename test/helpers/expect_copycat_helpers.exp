@@ -25,6 +25,13 @@ proc tmux_ctrl_g {} {
   sleep 0.7
 }
 
+proc search {text} {
+  send "/"
+  sleep 0.2
+  send "$text\r"
+  sleep 0.7
+}
+
 proc next_match {} {
   send "n"
   sleep 0.7
