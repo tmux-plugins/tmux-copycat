@@ -5,6 +5,8 @@
 - fix wrong result highlighting for lines that have \r, \n chars
 - another improvement to file matching search: changed regex strategy to be
   "inclusive"
+- add test suite
+- update readme to show how test suite is started
 
 ### v0.0.4, Jul 9, 2014
 - bugfix for incorrect result highlighting

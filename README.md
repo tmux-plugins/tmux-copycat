@@ -108,6 +108,14 @@ You might also find these useful:
 - [goto session](https://github.com/bruno-/tmux_goto_session) - faster session
   switching
 
+### Test suite
+
+This plugin has an integration test suite. It depends on `vagrant`.
+Run it with:
+
+    # within project top directory
+    $ ./run-tests
+
 ### License
 
 [MIT](LICENSE.md)
