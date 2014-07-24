@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.0.5, Jul 24, 2014
 - improve stored file matching search
 - fix wrong result highlighting for lines that have \r, \n chars
 - another improvement to file matching search: changed regex strategy to be
