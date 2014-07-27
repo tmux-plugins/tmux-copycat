@@ -1,6 +1,8 @@
 # Tmux
 #
 # VERSION 0.0.1
+# Docker is used for quick manual testing of this plugin on linux.
+# Alternative is running automatic test suite, see README how to run it.
 
 FROM ubuntu:trusty
 

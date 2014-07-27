@@ -3,6 +3,7 @@
 ### master
 - update video script
 - update readme and invite for code contributions
+- update dockerfile with it's purpose
 
 ### v0.0.5, Jul 24, 2014
 - improve stored file matching search
