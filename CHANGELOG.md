@@ -6,6 +6,7 @@
 - update dockerfile with it's purpose
 - add test suite `README` file
 - add screencast original document to git
+- add video directory `README` file
 
 ### v0.0.5, Jul 24, 2014
 - improve stored file matching search
