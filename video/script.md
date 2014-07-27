@@ -9,10 +9,21 @@ Actions
 
 Script
 ------
-Let's demo a tmux copycat plugin.
+Let's demo Tmux copycat plugin.
 
-I have tmux here and I want to grab that file you see at the top.
-The easiest and fastest way to do it is unfortunately with mouse.
+Tmux copycat enables you to perform regex searches and also to store those
+searches for fast execution later.
+
+This is something not possible with vanilla tmux and it can greatly reduce mouse
+usage and speed up your workflow.
+
+Let's jump to an example. We have tmux here, and I'll create some typical output
+in the terminal.
+
+Now, I want to grab that last file you see listed.
+The easiest and fastest way to do it is unfortunately with a mouse.
+I'll select the file.
+Copy and paste it.
 
 That, however feels wrong. I shouldn't be using mouse while in the command
 line. There has to be a way to automate and speed things up with tmux.
@@ -27,14 +38,15 @@ Actions
 
 Script
 ------
-Now, there is a way to do this with tmux copycat plugin.
+Now, let's show a proper way to do it.
 
-It has a predefined file search so pressing prefix plus control-f jumps
-straight to the last file.
+Tmux copycat has a predefined file search, so pressing prefix plus control-f
+jumps straight to the last file.
 
 Notice how the match is already selected.
+
 I'll copy it with enter,
-and paste it with tmux default paste binding: prefix plus right angle bracket.
+and paste it with tmux default paste "bajnding": prefix plus right angle bracket.
 
 3 - Jumping over searches with `n` and `N`
 ==========================================
@@ -49,8 +61,13 @@ Script
 ------
 You can also easily jump over all the matches in the pane scrollback.
 
-I'll enter file search with prefix control-f again. I can move to the next
-match with n, and to the previous match with uppercase n.
+I'll enter file search with prefix control-f again.
+
+I can move to the next match with n.
+
+And to the previous match with uppercase n.
+
+This jumping over the results is possible for any tmux copycat search.
 
 4 - Selecting git status files `prefix + <C-g>`
 ===============================================
@@ -65,16 +82,21 @@ Actions
 
 Script
 ------
-File search can be really useful for selecting `git status` files.
+File search can be really useful for selecting `git status` files. I'll invoke
+`git status` to get the output.
 
-But as you can see, file search has it's limitations. It does not detect
-simple file names. A string has to have a forward slash in it to be detected as
-a file.
+But as you can see, file search has it's limitations.
+In the example on the screen, file search didn't select `files.txt` and
+`file with spaces.txt`. It just skiped those and selected the next file.
 
-Tmux copycat has a git special binding for this.
-Prefix + control g after git status command, guarantees you'll be able to
-smoothly jump over all the files.
-That includes files with spaces and single word files.
+Why? Well, file search does not detect simple file names. A string has to have a
+forward slash in it to be detected as a file.
+
+To solve this, there is a git special "bajnding": prefix + control g. I'll
+invoke it.
+
+I can now smoothly jump over all the git status files, including files with
+spaces and single word files.
 
 5 - Selecting numbers `prefix + <C-d>`
 ======================================
@@ -88,17 +110,23 @@ Actions
 
 Script
 ------
-Let's make a commit and open a pull request now.
+To show another example I'll create a somewhat realistic scenario.
+I'll git add a file, make a commit and push it to a remote repo.
 
-I have git aliases for a program called hub set up.
+Next, I'll use a git alias for a program called `hub` to open a pull request
+from the command line.
 
-And here's the pull request url.
 
-Now, I'll assign the pull request to me. For that I need a pull request number.
-I could just type it, but since this is copycat demo, let's use prefix plus
-control d (d as digits).
+Good, here's the pull request url.
 
-Copy, paste and done.
+Now, I need to assign that pull request with the program `ghi`. For that I need
+a pull request number.
+This is another situation where I'd just use the mouse to select that number.
+
+But since this is copycat demo, let's use prefix plus control d.
+
+It searches for digits or numbers.
+Copy, paste and done without reaching for the mouse.
 
 6 - Selecting URLs `prefix + <C-u>`
 ===================================
@@ -110,27 +138,96 @@ Actions
 
 Script
 ------
-I wanna go check out the pull request on github now. I need to grab a url for
-that.
-You might have guessed it: there's a stored search for that prefix plus C-u.
+How about checking that pull request on github now? I need to grab a url to do that.
 
-I need to yank the url to the system clipboard so it's accessible outside tmux.
-For that, I'm using tmux yank so, I'll just press y and the selection is copied
-to the clipboard.
+You might've guessed it: there's a stored search for url's. Invoke it with
+prefix plus C-u and the url is selected.
 
 7 - Plain old search with `prefix + /`
 =====================================
 Actions
 -------
+- clear screen
+- enter: echo 'search me123'
+- then: echo 'search me2345'
 - enter search command `prefix + /`
-- search for a regex `tm..`
+- search for a regex `search me[[:digit:]]\\+`
+- scroll accross the results
+- search for a regex `search me\\d\\+`
+- scroll accress the results
 
 Script
 ------
-For the end, I just want to show how to manually enter a search regex, instead
-of just using predefined ones.
+Now, I want to show you how to perform a free search using regex.
+In fact plain regex search is the base for all other so called "saved searches"
+shown in the video so far.
 
-I'll search for `tm..`, dots beeing the whildcards.
-And, as usual I get the highlighted results I can jump over.
+I'll write a couple lines in the terminal to get some output.
 
-That's it, I hope you like tmux copycat!
+
+Let's say we need to match 'search me' string and all the digits that come
+after it. That can't be done using the tmux vanilla search, because it can do only
+literal searches.
+
+I'll invoke copycat regex search by pressing `prefix` + slash.
+
+I get a prompt at the bottom of the screen where I can enter the search term or a regex.
+I'll type 'search me', then a posix matching group for digits.
+
+Digit can be repeated one or more times and repeating is specified by the
+trailing plus.
+Note, plus has to be escaped to have special meaning.
+In copycat prompt, all escapes are done twice, so there are two backslashes.
+
+I'll execute a search and as you can see, we're matching the desired string with
+variable number of digits at the end. Yaay!
+
+8 - Other use examples
+======================
+Actions
+-------
+*brew*
+- brew info mobile-shell
+- select project home page
+- open <project home page>
+*gist*
+- gist -a
+- some example content and a <Ctrl-d>
+- highlight gist url
+*rspec*
+- bundle exec rspec
+- have a failing spec
+- highlight a failing spec file
+- vim <failing spec file>
+
+Script
+------
+*brew*
+To conclude this screencast, I'd like to show you a couple more examples where I
+find this plugin useful.
+
+I'm using OS X, and I often check brew package manager packages.
+Let's check this project called 'mobile shell'.
+
+Hmm, that doesn't tell me much about it, but there's the project homepage in the
+output.
+I'll use url search to fetch and open that url.
+
+*gist*
+If you like to create gists from the command line, there's a similar use case.
+I'll quickly create an example gist.
+
+Again, I'll use url search to fetch the gist url, without using the mouse.
+
+*rspec*
+By far my most common usage of this plugin is when testing.
+I'm a ruby developer and I often use rspec testing framework.
+I'll run tests for this project.
+
+Oh-oh, it seems tests fail and I have to fix them.
+To open the failing test file, I'll use file search.
+
+And now, I can open the file in vim.
+
+That's it for this screencast. I hope you like tmux copycat and that you'll find
+it useful.
