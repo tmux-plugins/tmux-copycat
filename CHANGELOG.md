@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+- update video script
+- update readme and invite for code contributions
 
 ### v0.0.5, Jul 24, 2014
 - improve stored file matching search

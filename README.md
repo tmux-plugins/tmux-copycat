@@ -6,7 +6,7 @@ This plugin enables:
 - search result highlighting
 - predefined searches
 
-Plugin killer feature is predefined searches. It speeds the workflow and
+Predefined searches are plugin killer feature. It speeds the workflow and
 reduces mouse usage with Tmux.
 
 It works even better when paired with [tmux yank](https://github.com/bruno-/tmux_yank).
@@ -115,6 +115,15 @@ Run it with:
 
     # within project top directory
     $ ./run-tests
+
+### Contributions and new features
+
+Bug fixes and contributions are welcome.
+
+Feel free to suggest new features, via github issues.
+
+If you have a bigger idea you'd like to work on, please get in touch, also via
+github issues.
 
 ### License
 
