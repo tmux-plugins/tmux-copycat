@@ -12,6 +12,10 @@ reduces mouse usage with Tmux.
 It works even better when paired with
 [tmux yank](https://github.com/tmux-plugins/tmux-yank).
 
+### Screencast
+
+[![screencast screenshot](/video/screencast_img.png)](https://vimeo.com/101867689)
+
 #### Search
 
 - `prefix + /` - regex search (strings work too)
