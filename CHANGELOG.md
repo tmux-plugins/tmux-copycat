@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.0.6, Jul 28, 2014
 - update video script
 - update readme and invite for code contributions
 - update dockerfile with it's purpose
