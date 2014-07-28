@@ -7,6 +7,7 @@
 - add test suite `README` file
 - add screencast original document to git
 - add video directory `README` file
+- update readme to reflect github organization change
 
 ### v0.0.5, Jul 24, 2014
 - improve stored file matching search

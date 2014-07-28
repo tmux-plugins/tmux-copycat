@@ -9,7 +9,8 @@ This plugin enables:
 Predefined searches are plugin killer feature. It speeds the workflow and
 reduces mouse usage with Tmux.
 
-It works even better when paired with [tmux yank](https://github.com/bruno-/tmux_yank).
+It works even better when paired with
+[tmux yank](https://github.com/tmux-plugins/tmux-yank).
 
 #### Search
 
@@ -50,7 +51,7 @@ Copying a highlighted match will take you "out" of copycat mode. Paste with
 `prefix + ]` (this is Tmux default paste).
 
 Copying highlighted matches can be enhanced with
-[tmux yank](https://github.com/bruno-/tmux_yank).
+[tmux yank](https://github.com/tmux-plugins/tmux-yank).
 
 ### Limitations
 
@@ -70,13 +71,13 @@ Copying highlighted matches can be enhanced with
 
       set -g mode-keys vi
 
-### Installation with [Tmux Plugin Manager](https://github.com/bruno-/tpm) (recommended)
+### Installation with [Tmux Plugin Manager](https://github.com/tmux-plugins/tpm) (recommended)
 
 Add plugin to the list of TPM plugins in `.tmux.conf`:
 
-    set -g @tpm_plugins "              \
-      bruno-/tpm                       \
-      bruno-/tmux_copycat              \
+    set -g @tpm_plugins "          \
+      tmux-plugins/tpm             \
+      tmux-plugins/tmux-copycat    \
     "
 
 Hit `prefix + I` to fetch the plugin and source it. You should now be able to
@@ -86,7 +87,7 @@ use the plugin.
 
 Clone the repo:
 
-    $ git clone https://github.com/bruno-/tmux_copycat ~/clone/path
+    $ git clone https://github.com/tmux-plugins/tmux-copycat ~/clone/path
 
 Add this line to the bottom of `.tmux.conf`:
 
@@ -103,9 +104,9 @@ You should now be able to use the plugin.
 
 You might also find these useful:
 
-- [logging](https://github.com/bruno-/tmux_logging) - easy logging and
+- [logging](https://github.com/tmux-plugins/tmux-logging) - easy logging and
   screen capturing for Tmux panes
-- [goto session](https://github.com/bruno-/tmux_goto_session) - faster session
+- [goto session](https://github.com/tmux-plugins/tmux-goto-session) - faster session
   switching
 
 ### Test suite
