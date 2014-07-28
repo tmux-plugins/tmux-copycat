@@ -29,8 +29,8 @@ RUN apt-get install -y tmux=1.9a-1~ppa1~t
 RUN apt-get install -y vim
 
 # install tmux plugin manager
-RUN git clone https://github.com/bruno-/tpm ~/.tmux/plugins/tpm
-RUN echo "set -g @tpm_plugins 'bruno-/tpm'" >> ~/.tmux.conf
+RUN git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+RUN echo "set -g @tpm_plugins 'tmux-plugins/tpm'" >> ~/.tmux.conf
 RUN echo "run-shell ~/.tmux/plugins/tpm/tpm" >> ~/.tmux.conf
 
 EXPOSE 22
