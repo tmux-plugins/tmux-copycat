@@ -30,7 +30,7 @@ set_start_bindings() {
 	local pattern
 	for jump in $key_pattern_list; do
 		key=$(echo "$jump" | cut -d\| -f1)
-		pattern=$(echo "$jump" | cut -d\| -f2-99)
+		pattern=$(echo "$jump" | cut -d\| -f2-)
 		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_mode_start.sh '$pattern'"
 	done
 }
