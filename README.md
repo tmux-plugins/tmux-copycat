@@ -57,6 +57,37 @@ Copying a highlighted match will take you "out" of copycat mode. Paste with
 Copying highlighted matches can be enhanced with
 [tmux yank](https://github.com/tmux-plugins/tmux-yank).
 
+#### Customization
+
+Most of the behavior of tmux-copycat can be customized via tmux options. To
+set a value, just put `set -g @option "value"` in your `.tmux.conf` before
+loading the tmux-copycat plugin.
+
+Available options:
+
+- `@copycat_search` defines the key-binding used (after prefix) to start an
+  interactive search. Defaults to `/`.
+
+- `@copycat_git_special` defines the key-binding to launch a git status
+  search. Defaults to `C-g`.
+
+- `@copycat_next` defines the key (without prefix) used to jump to next search
+  result. Defaults to `n`.
+
+- `@copycat_prev` defines the key (without prefix) used to jump to previous search
+  result. Defaults to `N`.
+
+- `@copycat` contains a space-separated list of bindings for saved searches.
+  The default are the file, url, digits and rails searches above, and the
+  contents of `@copycat` will be added on top of that. The syntax of a
+  single binding is the following: `key|regex`. For instance:
+
+  `"C-u|https\?://[[:alnum:]?=%/_.:,;~@!$&()*+-]*"`
+
+  is the content of the default URL search. Note that since the list is
+  space-separated, to insert a space you have to use `[[:space:]]`.
+
+
 ### Limitations
 
 - This plugin tries hard to consistently enable "marketed" features. It uses some

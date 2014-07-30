@@ -1,6 +1,7 @@
 # Changelog
 
 ### master
+- add customization section to the readme (@soli)
 
 ### v0.0.6, Jul 28, 2014
 - update video script
