@@ -2,6 +2,9 @@
 
 ### master
 - add customization section to the readme (@soli)
+- remove screencast from the project. The video is too bit and plugin download
+  is slow because of that. The video is moved to the separate `screencast`
+  branch.
 
 ### v0.0.6, Jul 28, 2014
 - update video script
