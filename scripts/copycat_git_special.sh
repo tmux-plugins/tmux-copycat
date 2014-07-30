@@ -14,7 +14,7 @@ git_status_files() {
 
 formatted_git_status() {
 	local raw_gist_status="$(git_status_files)"
-	echo "$(echo "$raw_gist_status" | cut -c 4-999)"
+	echo "$(echo "$raw_gist_status" | cut -c 4-)"
 }
 
 exit_if_no_results() {
