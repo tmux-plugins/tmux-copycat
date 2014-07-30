@@ -187,7 +187,7 @@ _copycat_go_to_line_with_jump() {
 		tmux send-keys :
 	else
 		# emacs copy mode
-		tmux send-keys "M->"
+		tmux send-keys "M-<"
 		tmux send-keys C-a
 		tmux send-keys g
 	fi
