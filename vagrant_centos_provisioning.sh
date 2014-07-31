@@ -9,7 +9,7 @@ echo 'export PS1="\w \$ "' >> ~/.bashrc
 sudo su -
 
 yum -y install gcc kernel-devel make ncurses-devel
-yum -y install git-core expect vim
+yum -y install git-core expect vim ruby ruby-devel ruby-irb
 
 # download tmux and libevent
 mkdir ~/downloads && cd ~/downloads
