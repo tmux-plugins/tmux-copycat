@@ -5,6 +5,7 @@
 - remove screencast from the project. The video is too bit and plugin download
   is slow because of that. The video is moved to the separate `screencast`
   branch.
+- run test suite on 2 vagrant VMs: ubuntu and centos
 
 ### v0.0.6, Jul 28, 2014
 - update video script
