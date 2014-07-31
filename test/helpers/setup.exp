@@ -5,8 +5,6 @@ source "/vagrant/test/helpers/expect_copycat_assertions.exp"
 
 # .tmux.conf
 exec "/vagrant/test/helpers/setup_tmux_conf.sh"
-# setup PS1
-exec "/vagrant/test/helpers/setup_bash_prompt.sh"
 expect_setup
 
 # exit status global var is successful by default
