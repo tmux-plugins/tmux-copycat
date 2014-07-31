@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.0.7, Jul 31, 2014
 - add customization section to the readme (@soli)
 - remove screencast from the project. The video is too bit and plugin download
   is slow because of that. The video is moved to the separate `screencast`
