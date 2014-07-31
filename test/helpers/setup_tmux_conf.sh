@@ -4,8 +4,10 @@
 # To be used by sourcing from within individual test scripts.
 
 setup_tmux_conf() {
-	echo "set -g mode-keys vi"                   > ~/.tmux.conf
-	echo "bind-key -t vi-copy y copy-selection" >> ~/.tmux.conf
-	echo "run-shell '/vagrant/copycat.tmux'"    >> ~/.tmux.conf
+	# Copy mode (vi or emacs) is automatically determined from EDITOR
+	# environment variable set in test runner file `test/run-tests-within-vm`.
+	echo "bind-key -t vi-copy    y copy-selection"  > ~/.tmux.conf
+	echo "bind-key -t emacs-copy y copy-selection" >> ~/.tmux.conf
+	echo "run-shell '/vagrant/copycat.tmux'"       >> ~/.tmux.conf
 }
 setup_tmux_conf

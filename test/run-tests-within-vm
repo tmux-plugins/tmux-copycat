@@ -17,10 +17,13 @@ set_global_exit_val_to_false() {
 
 run_test() {
 	local test_file="$1"
+	local tmux_copy_mode="$2"
 
 	# running test
-	echo "Test: $test_file"
-	$CURRENT_DIR/$test_file
+	echo "Test: $test_file (copy-mode $tmux_copy_mode)"
+
+	# by setting the EDITOR var tmux chooses vi or emacs copy mode
+	EDITOR="$tmux_copy_mode" $CURRENT_DIR/$test_file
 
 	# handling exit value
 	local exit_value="$?"
@@ -37,7 +40,8 @@ main() {
 	local test_file
 	local test_dir_path="./"
 	for test_file in $(test_files); do
-		run_test "$test_file"
+		run_test "$test_file" "vi"
+		run_test "$test_file" "emacs"
 	done
 	exit "$tests_exit_value"
 }
