@@ -137,7 +137,7 @@ _copycat_manually_go_up() {
 		for (( c=1; c<="$line_number"; c++ )); do
 			tmux send-keys C-p
 		done
-		tmux send-keyx C-a
+		tmux send-keys C-a
 	fi
 }
 
