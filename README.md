@@ -168,6 +168,8 @@ Run it with:
     # within project top directory
     $ ./run-tests
 
+By default tests run in 2 vagrant VMs: ubuntu and centos.
+
 ### Contributions and new features
 
 Bug fixes and contributions are welcome.
