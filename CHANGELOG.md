@@ -1,6 +1,7 @@
 # Changelog
 
 ### master
+- remove note about git history issue
 
 ### v0.0.7, Jul 31, 2014
 - add customization section to the readme (@soli)

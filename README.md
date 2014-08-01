@@ -12,22 +12,6 @@ reduces mouse usage with Tmux.
 It works even better when paired with
 [tmux yank](https://github.com/tmux-plugins/tmux-yank).
 
-#### Note
-
-I accidentally committed a video screencast (a pretty big file) into the
-project. Because of this - plugin download and installation was slow for some
-users.
-
-I decided to remove the video from the repository by rewriting git history on
-Jul 30. For users that already installed the plugin I'd recommend:
-
-    # remove the plugin
-    $ rm -rf ~/.tmux/plugins/tmux-copycat/
-    # manually install the plugin again
-    $ git clone https://github.com/tmux-plugins/tmux-copycat ~/.tmux/plugins/tmux-copycat
-
-Sorry for the inconvenience.
-
 ### Screencast
 
 [![screencast screenshot](/video/screencast_img.png)](https://vimeo.com/101867689)
