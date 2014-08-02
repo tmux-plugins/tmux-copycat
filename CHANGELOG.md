@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v0.1.0, Aug 02, 2014
 - remove note about git history issue
 - url saved search includes `#` character
 - improve stored search handling
