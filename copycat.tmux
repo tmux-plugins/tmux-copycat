@@ -3,7 +3,7 @@
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # stored search variable prefix
-COPYCAT_VAR_PREFIX="@copycat_store"
+COPYCAT_VAR_PREFIX="@copycat_search"
 
 # basic search
 default_copycat_search_key="/"
