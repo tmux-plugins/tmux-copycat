@@ -14,13 +14,9 @@ default_git_search_key="C-g"
 copycat_git_search_option="@copycat_git_special"
 
 source "$CURRENT_DIR/scripts/helpers.sh"
+source "$CURRENT_DIR/scripts/stored_search_helpers.sh"
 
-stored_search_not_defined() {
-	local key="$1"
-	local search_value="$(tmux show-option -gqv "${COPYCAT_VAR_PREFIX}_${key}")"
-	[ -z $search_value ]
-}
-
+# this function defines default stored searches
 set_default_stored_searches() {
 	if stored_search_not_defined "C-u"; then
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-u" "https\?://[[:alnum:]?=%/_.:,;~@!#$&()*+-]*"
@@ -34,24 +30,6 @@ set_default_stored_searches() {
 	if stored_search_not_defined "C-d"; then
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-d" "[[:digit:]]\+"
 	fi
-}
-
-stored_search_vars() {
-	tmux show-options -g |
-		grep -i "^${COPYCAT_VAR_PREFIX}_" |
-		cut -d ' ' -f1 |               # cut just variable names
-		xargs                          # splat var names in one line
-}
-
-# get the search key from the variable name
-get_stored_search_key() {
-	local search_var="$1"
-	echo "$(echo "$search_var" | sed "s/^${COPYCAT_VAR_PREFIX}_//")"
-}
-
-get_stored_search_pattern() {
-	local search_var="$1"
-	echo "$(get_tmux_option "$search_var" "")"
 }
 
 set_start_bindings() {
