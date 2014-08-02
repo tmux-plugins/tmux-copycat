@@ -2,15 +2,8 @@
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# predefined searches
-tmux_option="@copycat"
-
-url_jump="C-u|https\?://[[:alnum:]?=%/_.:,;~@!#$&()*+-]*"
-rails_request_jump="C-r|^Processing[[:space:]]by[[:space:]][^[:space:]]*"
-file_match_jump="C-f|\(^\|[[:space:]]\|[[:space:]]\.\)\([[:alnum:]]\|[~_]\)*/[][[:alnum:]_.#$%&+=/@-]*"
-digit_jump="C-d|[[:digit:]]\+"
-
-default_jumps="$url_jump $rails_request_jump $file_match_jump $digit_jump"
+# stored search variable prefix
+COPYCAT_VAR_PREFIX="@copycat_store"
 
 # basic search
 default_copycat_search_key="/"
@@ -21,16 +14,55 @@ default_git_search_key="C-g"
 copycat_git_search_option="@copycat_git_special"
 
 source "$CURRENT_DIR/scripts/helpers.sh"
-source "$CURRENT_DIR/scripts/jump_patterns_helper.sh"
+
+stored_search_not_defined() {
+	local key="$1"
+	local search_value="$(tmux show-option -gqv "${COPYCAT_VAR_PREFIX}_${key}")"
+	[ -z $search_value ]
+}
+
+set_default_stored_searches() {
+	if stored_search_not_defined "C-u"; then
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-u" "https\?://[[:alnum:]?=%/_.:,;~@!#$&()*+-]*"
+	fi
+	if stored_search_not_defined "C-r"; then
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-r" "^Processing[[:space:]]by[[:space:]][^[:space:]]*"
+	fi
+	if stored_search_not_defined "C-f"; then
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-f" "\(^\|[[:space:]]\|[[:space:]]\.\)\([[:alnum:]]\|[~_]\)*/[][[:alnum:]_.#$%&+=/@-]*"
+	fi
+	if stored_search_not_defined "C-d"; then
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-d" "[[:digit:]]\+"
+	fi
+}
+
+stored_search_vars() {
+	tmux show-options -g |
+		grep -i "^${COPYCAT_VAR_PREFIX}_" |
+		cut -d ' ' -f1 |               # cut just variable names
+		xargs                          # splat var names in one line
+}
+
+# get the search key from the variable name
+get_stored_search_key() {
+	local search_var="$1"
+	echo "$(echo "$search_var" | sed "s/^${COPYCAT_VAR_PREFIX}_//")"
+}
+
+get_stored_search_pattern() {
+	local search_var="$1"
+	echo "$(get_tmux_option "$search_var" "")"
+}
 
 set_start_bindings() {
-	local key_pattern_list="$(create_key_patterns_list "$tmux_option" "$default_jumps")"
-	local jump
+	set_default_stored_searches
+	local stored_search_vars="$(stored_search_vars)"
+	local search_var
 	local key
 	local pattern
-	for jump in $key_pattern_list; do
-		key=$(echo "$jump" | cut -d\| -f1)
-		pattern=$(echo "$jump" | cut -d\| -f2-)
+	for search_var in $stored_search_vars; do
+		key="$(get_stored_search_key "$search_var")"
+		pattern="$(get_stored_search_pattern "$search_var")"
 		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_mode_start.sh '$pattern'"
 	done
 }
