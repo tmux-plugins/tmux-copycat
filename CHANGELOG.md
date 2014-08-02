@@ -3,6 +3,8 @@
 ### master
 - remove note about git history issue
 - url saved search includes `#` character
+- improve stored search handling
+- update README and document addding custom stored searches
 
 ### v0.0.7, Jul 31, 2014
 - add customization section to the readme (@soli)
