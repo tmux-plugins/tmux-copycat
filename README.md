@@ -31,11 +31,11 @@ Searches are case insensitive.<br/>
 
 #### Predefined searches
 
-- `prefix + C-f` - simple *f*ile search
-- `prefix + C-g` - jumping over *g*it status files (best used after `git status` command)
-- `prefix + C-u` - *u*rl search
-- `prefix + C-d` - number search (mnemonic d, as digit)
-- `prefix + C-r` - "*r*ails server" request search
+- `prefix + ctrl-f` - simple *f*ile search
+- `prefix + ctrl-g` - jumping over *g*it status files (best used after `git status` command)
+- `prefix + ctrl-u` - *u*rl search
+- `prefix + ctrl-d` - number search (mnemonic d, as digit)
+- `prefix + ctrl-r` - "*r*ails server" request search
 
 These start "copycat mode" and jump to first match.
 
@@ -49,7 +49,7 @@ These are enabled when you search with copycat:
 To copy a highlighted match:
 
 - `Enter` - if you're using Tmux `vi` mode
-- `C-w` or `Alt-w` - if you're using Tmux `emacs` mode
+- `ctrl-w` or `alt-w` - if you're using Tmux `emacs` mode
 
 Copying a highlighted match will take you "out" of copycat mode. Paste with
 `prefix + ]` (this is Tmux default paste).
