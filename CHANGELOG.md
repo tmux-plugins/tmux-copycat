@@ -2,6 +2,7 @@
 
 ### master
 - simplify file search stored regex
+- match files starting with dot
 
 ### v0.1.0, Aug 02, 2014
 - remove note about git history issue
