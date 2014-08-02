@@ -57,7 +57,7 @@ Copying a highlighted match will take you "out" of copycat mode. Paste with
 Copying highlighted matches can be enhanced with
 [tmux yank](https://github.com/tmux-plugins/tmux-yank).
 
-#### Customization
+### Customization
 
 Most of the behavior of tmux-copycat can be customized via tmux options.<br/>
 To set a value, just put `set -g @option "value"` in your `.tmux.conf` before
@@ -76,6 +76,17 @@ Available options:
 
 - `@copycat_prev` defines the key (without prefix) used to jump to previous search
   result. Defaults to `N`.
+
+#### Defining new stored searches
+
+To speed up the workflow, in `.tmux.conf` you can define new bindings for
+searches you use often. Examples:
+
+    # 'prefix + ctrl-t' searches for "search me" string
+    set -g @copycat_search_C-t "search me"
+
+    # 'prefix + alt-t' searches for defined regex
+    set -g @copycat_search_M-t "regex search[[:alnum:]]\*"
 
 ### Limitations
 
