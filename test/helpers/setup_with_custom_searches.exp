@@ -1,0 +1,14 @@
+# sourcing helper functions
+source "/vagrant/test/helpers/expect_helpers.exp"
+source "/vagrant/test/helpers/expect_copycat_helpers.exp"
+source "/vagrant/test/helpers/expect_copycat_assertions.exp"
+
+# .tmux.conf
+exec "/vagrant/test/helpers/setup_tmux_conf_with_custom_searches.sh"
+expect_setup
+
+# exit status global var is successful by default
+set exit_status 0
+
+# run tmux (doesn't work when within a proc)
+source "/vagrant/test/helpers/run_tmux.exp"

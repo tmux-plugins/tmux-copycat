@@ -1,0 +1,137 @@
+#!/usr/bin/env expect
+
+source "/vagrant/test/helpers/setup_with_custom_searches.exp"
+
+# searches at the top of the pane
+#--------------------------------
+display_text "some text random string123 more text"
+tmux_ctrl_t
+assert_highlighted "random string123" "top of the pane, first string"
+
+new_tmux_pane
+display_text "some text random string123456 more text"
+tmux_ctrl_t
+assert_highlighted "random string123456" "top of the pane, second string"
+
+# middle of pane searches
+#------------------------
+new_tmux_pane
+create_output
+clear_screen
+display_text "some text random string123 more text"
+tmux_ctrl_t
+assert_highlighted "random string123" "middle of the pane, first string"
+
+display_text "some text random string123456 more text"
+tmux_ctrl_t
+assert_highlighted "random string123456" "middle of the pane, second string"
+
+create_output
+sleep 0.2
+send " beginning random string001 text"
+sleep 0.2
+tmux_ctrl_t
+assert_highlighted "random string001" "middle of the pane, pane bottom"
+
+# match selection when line contains escaped chars
+#-------------------------------------------------
+new_tmux_pane
+display_text "filename=test.csv\r\nContent-Type: random string456\r\n"
+tmux_ctrl_t
+assert_highlighted "random string456" "match selection when line contains escaped chars"
+
+# result navigation
+#------------------
+new_tmux_pane
+display_text "random string1"
+display_text "random string2"
+display_text "random string3"
+tmux_ctrl_t
+# random string3
+next_match
+# random string3
+next_match
+# random string2
+next_match
+# random string2
+next_match
+# random string1
+previous_match
+# random string2
+assert_highlighted "random string2" "result navigation at the top of the pane"
+
+create_output
+display_text "random string01"
+display_text "random string02"
+tmux_ctrl_t
+# random string02
+next_match
+# random string02
+next_match
+# random string01
+previous_match
+# random string02
+assert_highlighted "random string02" "result navigation, middle of the pane"
+
+# 2 matches on the same line
+#---------------------------
+new_tmux_pane
+display_text "foo random string11 bar random string12 foobar"
+tmux_ctrl_t
+assert_highlighted "random string11" "2 matches on the same line, first match"
+
+display_text "foo random string11 bar random string12 foobar"
+tmux_ctrl_t
+next_match
+assert_highlighted "random string12" "2 matches on the same line, second match"
+
+# no match, first and last match
+#-------------------------------
+new_tmux_pane
+tmux_ctrl_t
+assert_on_screen "No results!" "No results is displayed when no results"
+
+display_text "foo random string21"
+tmux_ctrl_t
+next_match
+next_match
+assert_on_screen "Last match!" "'Last match' is displayed when last match"
+# exit copycat mode
+send ""
+
+new_tmux_pane
+display_text "foo random string22"
+tmux_ctrl_t
+next_match
+previous_match
+previous_match
+assert_on_screen "First match!" "'First match' is displayed when first match"
+# exit copycat mode
+send ""
+
+# irb console searches
+#---------------------
+new_tmux_pane
+enter_irb
+irb_display_text "foo random string31 bar"
+tmux_ctrl_t
+irb_assert_highlighted "random string31" "irb console, beginning of line"
+exit_irb
+
+enter_irb
+irb_display_text "foo random string32 bar"
+tmux_ctrl_t
+irb_assert_highlighted "random string32" "irb console, not beginning of line"
+exit_irb
+
+enter_irb
+irb_generate_output
+send "puts random string33"
+sleep 0.1
+tmux_ctrl_t
+irb_assert_highlighted "random string33" "irb console, pane bottom, not beginning of line"
+exit_irb
+
+# quit
+#-----
+teardown_and_exit
