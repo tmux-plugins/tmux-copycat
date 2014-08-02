@@ -1,6 +1,7 @@
 # Changelog
 
 ### master
+- simplify file search stored regex
 
 ### v0.1.0, Aug 02, 2014
 - remove note about git history issue
