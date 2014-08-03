@@ -3,6 +3,7 @@
 ### master
 - simplify file search stored regex
 - match files starting with dot
+- improve README - add more relevant related plugins
 
 ### v0.1.0, Aug 02, 2014
 - remove note about git history issue

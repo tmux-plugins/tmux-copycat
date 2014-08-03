@@ -137,12 +137,12 @@ You should now be able to use the plugin.
 
 ### Other goodies
 
-You might also find these useful:
+`tmux-copycat` works great with:
 
-- [logging](https://github.com/tmux-plugins/tmux-logging) - easy logging and
-  screen capturing for Tmux panes
-- [goto session](https://github.com/tmux-plugins/tmux-goto-session) - faster session
-  switching
+- [tmux-yank](https://github.com/tmux-plugins/tmux-yank) - enables copying
+  highlighted text to system clipboard
+- [tmux-open](https://github.com/tmux-plugins/tmux-open) - a plugin for quickly
+  opening a highlighted file or a url
 
 ### Test suite
 
