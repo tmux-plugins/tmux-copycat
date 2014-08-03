@@ -6,7 +6,7 @@ stored_search_not_defined() {
 
 stored_search_vars() {
 	tmux show-options -g |
-		grep -i "^${COPYCAT_VAR_PREFIX}_" |
+		\grep -i "^${COPYCAT_VAR_PREFIX}_" |
 		cut -d ' ' -f1 |               # cut just variable names
 		xargs                          # splat var names in one line
 }
