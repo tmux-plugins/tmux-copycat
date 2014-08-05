@@ -7,7 +7,7 @@ tests_exit_value=0
 
 test_files() {
 	ls -1 $CURRENT_DIR |        # test files are in current dir
-		grep -i '^test' |       # test file names start with 'test'
+		\grep -i '^test' |       # test file names start with 'test'
 		xargs                   # file names in one line
 }
 

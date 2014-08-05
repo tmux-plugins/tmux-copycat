@@ -144,7 +144,7 @@ copycat_quit_copy_mode_keys() {
 	local commands_that_quit_copy_mode="cancel\|copy-selection\|copy-pipe"
 	local copy_mode="$(tmux_copy_mode)-copy"
 	tmux list-keys -t "$copy_mode" |
-		grep "$commands_that_quit_copy_mode" |
+		\grep "$commands_that_quit_copy_mode" |
 		awk '{ print $4}' |
 		sort -u |
 		xargs echo
