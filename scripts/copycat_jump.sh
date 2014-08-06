@@ -105,7 +105,6 @@ _copycat_jump() {
 	_copycat_exit_select_mode
 	_copycat_jump_to_line "$line_number" "$scrollback_line_number"
 	_copycat_position_to_match_start "$match_line_position"
-	_copycat_clear_search
 	_copycat_select "$match"
 }
 
@@ -255,32 +254,6 @@ _copycat_position_to_match_start() {
 		for (( c=1; c<="$match_line_position"; c++ )); do
 			tmux send-keys C-f
 		done
-	fi
-}
-
-# This is cleaned so there's no conflicts between default Tmux and copycat key
-# bindings of `n` and `N` keys.
-_copycat_clear_search() {
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
-		# vi copy mode
-		# clean forward search
-		tmux send-keys /
-		tmux send-keys C-u
-		tmux send-keys C-m
-		# clean backward search
-		tmux send-keys ?
-		tmux send-keys C-u
-		tmux send-keys C-m
-	else
-		# emacs copy mode
-		# clean forward search
-		tmux send-keys C-s
-		tmux send-keys C-u
-		tmux send-keys C-m
-		# clean backward search
-		tmux send-keys C-r
-		tmux send-keys C-u
-		tmux send-keys C-m
 	fi
 }
 
