@@ -6,6 +6,7 @@
 - improve README - add more relevant related plugins
 - do not use `copycat_clear_search` method when in copycat mode. It was causing
   mysterious issues for some users.
+- update `README.md` - warning about a breaking mapping
 
 ### v0.1.0, Aug 02, 2014
 - remove note about git history issue

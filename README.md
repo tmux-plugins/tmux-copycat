@@ -106,6 +106,11 @@ searches you use often. Examples:
 
       set -g mode-keys vi
 
+- remapping `Escape` key in copy mode will break the plugin. If you have this
+  in your `.tmux.conf`, please consider removing it:
+
+      bind -t vi-copy Escape cancel
+
 ### Installation with [Tmux Plugin Manager](https://github.com/tmux-plugins/tpm) (recommended)
 
 Add plugin to the list of TPM plugins in `.tmux.conf`:
