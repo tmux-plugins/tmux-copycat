@@ -21,9 +21,6 @@ set_default_stored_searches() {
 	if stored_search_not_defined "C-u"; then
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-u" "https\?://[[:alnum:]?=%/_.:,;~@!#$&()*+-]*"
 	fi
-	if stored_search_not_defined "C-r"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-r" "^Processing[[:space:]]by[[:space:]][^[:space:]]*"
-	fi
 	if stored_search_not_defined "C-f"; then
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-f" "\(^\|^\.\|[[:space:]]\|[[:space:]]\.\)[[:alnum:]~_]*/[][[:alnum:]_.#$%&+=/@-]*"
 	fi
