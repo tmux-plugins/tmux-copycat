@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v1.0.0, Aug 31, 2014
 - simplify file search stored regex
 - match files starting with dot
 - improve README - add more relevant related plugins
