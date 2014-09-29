@@ -27,6 +27,9 @@ set_default_stored_searches() {
 	if stored_search_not_defined "C-d"; then
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-d" "[[:digit:]]\+"
 	fi
+	if stored_search_not_defined "M-i"; then
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_M-i" "[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}"
+	fi
 }
 
 set_start_bindings() {
