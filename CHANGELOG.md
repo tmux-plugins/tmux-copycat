@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v1.1.0, Sep 29, 2014
 - add IP address search
 - enhance url search with git and ftp urls
 
