@@ -33,7 +33,7 @@ Searches are case insensitive.<br/>
 
 - `prefix + ctrl-f` - simple *f*ile search
 - `prefix + ctrl-g` - jumping over *g*it status files (best used after `git status` command)
-- `prefix + ctrl-u` - *u*rl search
+- `prefix + ctrl-u` - *u*rl search (http, ftp and git urls)
 - `prefix + ctrl-d` - number search (mnemonic d, as digit)
 - `prefix + alt-i` - *i*p address search
 

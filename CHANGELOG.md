@@ -2,6 +2,7 @@
 
 ### master
 - add IP address search
+- enhance url search with git and ftp urls
 
 ### v1.0.0, Aug 31, 2014
 - simplify file search stored regex

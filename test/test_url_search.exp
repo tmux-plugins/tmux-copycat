@@ -41,6 +41,19 @@ sleep 0.2
 tmux_ctrl_u
 assert_highlighted "http://example6.com" "middle of the pane, http, pane bottom"
 
+# other url scheme searches
+#--------------------------
+new_tmux_pane
+create_output
+clear_screen
+display_text "git@github.com:rails/rails.git"
+tmux_ctrl_u
+assert_highlighted "git@github.com:rails/rails.git" "middle of the pane, git url"
+
+display_text "ftp://ftp.foo.bar/baz/lorem/IPSUM/file.txt"
+tmux_ctrl_u
+assert_highlighted "ftp://ftp.foo.bar/baz/lorem/IPSUM/file.txt" "middle of the pane, ftp url"
+
 # urls with parameters
 #---------------------
 new_tmux_pane
