@@ -22,7 +22,7 @@ set_default_stored_searches() {
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-u" "\(https\?://\|git@\|ftp://\)[[:alnum:]?=%/_.:,;~@!#$&()*+-]*"
 	fi
 	if stored_search_not_defined "C-f"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-f" "\(^\|^\.\|[[:space:]]\|[[:space:]]\.\)[[:alnum:]~_]*/[][[:alnum:]_.#$%&+=/@-]*"
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-f" "\(^\|^\.\|[[:space:]]\|[[:space:]]\.\|[[:space:]]\.\.\|\.\.\)[[:alnum:]~_]*/[][[:alnum:]_.#$%&+=/@-]*"
 	fi
 	if stored_search_not_defined "C-d"; then
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-d" "[[:digit:]]\+"
