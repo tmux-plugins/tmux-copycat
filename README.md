@@ -60,22 +60,8 @@ Copying highlighted matches can be enhanced with
 ### Customization
 
 Most of the behavior of tmux-copycat can be customized via tmux options.<br/>
-To set a value, just put `set -g @option "value"` in your `.tmux.conf` before
-loading the tmux-copycat plugin.
-
-Available options:
-
-- `@copycat_search` defines the key-binding used (after prefix) to start an
-  interactive search. Defaults to `/`.
-
-- `@copycat_git_special` defines the key-binding to launch a git status
-  search. Defaults to `C-g`.
-
-- `@copycat_next` defines the key (without prefix) used to jump to next search
-  result. Defaults to `n`.
-
-- `@copycat_prev` defines the key (without prefix) used to jump to previous search
-  result. Defaults to `N`.
+Check the full options list on
+[the wiki page](https://github.com/tmux-plugins/tmux-copycat/wiki/Customizations).
 
 #### Defining new stored searches
 
