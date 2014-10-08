@@ -2,33 +2,28 @@
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# stored search variable prefix
-COPYCAT_VAR_PREFIX="@copycat_search"
-
-# basic search
-default_copycat_search_key="/"
-copycat_search_option="@copycat_search"
-
-# git special search
-default_git_search_key="C-g"
-copycat_git_search_option="@copycat_git_special"
-
+source "$CURRENT_DIR/scripts/variables.sh"
 source "$CURRENT_DIR/scripts/helpers.sh"
 source "$CURRENT_DIR/scripts/stored_search_helpers.sh"
 
 # this function defines default stored searches
 set_default_stored_searches() {
-	if stored_search_not_defined "C-u"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-u" "\(https\?://\|git@\|ftp://\)[[:alnum:]?=%/_.:,;~@!#$&()*+-]*"
+	local file_search="$(get_tmux_option "$copycat_file_search_option" "$default_file_search_key")"
+	local url_search="$(get_tmux_option "$copycat_url_search_option" "$default_url_search_key")"
+	local digit_search="$(get_tmux_option "$copycat_digit_search_option" "$default_digit_search_key")"
+	local ip_search="$(get_tmux_option "$copycat_ip_search_option" "$default_ip_search_key")"
+
+	if stored_search_not_defined "$url_search"; then
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${url_search}" "\(https\?://\|git@\|ftp://\)[[:alnum:]?=%/_.:,;~@!#$&()*+-]*"
 	fi
-	if stored_search_not_defined "C-f"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-f" "\(^\|^\.\|[[:space:]]\|[[:space:]]\.\|[[:space:]]\.\.\|^\.\.\)[[:alnum:]~_]*/[][[:alnum:]_.#$%&+=/@-]*"
+	if stored_search_not_defined "$file_search"; then
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${file_search}" "\(^\|^\.\|[[:space:]]\|[[:space:]]\.\|[[:space:]]\.\.\|^\.\.\)[[:alnum:]~_]*/[][[:alnum:]_.#$%&+=/@-]*"
 	fi
-	if stored_search_not_defined "C-d"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_C-d" "[[:digit:]]\+"
+	if stored_search_not_defined "$digit_search"; then
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${digit_search}" "[[:digit:]]\+"
 	fi
-	if stored_search_not_defined "M-i"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_M-i" "[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}"
+	if stored_search_not_defined "$ip_search"; then
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${ip_search}" "[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}"
 	fi
 }
 

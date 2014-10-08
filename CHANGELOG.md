@@ -1,6 +1,7 @@
 # Changelog
 
 ### master
+- add tmux options for default searches
 
 ### v1.1.0, Sep 29, 2014
 - add IP address search
