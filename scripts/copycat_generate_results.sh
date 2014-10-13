@@ -18,9 +18,8 @@ capture_pane() {
 reverse_and_create_copycat_file() {
 	local file=$1
 	local copycat_file=$2
-	local grep_pattern="'$3'" # making sure grep regex is quoted
-	# The below line had to be eval-ed, otherwise it doesn't work
-	eval "(tac 2> /dev/null || tail -r) < "$file" | grep -oni "$grep_pattern" > "$copycat_file""
+	local grep_pattern=$3
+	(tac 2>/dev/null || tail -r) < "$file" | grep -oniE "$grep_pattern" > "$copycat_file"
 }
 
 delete_old_files() {
