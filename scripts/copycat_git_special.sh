@@ -34,7 +34,7 @@ concatenate_files() {
 	local file_separator
 	while read -r line; do
 		result="${result}${file_separator}${line}"
-		file_separator="\|"
+		file_separator="|"
 	done <<< "$git_status_files"
 	echo "$result"
 }
@@ -43,10 +43,10 @@ concatenate_files() {
 # Example:
 # `git status` shows files `foo.txt` and `bar.txt`
 # output regex will be:
-# `\(foo.txt\|bar.txt\)
+# `(foo.txt|bar.txt)
 git_status_files_regex() {
 	local concatenated_files="$(concatenate_files)"
-	local regex_result="\(${concatenated_files}\)"
+	local regex_result="(${concatenated_files})"
 	echo "$regex_result"
 }
 
