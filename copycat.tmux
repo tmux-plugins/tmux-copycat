@@ -14,16 +14,16 @@ set_default_stored_searches() {
 	local ip_search="$(get_tmux_option "$copycat_ip_search_option" "$default_ip_search_key")"
 
 	if stored_search_not_defined "$url_search"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${url_search}" "\(https\?://\|git@\|ftp://\)[[:alnum:]?=%/_.:,;~@!#$&()*+-]*"
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${url_search}" "(https?://|git@|ftp://)[[:alnum:]?=%/_.:,;~@!#$&()*+-]*"
 	fi
 	if stored_search_not_defined "$file_search"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${file_search}" "\(^\|^\.\|[[:space:]]\|[[:space:]]\.\|[[:space:]]\.\.\|^\.\.\)[[:alnum:]~_]*/[][[:alnum:]_.#$%&+=/@-]*"
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${file_search}" "(^|^\.|[[:space:]]|[[:space:]]\.|[[:space:]]\.\.|^\.\.)[[:alnum:]~_]*/[][[:alnum:]_.#$%&+=/@-]*"
 	fi
 	if stored_search_not_defined "$digit_search"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${digit_search}" "[[:digit:]]\+"
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${digit_search}" "[[:digit:]]+"
 	fi
 	if stored_search_not_defined "$ip_search"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${ip_search}" "[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}\.[[:digit:]]\{1,3\}"
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${ip_search}" "[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}"
 	fi
 }
 
