@@ -12,6 +12,9 @@ reduces mouse usage with Tmux.
 It works even better when paired with
 [tmux yank](https://github.com/tmux-plugins/tmux-yank).
 
+**Note:** new version 2.0 uses extended regexs! Regex character escaping with
+backslashes `\ ` isn't required anymore.
+
 ### Screencast
 
 [![screencast screenshot](/video/screencast_img.png)](https://vimeo.com/101867689)
