@@ -171,6 +171,8 @@ _get_tmp_dir() {
 }
 
 # returns a string unique to current pane
+# sed removes `$` sign because `session_id` contains is
 _pane_unique_id() {
-	tmux display-message -p "#{session_name}_#{window_index}_#{pane_index}"
+	tmux display-message -p "#{session_id}_#{window_index}_#{pane_index}" |
+		sed 's/\$//'
 }
