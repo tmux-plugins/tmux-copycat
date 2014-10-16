@@ -23,10 +23,9 @@ It works even better when paired with
 Example search entries:
 
 - `foo` - searches for string `foo`
-- `[0-9]\\+` - regex search for numbers (**notice `+` is escaped with 2 x `\`**)
+- `[0-9]+` - regex search for numbers
 
 Grep is used for searching.<br/>
-Escape regex characters with 2 backslashes.<br/>
 Searches are case insensitive.<br/>
 
 #### Predefined searches
