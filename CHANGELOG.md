@@ -2,7 +2,8 @@
 
 ### master
 - add tmux options for default searches
-- use `session_id` instead of `session_name` in the copycat file name
+- use `session_id` instead of `session_name` in the copycat file name (solution
+  provided by @toupeira)
 
 ### v1.1.0, Sep 29, 2014
 - add IP address search
