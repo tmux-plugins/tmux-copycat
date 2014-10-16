@@ -21,8 +21,8 @@ assert_highlighted "search me3" "top of the pane, search with dot and \[\[:digit
 
 new_tmux_pane
 display_text "something search me4"
-search "sear\[^\[:space:]]* me.*$"
-assert_highlighted "search me4" "top of the pane, search with matching group, dot-star and end of line $"
+search "sear\[^\[:space:]]* me.+$"
+assert_highlighted "search me4" "top of the pane, search with matching group, dot-plus and end of line $"
 
 # middle of pane searches
 #------------------------
@@ -42,8 +42,8 @@ search "searc. me\[\[:digit:]]"
 assert_highlighted "search me3" "middle of the pane, search with dot and \[\[:digit:]]"
 
 display_text "something search me4"
-search "sear\[^\[:space:]]* me.*$"
-assert_highlighted "search me4" "middle of the pane, search with matching group, dot-star and end of line $"
+search "sear\[^\[:space:]]* me.+$"
+assert_highlighted "search me4" "middle of the pane, search with matching group, dot-plus and end of line $"
 
 # bottom of the buffer searches
 #------------------------------
@@ -70,8 +70,8 @@ assert_highlighted "search me3" "bottom of the pane, search with dot and \[\[:di
 sleep 0.2
 send "something search me4"
 sleep 0.2
-search "sear\[^\[:space:]]* me.*$"
-assert_highlighted "search me4" "bottom of the pane, search with matching group, dot-star and end of line $"
+search "sear\[^\[:space:]]* me.+$"
+assert_highlighted "search me4" "bottom of the pane, search with matching group, dot-plus and end of line $"
 
 # match selection when line contains escaped chars
 #-------------------------------------------------
