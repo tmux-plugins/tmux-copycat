@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v2.0.0, Oct 16, 2014
 - add tmux options for default searches
 - use `session_id` instead of `session_name` in the copycat file name (solution
   provided by @toupeira)
