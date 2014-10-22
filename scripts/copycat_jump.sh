@@ -128,9 +128,7 @@ _copycat_manually_go_up() {
 	local line_number="$1"
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
-		tmux send-keys "$line_number"
-		tmux send-keys k
-		tmux send-keys 0
+		tmux send-keys "$line_number" k 0
 	else
 		# emacs copy mode
 		for (( c=1; c<="$line_number"; c++ )); do
@@ -160,10 +158,7 @@ _copycat_create_padding_below_result() {
 
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
-		tmux send-keys "$padding" # go down a number of lines
-		tmux send-keys j
-		tmux send-keys "$padding" # go up a number of lines
-		tmux send-keys k
+		tmux send-keys "$padding" j "$padding" k
 	else
 		# emacs copy mode
 		for (( c=1; c<="$padding"; c++ )); do
@@ -181,17 +176,12 @@ _copycat_go_to_line_with_jump() {
 	# first jumps to the "bottom" in copy mode so that jumps are consistent
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
-		tmux send-keys G
-		tmux send-keys 0
-		tmux send-keys :
+		tmux send-keys G 0 :
 	else
 		# emacs copy mode
-		tmux send-keys "M->"
-		tmux send-keys C-a
-		tmux send-keys g
+		tmux send-keys "M->" C-a g
 	fi
-	tmux send-keys "$line_number"
-	tmux send-keys C-m
+	tmux send-keys "$line_number" C-m
 }
 
 # maximum line number that can be reached via tmux 'jump'
@@ -246,8 +236,7 @@ _copycat_position_to_match_start() {
 
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
-		tmux send-keys "$match_line_position"
-		tmux send-keys l
+		tmux send-keys "$match_line_position" l
 	else
 		# emacs copy mode
 		# emacs doesn't have repeat, so we're manually looping :(
@@ -262,10 +251,7 @@ _copycat_select() {
 	local length="${#match}"
 	if [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
-		tmux send-keys Space
-		tmux send-keys "$length"
-		tmux send-keys l
-		tmux send-keys h # selection correction for 1 char
+		tmux send-keys Space "$length" l h # selection correction for 1 char
 	else
 		# emacs copy mode
 		tmux send-keys C-Space

@@ -1,6 +1,7 @@
 # Changelog
 
 ### master
+- combine send-keys calls to reduce flickering (@toupeira)
 
 ### v2.0.0, Oct 16, 2014
 - add tmux options for default searches
