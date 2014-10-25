@@ -23,13 +23,14 @@ reverse_and_create_copycat_file() {
 delete_old_files() {
 	local scrollback_filename="$(get_scrollback_filename)"
 	local copycat_filename="$(get_copycat_filename)"
-	rm "$scrollback_filename" "$copycat_filename"
+	rm -f "$scrollback_filename" "$copycat_filename"
 }
 
 generate_copycat_file() {
 	local grep_pattern="$1"
 	local scrollback_filename="$(get_scrollback_filename)"
 	local copycat_filename="$(get_copycat_filename)"
+	mkdir -p "$(_get_tmp_dir)"
 	capture_pane "$scrollback_filename"
 	reverse_and_create_copycat_file "$scrollback_filename" "$copycat_filename" "$grep_pattern"
 }
