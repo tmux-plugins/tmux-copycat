@@ -9,9 +9,7 @@ search_pattern="$1"
 capture_pane() {
 	local file=$1
 	# copying 9M lines back will hopefully fetch the whole scrollback
-	tmux capture-pane -S -9000000
-	tmux save-buffer "$file"
-	tmux delete-buffer
+	tmux capture-pane -S -9000000 -p > "$file"
 }
 
 # doing 2 things in 1 step so that we don't write to disk too much
