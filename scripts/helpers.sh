@@ -75,11 +75,11 @@ reset_copycat_position() {
 # === scrollback and results position ===
 
 get_scrollback_filename() {
-	echo "$(_get_tmp_dir)/tmux_scrollback_$(_pane_unique_id)"
+	echo "$(_get_tmp_dir)/scrollback-$(_pane_unique_id)"
 }
 
 get_copycat_filename() {
-	echo "$(_get_tmp_dir)/tmux_copycat_$(_pane_unique_id)"
+	echo "$(_get_tmp_dir)/results-$(_pane_unique_id)"
 }
 
 # Ensures a message is displayed for 5 seconds in tmux prompt.
@@ -163,16 +163,12 @@ _copycat_position_var() {
 }
 
 _get_tmp_dir() {
-	if [ -n "$TMPDIR" ]; then
-		echo "$TMPDIR"
-	else
-		echo "/tmp/"
-	fi
+	echo "${TMPDIR:-/tmp}/tmux-$EUID-copycat"
 }
 
 # returns a string unique to current pane
 # sed removes `$` sign because `session_id` contains is
 _pane_unique_id() {
-	tmux display-message -p "#{session_id}_#{window_index}_#{pane_index}" |
+	tmux display-message -p "#{session_id}-#{window_index}-#{pane_index}" |
 		sed 's/\$//'
 }

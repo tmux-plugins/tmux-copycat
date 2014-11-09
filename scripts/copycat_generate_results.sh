@@ -9,9 +9,7 @@ search_pattern="$1"
 capture_pane() {
 	local file=$1
 	# copying 9M lines back will hopefully fetch the whole scrollback
-	tmux capture-pane -S -9000000
-	tmux save-buffer "$file"
-	tmux delete-buffer
+	tmux capture-pane -S -9000000 -p > "$file"
 }
 
 # doing 2 things in 1 step so that we don't write to disk too much
@@ -25,13 +23,14 @@ reverse_and_create_copycat_file() {
 delete_old_files() {
 	local scrollback_filename="$(get_scrollback_filename)"
 	local copycat_filename="$(get_copycat_filename)"
-	rm "$scrollback_filename" "$copycat_filename"
+	rm -f "$scrollback_filename" "$copycat_filename"
 }
 
 generate_copycat_file() {
 	local grep_pattern="$1"
 	local scrollback_filename="$(get_scrollback_filename)"
 	local copycat_filename="$(get_copycat_filename)"
+	mkdir -p "$(_get_tmp_dir)"
 	capture_pane "$scrollback_filename"
 	reverse_and_create_copycat_file "$scrollback_filename" "$copycat_filename" "$grep_pattern"
 }
