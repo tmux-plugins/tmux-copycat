@@ -3,7 +3,8 @@
 # override PS1 prompt
 echo 'export PS1="\$ "' >> ~/.bashrc
 # simplify irb prompt
-echo 'IRB.conf[:PROMPT_MODE] = :SIMPLE' >> ~/.irbrc
+echo 'IRB.conf[:PROMPT_MODE] = :SIMPLE' >> /home/vagrant/.irbrc
+chown -R vagrant:vagrant /home/vagrant/.irbrc
 
 # tmux installation instructions from here
 # https://gist.github.com/rschuman/6168833

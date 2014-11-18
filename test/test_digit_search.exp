@@ -109,18 +109,12 @@ new_tmux_pane
 enter_irb
 irb_display_text "890"
 tmux_ctrl_d
-# compensating for irb prompt numbers
-next_match
-next_match
 irb_assert_highlighted "890" "irb console, beggining of line"
 exit_irb
 
 enter_irb
 irb_display_text "901"
 tmux_ctrl_d
-# compensating for irb prompt numbers
-next_match
-next_match
 irb_assert_highlighted "901" "irb console, not beggining of line"
 exit_irb
 
@@ -129,9 +123,6 @@ irb_generate_output
 send "puts 012"
 sleep 0.1
 tmux_ctrl_d
-# compensating for irb prompt numbers
-next_match
-next_match
 irb_assert_highlighted "012" "irb console, pane bottom, not beggining of line"
 exit_irb
 
