@@ -1,0 +1,19 @@
+# generic packages
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y git-core expect
+  - sudo apt-get install -y python-software-properties software-properties-common
+
+# install latest Tmux 1.9a
+install:
+  - sudo add-apt-repository -y ppa:pi-rho/dev
+  - sudo apt-get update
+  - sudo apt-get install -y tmux=1.9a-1~ppa1~p
+
+# override PS1 and irb prompt, fetch a git repo used for testing
+before_script:
+  - echo 'export PS1="\$ "' >> ~/.bashrc
+  - echo 'IRB.conf[:PROMPT_MODE] = :SIMPLE' >> ~/.irbrc
+  - git clone https://github.com/tmux-plugins/tmux-example-plugin ~/tmux-example-plugin
+
+script: ./test/run-tests-within-vm
