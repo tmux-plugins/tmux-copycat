@@ -1,5 +1,7 @@
 # Tmux copycat
 
+![Build Status](https://travis-ci.org/tmux-plugins/tmux-copycat.png?branch=master)
+
 This plugin enables:
 
 - regex searches
@@ -139,8 +141,10 @@ You should now be able to use the plugin.
 
 ### Test suite
 
-This plugin has an integration test suite. It depends on `vagrant`.
-Run it with:
+This plugin has a pretty extensive integration test suite that runs on
+[travis](https://travis-ci.org/tmux-plugins/tmux-copycat).
+
+When run locally, it depends on `vagrant`. Run it with:
 
     # within project top directory
     $ ./run-tests
