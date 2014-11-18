@@ -1,6 +1,6 @@
 #!/usr/bin/env expect
 
-source "/vagrant/test/helpers/setup.exp"
+source "./test/helpers/setup.exp"
 
 # searches at the top of the pane
 #--------------------------------

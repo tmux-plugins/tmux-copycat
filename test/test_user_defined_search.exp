@@ -1,6 +1,6 @@
 #!/usr/bin/env expect
 
-source "/vagrant/test/helpers/setup_with_custom_searches.exp"
+source "./test/helpers/setup_with_custom_searches.exp"
 
 # searches at the top of the pane
 #--------------------------------

@@ -1,9 +1,8 @@
 #!/usr/bin/env expect
 
-source "/vagrant/test/helpers/setup.exp"
+source "./test/helpers/setup.exp"
 
-clone_test_git_repo
-enter_git_repo
+enter_test_git_repo
 
 # single file tests
 #------------------
@@ -74,13 +73,13 @@ clean_git_repo
 # no match, first and last match
 #-------------------------------
 new_tmux_pane
-enter_git_repo
+enter_test_git_repo
 tmux_ctrl_g
 assert_on_screen "No results!" "No results is displayed when no results"
 clean_git_repo
 
 new_tmux_pane
-enter_git_repo
+enter_test_git_repo
 change_file "README.md"
 git_status
 tmux_ctrl_g
@@ -90,7 +89,7 @@ assert_on_screen "Last match!" "'Last match' is displayed when last match"
 clean_git_repo
 
 new_tmux_pane
-enter_git_repo
+enter_test_git_repo
 change_file "README.md"
 git_status
 tmux_ctrl_g

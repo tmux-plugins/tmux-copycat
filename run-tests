@@ -34,7 +34,7 @@ run_tests() {
 	local test_file="/vagrant/test/run-tests-within-vm"
 	echo "Running test suite on $box from: $test_file"
 	echo
-	vagrant ssh "$box" -c "$test_file"
+	vagrant ssh "$box" -c "cd /vagrant; $test_file"
 }
 
 exit_message() {

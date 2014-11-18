@@ -67,11 +67,7 @@ proc irb_generate_output {} {
   sleep 0.5
 }
 
-proc clone_test_git_repo {} {
-  exec "/vagrant/test/helpers/clone_test_git_repo.sh"
-}
-
-proc enter_git_repo {} {
+proc enter_test_git_repo {} {
   sleep 0.2
   send "cd ~/tmux-example-plugin\r"
   sleep 0.1

@@ -9,6 +9,6 @@ setup_tmux_conf() {
 	echo "bind-key -t vi-copy    y copy-selection"  > ~/.tmux.conf
 	echo "bind-key -t emacs-copy y copy-selection" >> ~/.tmux.conf
 	echo "set -g @copycat_search_C-t 'random string[[:digit:]]+'" >> ~/.tmux.conf
-	echo "run-shell '/vagrant/copycat.tmux'"       >> ~/.tmux.conf
+	echo "run-shell './copycat.tmux'"              >> ~/.tmux.conf
 }
 setup_tmux_conf
