@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # override PS1 prompt
-echo 'export PS1="\w \$ "' >> ~/.bashrc
+echo 'export PS1="\$ "' >> ~/.bashrc
+# simplify irb prompt
+echo 'IRB.conf[:PROMPT_MODE] = :SIMPLE' >> ~/.irbrc
 
 # tmux installation instructions from here
 # https://gist.github.com/rschuman/6168833
@@ -31,3 +33,7 @@ cd tmux-*
 LDFLAGS="-L/usr/local/lib -Wl,-rpath=/usr/local/lib" ./configure --prefix=/usr/local
 make
 make install
+
+# clone a repo used later for tests
+git clone https://github.com/tmux-plugins/tmux-example-plugin /home/vagrant/tmux-example-plugin
+chown -R vagrant:vagrant /home/vagrant/tmux-example-plugin
