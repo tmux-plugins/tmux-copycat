@@ -1,6 +1,6 @@
 # Tmux copycat
 
-![Build Status](https://travis-ci.org/tmux-plugins/tmux-copycat.png?branch=master)
+[![Build Status](https://travis-ci.org/tmux-plugins/tmux-copycat.png?branch=master)](https://travis-ci.org/tmux-plugins/tmux-copycat)
 
 This plugin enables:
 
