@@ -14,7 +14,7 @@ reduces mouse usage with Tmux.
 It works even better when paired with
 [tmux yank](https://github.com/tmux-plugins/tmux-yank).
 
-**Note:** new version 2.0 uses extended regexs! Regex character escaping with
+**Note:** new version 2.0 uses extended regexes! Regex character escaping with
 backslashes `\ ` isn't required anymore.
 
 ### Screencast
@@ -69,14 +69,11 @@ Check the full options list on
 
 #### Defining new stored searches
 
-To speed up the workflow, in `.tmux.conf` you can define new bindings for
-searches you use often. Examples:
+To speed up the workflow you can define new bindings in `.tmux.conf` for
+searches you use often.
 
-    # 'prefix + ctrl-t' searches for "search me" string
-    set -g @copycat_search_C-t "search me"
-
-    # 'prefix + alt-t' searches for defined regex
-    set -g @copycat_search_M-t "regex search[[:alnum:]]\*"
+How to + useful searches
+[in this wiki page](https://github.com/tmux-plugins/tmux-copycat/wiki/Defining-new-stored-searches).
 
 ### Limitations
 
