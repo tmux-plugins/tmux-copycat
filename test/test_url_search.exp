@@ -54,6 +54,10 @@ display_text "ftp://ftp.foo.bar/baz/lorem/IPSUM/file.txt"
 tmux_ctrl_u
 assert_highlighted "ftp://ftp.foo.bar/baz/lorem/IPSUM/file.txt" "middle of the pane, ftp url"
 
+display_text "file:///foo/bar/file.txt"
+tmux_ctrl_u
+assert_highlighted "file:///foo/bar/file.txt" "middle of the pane, file url"
+
 # urls with parameters
 #---------------------
 new_tmux_pane
