@@ -1,6 +1,8 @@
 # Changelog
 
 ### master
+
+### v2.1.0, Jan 01, 2015
 - combine send-keys calls to reduce flickering (@toupeira)
 - add `file:///` prefix for local file url's (@vellvisher)
 - add `git://` type url
