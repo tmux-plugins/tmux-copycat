@@ -50,6 +50,10 @@ display_text "git@github.com:rails/rails.git"
 tmux_ctrl_u
 assert_highlighted "git@github.com:rails/rails.git" "middle of the pane, git url"
 
+display_text "git://github.com/rails/rails.git"
+tmux_ctrl_u
+assert_highlighted "git://github.com/rails/rails.git" "middle of the pane, another git url"
+
 display_text "ftp://ftp.foo.bar/baz/lorem/IPSUM/file.txt"
 tmux_ctrl_u
 assert_highlighted "ftp://ftp.foo.bar/baz/lorem/IPSUM/file.txt" "middle of the pane, ftp url"

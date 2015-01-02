@@ -3,6 +3,7 @@
 ### master
 - combine send-keys calls to reduce flickering (@toupeira)
 - add `file:///` prefix for local file url's (@vellvisher)
+- add `git://` type url
 
 ### v2.0.0, Oct 16, 2014
 - add tmux options for default searches
