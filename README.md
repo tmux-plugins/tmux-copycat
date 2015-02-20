@@ -135,6 +135,11 @@ You should now be able to use the plugin.
   highlighted text to system clipboard
 - [tmux-open](https://github.com/tmux-plugins/tmux-open) - a plugin for quickly
   opening a highlighted file or a url
+- [tmux-continuum](https://github.com/tmux-plugins/tmux-continuum) - automatic
+  restoring and continuous saving of tmux env
+
+You might want to follow [@brunosutic](https://twitter.com/brunosutic) on
+twitter if you want to hear about new tmux plugins or feature updates.
 
 ### Test suite
 
