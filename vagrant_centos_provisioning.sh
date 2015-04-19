@@ -12,7 +12,7 @@ chown -R vagrant:vagrant /home/vagrant/.irbrc
 sudo su -
 
 yum -y install gcc kernel-devel make ncurses-devel
-yum -y install git-core expect vim ruby ruby-devel ruby-irb
+yum -y install git-core expect vim gawk ruby ruby-devel ruby-irb
 
 # download tmux and libevent
 mkdir ~/downloads && cd ~/downloads

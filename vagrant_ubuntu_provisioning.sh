@@ -7,7 +7,7 @@ echo 'IRB.conf[:PROMPT_MODE] = :SIMPLE' >> /home/vagrant/.irbrc
 chown -R vagrant:vagrant /home/vagrant/.irbrc
 
 sudo apt-get update
-sudo apt-get install -y git-core expect vim
+sudo apt-get install -y git-core expect vim gawk
 sudo apt-get install -y python-software-properties software-properties-common
 
 # install latest Tmux 1.9a

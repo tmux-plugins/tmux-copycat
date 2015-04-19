@@ -127,6 +127,17 @@ tmux_ctrl_u
 next_match
 assert_highlighted "http://example112.com" "2 matches on the same line, second match"
 
+# works ok even with unicode characters in the line (requires gawk to be installed)
+#--------------------------------------------------
+new_tmux_pane
+display_text "Ξ ~CM_CONF_DIR → curl http://www.google.com"
+tmux_ctrl_u
+assert_highlighted "http://www.google.com" "match on the line with unicode characters"
+
+display_text "↑127 ~CM_CONF_DIR → echo http://www.google.com"
+tmux_ctrl_u
+assert_highlighted "http://www.google.com" "another match on the line with unicode characters"
+
 # no match, first and last match
 #-------------------------------
 new_tmux_pane
