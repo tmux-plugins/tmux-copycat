@@ -9,6 +9,15 @@ tmux_option_prev="@copycat_prev"
 # keeps track of number of panes in copycat mode
 tmux_option_counter="@copycat_counter"
 
+# === awk vs gawk ===
+command_exists() {
+	command -v "$@" > /dev/null 2>&1
+}
+AWK_CMD='awk'
+if command_exists gawk; then
+	AWK_CMD='gawk'
+fi
+
 # === general helpers ===
 
 get_tmux_option() {
@@ -145,7 +154,7 @@ copycat_quit_copy_mode_keys() {
 	local copy_mode="$(tmux_copy_mode)-copy"
 	tmux list-keys -t "$copy_mode" |
 		\grep "$commands_that_quit_copy_mode" |
-		awk '{ print $4}' |
+		$AWK_CMD '{ print $4}' |
 		sort -u |
 		xargs echo
 }
