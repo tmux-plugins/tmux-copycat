@@ -15,7 +15,7 @@ TMUX_COPY_MODE="$(tmux_copy_mode)"
 
 _file_number_of_lines() {
 	local file="$1"
-	echo "$(wc -l $file | awk '{print $1}')"
+	echo "$(wc -l $file | $AWK_CMD '{print $1}')"
 }
 
 _get_result_line() {
@@ -91,7 +91,7 @@ _get_match_line_position() {
 	result_line="$(_escape_backslash "$result_line")"
 	match="$(_escape_backslash "$match")"
 
-	local index=$(awk -v a="$result_line" -v b="$match" 'BEGIN{print index(a,b)}')
+	local index=$($AWK_CMD -v a="$result_line" -v b="$match" 'BEGIN{print index(a,b)}')
 	local zero_index=$((index - 1))
 	echo "$zero_index"
 }
@@ -272,7 +272,7 @@ get_new_position_number() {
 
 	# doing a forward/up jump
 	if [ "$NEXT_PREV" == "next" ]; then
-		local number_of_results=$(wc -l "$copycat_file" | awk '{ print $1 }')
+		local number_of_results=$(wc -l "$copycat_file" | $AWK_CMD '{ print $1 }')
 		if [ "$current_position" -eq "$number_of_results" ]; then
 			# position can't go beyond the last result
 			new_position="$current_position"
