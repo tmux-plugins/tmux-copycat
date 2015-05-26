@@ -81,6 +81,18 @@ proc git_status {} {
   sleep 0.1
 }
 
+proc git_log_reverse_short {} {
+  sleep 0.1
+  send "git --no-pager log --reverse --oneline -1\r"
+  sleep 0.1
+}
+
+proc git_log_reverse {} {
+  sleep 0.1
+  send "git --no-pager log --reverse -1\r"
+  sleep 0.1
+}
+
 proc git_checkout {} {
   sleep 0.1
   send "git checkout -- .\r"

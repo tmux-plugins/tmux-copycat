@@ -1,0 +1,22 @@
+#!/usr/bin/env expect
+
+source "./test/helpers/setup.exp"
+
+enter_test_git_repo
+
+# Match regular SHA-1 hashes
+#---------------------------
+git_log_reverse
+tmux_ctrl_g
+assert_highlighted "29a71f6749a5413f42445372052e612e937b23d6" "match regular SHA-1 hashes"
+
+#Match shortened SHA-1 hashes
+#----------------------------
+git_log_reverse_short
+tmux_ctrl_g
+assert_highlighted "29a71f6" "match shortened SHA-1 hashes"
+
+# quit
+#-----
+remove_test_git_repo
+teardown_and_exit
