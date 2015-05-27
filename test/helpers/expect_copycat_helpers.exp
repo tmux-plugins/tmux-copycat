@@ -25,8 +25,8 @@ proc tmux_ctrl_g {} {
   sleep 0.7
 }
 
-proc tmux_ctrl_h {} {
-  send ""
+proc tmux_alt_h {} {
+  send "h"
   sleep 0.7
 }
 

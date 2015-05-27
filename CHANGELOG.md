@@ -2,6 +2,7 @@
 
 ### master
 - if installed use `gawk` instead of `awk` (@metcalfc)
+- add stored search for matching git SHAs (@jbnicolai)
 
 ### v2.1.0, Jan 01, 2015
 - combine send-keys calls to reduce flickering (@toupeira)

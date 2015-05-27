@@ -7,14 +7,14 @@ enter_test_git_repo
 # Match regular SHA-1 hashes
 #---------------------------
 git_log_reverse
-tmux_ctrl_g
-assert_highlighted "29a71f6749a5413f42445372052e612e937b23d6" "match regular SHA-1 hashes"
+tmux_alt_h
+assert_highlighted "935929c4c7265666e41e727f97a87d1af00a8b40" "match regular SHA-1 hashes"
 
 #Match shortened SHA-1 hashes
 #----------------------------
 git_log_reverse_short
-tmux_ctrl_g
-assert_highlighted "29a71f6" "match shortened SHA-1 hashes"
+tmux_alt_h
+assert_highlighted "935929c" "match shortened SHA-1 hashes"
 
 # quit
 #-----
