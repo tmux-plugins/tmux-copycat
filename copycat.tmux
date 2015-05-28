@@ -32,7 +32,7 @@ set_default_stored_searches() {
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${ip_search}" "[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}"
 	fi
 	if stored_search_not_defined "$docker_search"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${docker_search}" "[[:alnum:]]{12}"
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${docker_search}" "[[:alnum:]]{12}\\s"
 	fi
 
 }
