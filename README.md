@@ -41,7 +41,7 @@ Searches are case insensitive.<br/>
 - `prefix + ctrl-u` - *u*rl search (http, ftp and git urls)
 - `prefix + ctrl-d` - number search (mnemonic d, as digit)
 - `prefix + alt-i` - *i*p address search
-- `prefix + ctrl-i` - *docker* container id search
+- `prefix + ctrl-o` - *docker* container id search
 
 These start "copycat mode" and jump to first match.
 
