@@ -39,9 +39,10 @@ proc _display_highlighted_with_checker_text {checker} {
   _copy_mode_copy
   send ""
   sleep 0.1
-  send "echo $checker"
+  send "echo '$checker"
   sleep 0.1
   _tmux_paste
+  send "'"
   send "\r"
 }
 

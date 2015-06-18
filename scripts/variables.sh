@@ -24,3 +24,6 @@ copycat_hash_search_option="@copycat_hash_search"
 
 default_ip_search_key="M-i"
 copycat_ip_search_option="@copycat_ip_search"
+
+default_email_search_key="C-e"
+copycat_email_search_option="@copycat_email_search"

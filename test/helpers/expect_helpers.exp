@@ -34,7 +34,7 @@ proc clear_screen {} {
 }
 
 proc display_text {text} {
-  send "echo $text\r"
+  send "echo '$text'\r"
   sleep 0.1
 }
 

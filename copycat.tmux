@@ -13,6 +13,7 @@ set_default_stored_searches() {
 	local digit_search="$(get_tmux_option "$copycat_digit_search_option" "$default_digit_search_key")"
 	local hash_search="$(get_tmux_option "$copycat_hash_search_option" "$default_hash_search_key")"
 	local ip_search="$(get_tmux_option "$copycat_ip_search_option" "$default_ip_search_key")"
+	local email_search="$(get_tmux_option "$copycat_email_search_option" "$default_email_search_key")"
 
 	if stored_search_not_defined "$url_search"; then
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${url_search}" "(https?://|git@|git://|ssh://|ftp://|file:///)[[:alnum:]?=%/_.:,;~@!#$&()*+-]*"
@@ -28,6 +29,9 @@ set_default_stored_searches() {
 	fi
 	if stored_search_not_defined "$ip_search"; then
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${ip_search}" "[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}"
+	fi
+	if stored_search_not_defined "$email_search"; then
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${email_search}" '[[:alnum:].!#$%&*+/=?^_\`{|}~-]+@[[:alnum:]-]+(\.[[:alnum:]]+)*'
 	fi
 }
 
