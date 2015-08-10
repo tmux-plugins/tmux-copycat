@@ -103,10 +103,7 @@ How to + useful searches
 
 Add plugin to the list of TPM plugins in `.tmux.conf`:
 
-    set -g @tpm_plugins '          \
-      tmux-plugins/tpm             \
-      tmux-plugins/tmux-copycat    \
-    '
+    set -g @plugin 'tmux-plugins/tmux-copycat'
 
 Hit `prefix + I` to fetch the plugin and source it. You should now be able to
 use the plugin.
