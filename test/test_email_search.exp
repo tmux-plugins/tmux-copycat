@@ -1,0 +1,155 @@
+#!/usr/bin/env expect
+
+source "./test/helpers/setup.exp"
+
+# searches at the top of the pane
+#--------------------------------
+display_text "example@example1.com"
+tmux_ctrl_e
+assert_highlighted "example@example1.com" "top of the pane, email"
+
+new_tmux_pane
+display_text "example@example1.com.au"
+tmux_ctrl_e
+assert_highlighted "example@example1.com" "top of the pane, email country code"
+
+# middle of pane searches
+#------------------------
+new_tmux_pane
+create_output
+clear_screen
+display_text "example@example2.com"
+tmux_ctrl_e
+assert_highlighted "example@example2.com" "middle of the pane, email, beginning of the line"
+
+display_text "random example@example3.com"
+tmux_ctrl_e
+assert_highlighted "example@example3.com" "middle of the pane, email, not beginning of the line"
+
+display_text "example@example4.com"
+tmux_ctrl_e
+assert_highlighted "example@example4.com" "middle of the pane, email, beginning of the line"
+
+display_text "some text example@example5.com"
+tmux_ctrl_e
+assert_highlighted "example@example5.com" "middle of the pane, email, not beginning of the line"
+
+create_output
+sleep 0.2
+send " example@example6.com "
+sleep 0.2
+tmux_ctrl_e
+assert_highlighted "example@example6.com" "middle of the pane, email, pane bottom"
+
+# other email structures
+#-----------------------
+new_tmux_pane
+create_output
+clear_screen
+
+display_text "example.person@example.com"
+tmux_ctrl_e
+assert_highlighted "example.person@example.com" "middle of the pane, dotted email"
+
+display_text "example.person+subject@example.com"
+tmux_ctrl_e
+assert_highlighted "example.person+subject@example.com" "middle of the pane, dotted email with plus"
+
+display_text "example@host.example.mueseum"
+tmux_ctrl_e
+assert_highlighted "example@host.example.mueseum" "middle of the pane, new gTLDs, .mueseum"
+
+display_text "example@host.example.party"
+tmux_ctrl_e
+assert_highlighted "example@host.example.party" "middle of the pane, new gTLDs, .party"
+
+display_text "example.\!\#\$%&*+/=?^_`\{|\}~-@example-one.com"
+tmux_ctrl_e
+assert_highlighted "example.\!\#\$%&*+/=?^_`\{|\}~-@example-one.com" "middle of the pane, all special characters"
+
+# emails in html
+#---------------
+new_tmux_pane
+display_text "<a href='mailto:example@example61.com?subject=Test'>asdf</a>"
+tmux_ctrl_e
+assert_highlighted "example@example61.com" "email, subject in html"
+
+# match selection when line contains escaped chars
+#-------------------------------------------------
+new_tmux_pane
+display_text "User ID: example\r\nEmail: example@example7.com\r\n"
+tmux_ctrl_e
+assert_highlighted "example@example7.com" "match selection when line contains escaped chars"
+
+# result navigation
+#------------------
+new_tmux_pane
+display_text "example@example81.com"
+display_text "example@example82.com"
+display_text "example@example83.com"
+tmux_ctrl_e
+# example@example83.com
+next_match
+# example@example83.com
+next_match
+# example@example82.com
+next_match
+# example@example82.com
+next_match
+# example@example81.com
+previous_match
+# example@example82.com
+assert_highlighted "example@example82.com" "result navigation at the top of the pane"
+
+create_output
+display_text "example@example91.com"
+display_text "example@example92.com"
+tmux_ctrl_e
+# example@example92.com
+next_match
+# example@example92.com
+next_match
+# example@example91.com
+previous_match
+# example@example92.com
+assert_highlighted "example@example92.com" "result navigation, middle of the pane"
+
+# 2 matches on the same line
+#---------------------------
+new_tmux_pane
+display_text "example@example101.com example@example102.com"
+tmux_ctrl_e
+assert_highlighted "example@example101.com" "2 matches on the same line, first match"
+
+display_text "example@example111.com example@example112.com"
+tmux_ctrl_e
+next_match
+assert_highlighted "example@example112.com" "2 matches on the same line, second match"
+
+# no match, first and last match
+#-------------------------------
+new_tmux_pane
+tmux_ctrl_e
+assert_on_screen "No results!" "No results is displayed when no results"
+
+display_text "example@example12.com"
+tmux_ctrl_e
+next_match
+next_match
+assert_on_screen "Last match!" "'Last match' is displayed when last match"
+# exit copycat mode
+send ""
+
+new_tmux_pane
+display_text "example@example13.com"
+tmux_ctrl_e
+next_match
+previous_match
+previous_match
+assert_on_screen "First match!" "'First match' is displayed when first match"
+# exit copycat mode
+send ""
+
+# quit
+#-----
+teardown_and_exit

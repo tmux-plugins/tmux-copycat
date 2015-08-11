@@ -35,6 +35,11 @@ proc tmux_ctrl_t {} {
   sleep 0.7
 }
 
+proc tmux_ctrl_e {} {
+  send ""
+  sleep 0.7
+}
+
 proc search {text} {
   send "/"
   sleep 0.2
