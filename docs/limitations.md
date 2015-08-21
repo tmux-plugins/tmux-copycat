@@ -21,3 +21,4 @@
 
       bind -t vi-copy Escape cancel
 
+  After removing this key binding, don't forget to restart tmux server!
