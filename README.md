@@ -62,20 +62,6 @@ Copying a highlighted match will take you "out" of copycat mode. Paste with
 Copying highlighted matches can be enhanced with
 [tmux yank](https://github.com/tmux-plugins/tmux-yank).
 
-### Customization
-
-Most of the behavior of tmux-copycat can be customized via tmux options.<br/>
-Check the full options list on
-[the wiki page](https://github.com/tmux-plugins/tmux-copycat/wiki/Customizations).
-
-#### Defining new stored searches
-
-To speed up the workflow you can define new bindings in `.tmux.conf` for
-searches you use often.
-
-How to + useful searches
-[in this wiki page](https://github.com/tmux-plugins/tmux-copycat/wiki/Defining-new-stored-searches).
-
 ### Limitations
 
 - This plugin tries hard to consistently enable "marketed" features. It uses some
@@ -130,6 +116,13 @@ You should now be able to use the plugin.
 
 Optional (but recommended) install `gawk` via your package manager of choice
 for better UTF-8 character support.
+
+### Docs
+
+- Most of the behavior of tmux-copycat can be customized via tmux options.
+  [Check out the full options list](docs/customizations.md).
+- To speed up the workflow you can define new bindings in `.tmux.conf` for
+  searches you use often, more info [here](docs/defining_new_stored_searches.md)
 
 ### Other goodies
 
