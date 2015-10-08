@@ -14,6 +14,8 @@ reduces mouse usage with Tmux.
 It works even better when paired with
 [tmux yank](https://github.com/tmux-plugins/tmux-yank).
 
+Tested and working on Linux, OSX and Cygwin.
+
 **Note:** new version 2.0 uses extended regexes! Regex character escaping with
 backslashes `\ ` isn't required anymore.
 
