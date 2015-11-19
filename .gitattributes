@@ -6,3 +6,4 @@
 Vagrantfile eol=lf
 run-tests eol=lf
 test/run-tests-within-vm eol=lf
+*.png binary
