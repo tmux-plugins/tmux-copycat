@@ -22,3 +22,12 @@
       bind -t vi-copy Escape cancel
 
   After removing this key binding, don't forget to restart tmux server!
+
+- Custom `-n` mappings on `C-j`, `C-c`, `Enter` and `q` will be unbound when
+  copycat mode is enabled (see #53). If you have such mappings (for instance 
+  [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator#tmux)'s
+  `C-j`), the workaround to preserve them is to unbind them from `copy-mode` in
+  your `.tmux.conf`, e.g.:
+
+      unbind -t vi-copy C-j
+
