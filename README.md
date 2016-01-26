@@ -46,53 +46,18 @@ Searches are case insensitive.<br/>
 
 These start "copycat mode" and jump to first match.
 
-#### Using a custom key table for copycat searches
+#### Using a custom key-table for copycat searches
 
-From `tmux` [manpage](tmux.github.io):
+A special `@copycat_keytable_option` can be set to set all search bindings (except `/`) in a custom key-table, for instance `"cpyct"`. If you don't specify this option, the default key-table remains `"prefix"` (tmux's default key-table), and all works fine, but your keybindings may be more crowded.
 
-    switch-client -T sets the client's key table; the next key from the client will be interpreted from key-table. This may be used to configure multiple prefix keys, or to bind commands to sequences of keys. For example, to make typing ‘abc’ run the list-keys command:
-
-        bind-key -Ttable2 c list-keys
-        bind-key -Ttable1 b switch-client -Ttable2
-        bind-key -Troot   a switch-client -Ttable1
-
-`copycat` can be told to store all its search bindings (except `/`) in a custom `key-table`, for instance `"cpyct"`.
-
-If you don't specify this option, the default `key-table` remains `"prefix"` (tmux's default table), and all works fine, but your keybindings may be more crowded.
-
-In order use a custom `key-table`, the following 2 lines are all you need:
+In order use a custom key-table, the following 2 lines are all you need:
 
     set -g @copycat_keytable_option 'cpyct'
     bind t switch-client -T 'cpyct'
 
 The second line sets the binding for switching to `"cpyct"`: so now `prefix` + `t` + yourbinding.
 
-Example: one can set the following alternative bindings for instance:
-
-    # prefix + t + h searches for git commit SHA1
-    set -g @copycat_hash_search 'h'
-    # prefix + t + d searches for digits
-    set -g @copycat_digit_search 'd'
-    # prefix + t + f searches for filepaths
-    set -g @copycat_file_search 'f'
-    # prefix + t + g searches for files reported by `git status`
-    set -g @copycat_git_special 'g'
-    # prefix + t + i searches for ip addresses
-    set -g @copycat_ip_search 'i'
-    # prefix + t + u searches for url (http[s], ssh, ...)
-    set -g @copycat_url_search 'u'
-    # prefix + t + U searches for uuid
-    set -g @copycat_search_U '\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b'
-
-then
-
-- `prefix + t + f` - simple *f*ile search
-- `prefix + t + g` - jumping over *g*it status files (best used after `git status` command)
-- `prefix + t + h` - jumping over SHA-1 hashes (best used after `git log` command)
-- `prefix + t + u` - *u*rl search (http, ftp and git urls)
-- `prefix + t + d` - number search (mnemonic d, as digit)
-- `prefix + t + i` - *i*p address search
-- `prefix + t + U` - *U*uid search
+See [customizations.md](docs/customizations.md).
 
 #### "Copycat mode" bindings
 
