@@ -156,6 +156,7 @@ copycat_quit_copy_mode_keys() {
 		\grep "$commands_that_quit_copy_mode" |
 		$AWK_CMD '{ print $4}' |
 		sort -u |
+		sed 's/C-j//g' |
 		xargs echo
 }
 
