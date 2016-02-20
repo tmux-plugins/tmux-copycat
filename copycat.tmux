@@ -6,6 +6,13 @@ source "$CURRENT_DIR/scripts/variables.sh"
 source "$CURRENT_DIR/scripts/helpers.sh"
 source "$CURRENT_DIR/scripts/stored_search_helpers.sh"
 
+# check if tmux supports keytable (v2.1+)
+check_keytable_support() {
+	if (( $(echo "$(tmux -V | cut -f2 -d' ') >= 2.1" | bc) )); then
+		keytable_supported=true
+	fi
+}
+
 # this function defines the default key binding table
 set_keytable() {
 	local keytable="$(get_tmux_option "$copycat_keytable_option" "$default_keytable")"
@@ -50,7 +57,11 @@ set_start_bindings() {
 	for search_var in $stored_search_vars; do
 		key="$(get_stored_search_key "$search_var")"
 		pattern="$(get_stored_search_pattern "$search_var")"
-		tmux bind-key -T "$keytable" "$key" run-shell "$CURRENT_DIR/scripts/copycat_mode_start.sh '$pattern'"
+		if [ -z ${keytable_supported+x} ]; then
+			tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_mode_start.sh '$pattern'"
+		else
+			tmux bind-key -T "$keytable" "$key" run-shell "$CURRENT_DIR/scripts/copycat_mode_start.sh '$pattern'"
+		fi
 	done
 }
 
@@ -67,12 +78,17 @@ set_copycat_git_special_binding() {
 	local key_bindings=$(get_tmux_option "$copycat_git_search_option" "$default_git_search_key")
 	local key
 	for key in $key_bindings; do
-		tmux bind-key -T "$keytable" "$key" run-shell "$CURRENT_DIR/scripts/copycat_git_special.sh #{pane_current_path}"
+		if [ -z ${keytable_supported+x} ]; then
+			tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_git_special.sh #{pane_current_path}"
+		else
+			tmux bind-key -T "$keytable" "$key" run-shell "$CURRENT_DIR/scripts/copycat_git_special.sh #{pane_current_path}"
+		fi
 	done
 }
 
 main() {
 	set_keytable
+	check_keytable_support
 	set_start_bindings
 	set_copycat_search_binding
 	set_copycat_git_special_binding
