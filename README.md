@@ -48,14 +48,18 @@ These start "copycat mode" and jump to first match.
 
 #### Using a custom key-table for copycat searches
 
-A special `@copycat_keytable_option` can be set to set all search bindings (except `/`) in a custom key-table, for instance `"cpyct"`. If you don't specify this option, the default key-table remains `"prefix"` (tmux's default key-table), and all works fine, but your keybindings may be more crowded.
+Beginning with tmux `2.1`, we can choose to which key-table our custom key-bindings are assigned (look for the `switch-client -T` option). Before `2.1`, there was no choice for where to place the key-bindings, but now with `2.1` the default key-table is named `prefix`, and we can choose any other key-table name and switch to it (again, this is the new option `switch-client -T custom-key-table-name`).
+
+A special `@copycat_keytable_option` can be set to set all our tmux-copycat search bindings (except `/`) in a custom key-table, for instance `"t"`. If you don't specify this option, the default key-table remains the default `"prefix"` key-table, and all works fine, but your key-bindings may be more crowded.
 
 In order use a custom key-table, the following 2 lines are all you need:
 
-    set -g @copycat_keytable_option 'cpyct'
-    bind t switch-client -T 'cpyct'
+    set -g @copycat_keytable_option 't'
+    bind t switch-client -T 't'
 
-The second line sets the binding for switching to `"cpyct"`: so now `prefix` + `t` + yourbinding.
+The second line sets the binding for switching to `"t"`: so now `prefix` + `t` + yourbinding.
+
+If you have tmux `2.1+`, we use this functionality automatically: all tmux-copycat key-bindings are set to the key-table you defined, and if you have not defined a name as shown above, we choose `t` by default.
 
 See [customizations.md](docs/customizations.md).
 

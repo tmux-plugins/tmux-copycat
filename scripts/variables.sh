@@ -26,5 +26,5 @@ default_ip_search_key="M-i"
 copycat_ip_search_option="@copycat_ip_search"
 
 # bind table variable prefix
-default_keytable="prefix"
+default_keytable="t"
 copycat_keytable_option="@copycat_keytable"

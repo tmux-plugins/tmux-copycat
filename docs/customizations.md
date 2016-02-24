@@ -32,14 +32,14 @@ From `tmux` [manpage](tmux.github.io):
         bind-key -Ttable1 b switch-client -Ttable2
         bind-key -Troot   a switch-client -Ttable1
 
-`copycat` can be told to store all its search bindings (except `/`) in a custom key-table, for instance `"cpyct"`. If you don't specify this option, the default key-table remains `"prefix"` (tmux's default key-table), and all works fine, but your keybindings may be more crowded.
+`copycat` can be told to store all its search bindings (except `/`) in a custom key-table, for instance `"t"`. If you don't specify this option, the default key-table is now `"t"`, so you should add a binding to switch to this table, but your keybindings will be less crowded.
 
 In order use a custom key-table, the following 2 lines are all you need:
 
-    set -g @copycat_keytable_option 'cpyct'
-    bind t switch-client -T 'cpyct'
+    set -g @copycat_keytable_option 't'
+    bind t switch-client -T 't'
 
-The second line sets the binding for switching to `"cpyct"`: so now `prefix` + `t` + yourbinding.
+The second line sets the binding for switching to `"t"`: so now `prefix` + `t` + yourbinding.
 
 Example: one can set the following alternative bindings for instance:
 
