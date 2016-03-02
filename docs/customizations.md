@@ -19,7 +19,7 @@ Options for predefined searches:
 - `@copycat_file_search` (default `C-f`) file search
 - `@copycat_url_search` (default `C-u`) url search
 - `@copycat_digit_search` (default `C-d`) digit search
-- `@copycat_hash_hearch` (default `M-h`) SHA-1 hash search
+- `@copycat_hash_search` (default `M-h`) SHA-1 hash search
 - `@copycat_ip_search` (default `M-i`) IP address search
 
 Example: to remap default file search to use `C-t` put
