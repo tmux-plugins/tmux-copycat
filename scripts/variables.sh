@@ -19,8 +19,8 @@ copycat_url_search_option="@copycat_url_search"
 default_digit_search_key="C-d"
 copycat_digit_search_option="@copycat_digit_search"
 
-default_hash_search_key="M-h"
+default_hash_search_key="C-a"
 copycat_hash_search_option="@copycat_hash_search"
 
-default_ip_search_key="M-i"
+default_ip_search_key="C-i"
 copycat_ip_search_option="@copycat_ip_search"
