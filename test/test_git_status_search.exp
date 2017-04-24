@@ -25,6 +25,26 @@ tmux_ctrl_g
 assert_highlighted "another_file.txt" "search works for files just written on the command line"
 clean_git_repo
 
+change_file "scripts/tmux_list_plugins.sh"
+tmux_ctrl_g
+assert_highlighted "scripts/tmux_list_plugins.sh" "search works for changed files in subdirectory"
+clean_git_repo
+
+enter_test_git_repo_subdir
+change_file "tmux_list_plugins.sh"
+tmux_ctrl_g
+assert_highlighted "tmux_list_plugins.sh" "search works for files when located in subdirectory"
+enter_git_repo_root
+clean_git_repo
+
+change_file "new_file.txt"
+enter_test_git_repo_subdir
+git_status
+tmux_ctrl_g
+assert_highlighted "new_file.txt" "search works for files changed in parent directory"
+enter_git_repo_root
+clean_git_repo
+
 # multile files changed
 #----------------------
 change_file "README.md"

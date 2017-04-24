@@ -67,12 +67,22 @@ proc irb_generate_output {} {
   sleep 0.5
 }
 
-proc enter_test_git_repo {} {
+proc enter_git_repo_root {} {
   sleep 0.2
   send "cd ~/tmux-example-plugin\r"
   sleep 0.1
+}
+
+proc enter_test_git_repo {} {
+  enter_git_repo_root
   send "git checkout --quiet tags/v0.0.1\r"
   sleep 0.2
+}
+
+proc enter_test_git_repo_subdir {} {
+  sleep 0.1
+  send "cd ~/tmux-example-plugin/scripts\r"
+  sleep 0.1
 }
 
 proc git_status {} {
