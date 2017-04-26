@@ -114,28 +114,31 @@ _copycat_enter_mode() {
 
 # clears selection from a previous match
 _copycat_exit_select_mode() {
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
-		# vi mode
-		tmux send-keys Escape
-	else
-		# emacs mode
-		tmux send-keys C-g
-	fi
+	tmux send-keys -X clear-selection
+	# if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	# 	# vi mode
+	# 	tmux send-keys Escape
+	# else
+	# 	# emacs mode
+	# 	tmux send-keys C-g
+	# fi
 }
 
 # "manually" go up in the scrollback for a number of lines
 _copycat_manually_go_up() {
 	local line_number="$1"
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
-		# vi copy mode
-		tmux send-keys "$line_number" k 0
-	else
-		# emacs copy mode
-		for (( c=1; c<="$line_number"; c++ )); do
-			tmux send-keys C-p
-		done
-		tmux send-keys C-a
-	fi
+	tmux send-keys -X -N "$line_number" cursor-up
+	tmux send-keys -X start-of-line
+	# if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	# 	# vi copy mode
+	# 	tmux send-keys "$line_number" k 0
+	# else
+	# 	# emacs copy mode
+	# 	for (( c=1; c<="$line_number"; c++ )); do
+	# 		tmux send-keys C-p
+	# 	done
+	# 	tmux send-keys C-a
+	# fi
 }
 
 _copycat_create_padding_below_result() {
@@ -156,32 +159,37 @@ _copycat_create_padding_below_result() {
 		return
 	fi
 
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
-		# vi copy mode
-		tmux send-keys "$padding" j "$padding" k
-	else
-		# emacs copy mode
-		for (( c=1; c<="$padding"; c++ )); do
-			tmux send-keys C-n
-		done
-		for (( c=1; c<="$padding"; c++ )); do
-			tmux send-keys C-p
-		done
-	fi
+	tmux send-keys -X -N "$padding" cursor-down
+	tmux send-keys -X -N "$padding" cursor-up
+	# if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	# 	# vi copy mode
+	# 	tmux send-keys "$padding" j "$padding" k
+	# else
+	# 	# emacs copy mode
+	# 	for (( c=1; c<="$padding"; c++ )); do
+	# 		tmux send-keys C-n
+	# 	done
+	# 	for (( c=1; c<="$padding"; c++ )); do
+	# 		tmux send-keys C-p
+	# 	done
+	# fi
 }
 
 # performs a jump to go to line
 _copycat_go_to_line_with_jump() {
 	local line_number="$1"
 	# first jumps to the "bottom" in copy mode so that jumps are consistent
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
-		# vi copy mode
-		tmux send-keys G 0 :
-	else
-		# emacs copy mode
-		tmux send-keys "M->" C-a g
-	fi
-	tmux send-keys "$line_number" C-m
+	tmux send-keys -X history-bottom
+	tmux send-keys -X start-of-line
+	tmux send-keys -X goto-line $line_number
+	# if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	# 	# vi copy mode
+	# 	tmux send-keys G 0 :
+	# else
+	# 	# emacs copy mode
+	# 	tmux send-keys "M->" C-a g
+	# fi
+	# tmux send-keys "$line_number" C-m
 }
 
 # maximum line number that can be reached via tmux 'jump'
@@ -234,33 +242,38 @@ _copycat_position_to_match_start() {
 	local match_line_position="$1"
 	[ "$match_line_position" -eq "0" ] && return 0
 
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
-		# vi copy mode
-		tmux send-keys "$match_line_position" l
-	else
-		# emacs copy mode
-		# emacs doesn't have repeat, so we're manually looping :(
-		for (( c=1; c<="$match_line_position"; c++ )); do
-			tmux send-keys C-f
-		done
-	fi
+	tmux send-keys -X -N "$match_line_position" cursor-right
+	# if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	# 	# vi copy mode
+	# 	tmux send-keys "$match_line_position" l
+	# else
+	# 	# emacs copy mode
+	# 	# emacs doesn't have repeat, so we're manually looping :(
+	# 	for (( c=1; c<="$match_line_position"; c++ )); do
+	# 		tmux send-keys C-f
+	# 	done
+	# fi
 }
 
 _copycat_select() {
 	local match="$1"
 	local length="${#match}"
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
-		# vi copy mode
-		tmux send-keys Space "$length" l h # selection correction for 1 char
-	else
-		# emacs copy mode
-		tmux send-keys C-Space
-		# emacs doesn't have repeat, so we're manually looping :(
-		for (( c=1; c<="$length"; c++ )); do
-			tmux send-keys C-f
-		done
-		# NO selection correction for emacs mode
-	fi
+
+	tmux send-keys -X begin-selection
+	tmux send-keys -X -N "$length" cursor-right
+	tmux send-keys -X cursor-left
+	# if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	# 	# vi copy mode
+	# 	tmux send-keys Space "$length" l h # selection correction for 1 char
+	# else
+	# 	# emacs copy mode
+	# 	tmux send-keys C-Space
+	# 	# emacs doesn't have repeat, so we're manually looping :(
+	# 	for (( c=1; c<="$length"; c++ )); do
+	# 		tmux send-keys C-f
+	# 	done
+	# 	# NO selection correction for emacs mode
+	# fi
 }
 
 # all functions above are "private", called from `do_next_jump` function

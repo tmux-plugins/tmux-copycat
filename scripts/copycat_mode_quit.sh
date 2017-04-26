@@ -5,16 +5,30 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$CURRENT_DIR/helpers.sh"
 
 unbind_cancel_bindings() {
-	local cancel_mode_bindings=$(copycat_quit_copy_mode_keys)
+	# local cancel_mode_bindings=$(copycat_quit_copy_mode_keys)
+	local cancel_mode_bindings='C-c Enter q'
 	local key
 	for key in $cancel_mode_bindings; do
-		tmux unbind-key -n "$key"
+		tmux unbind-key -T copy-mode    "$key"
+		tmux   bind-key -T copy-mode    "$key" send-keys -X cancel
+		tmux unbind-key -T copy-mode-vi "$key"
+		tmux   bind-key -T copy-mode-vi "$key" send-keys -X cancel
+		# tmux unbind-key -n "$key"
 	done
 }
 
 unbind_prev_next_bindings() {
-	tmux unbind-key -n "$(copycat_next_key)"
-	tmux unbind-key -n "$(copycat_prev_key)"
+	tmux unbind-key -T copy-mode    "$(copycat_next_key)"
+	# tmux   bind-key -T copy-mode    "$(copycat_next_key)" send-keys -X search-again
+	tmux unbind-key -T copy-mode    "$(copycat_prev_key)"
+	# tmux   bind-key -T copy-mode    "$(copycat_prev_key)" send-keys -X search-reverse
+
+	tmux unbind-key -T copy-mode-vi "$(copycat_next_key)"
+	# tmux   bind-key -T copy-mode-vi "$(copycat_next_key)" send-keys -X search-again
+	tmux unbind-key -T copy-mode-vi "$(copycat_prev_key)"
+	# tmux   bind-key -T copy-mode-vi "$(copycat_prev_key)" send-keys -X search-reverse
+	# tmux unbind-key -n "$(copycat_next_key)"
+	# tmux unbind-key -n "$(copycat_prev_key)"
 }
 
 unbind_all_bindings() {

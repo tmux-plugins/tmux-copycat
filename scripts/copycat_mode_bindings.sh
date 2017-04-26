@@ -16,15 +16,20 @@ extend_key() {
 	# 3. `true` command ensures an exit status 0 is returned. This ensures a
 	#	 user never gets an error msg - even if the script file from step 2 is
 	#	 deleted.
-	tmux bind-key -n "$key" run-shell "tmux send-keys '$key'; $script; true"
+	tmux bind-key -T copy-mode    "$key" run-shell "$script"
+	tmux bind-key -T copy-mode-vi "$key" run-shell "$script"
+	# tmux bind-key -n "$key" run-shell "tmux send-keys '$key'; $script; true"
 }
 
 copycat_cancel_bindings() {
 	# keys that quit copy mode are enhanced to quit copycat mode as well.
-	local cancel_mode_bindings=$(copycat_quit_copy_mode_keys)
+	# local cancel_mode_bindings=$(copycat_quit_copy_mode_keys)
+	local cancel_mode_bindings='C-c Enter q'
 	local key
 	for key in $cancel_mode_bindings; do
-		extend_key "$key" "$CURRENT_DIR/copycat_mode_quit.sh"
+		tmux bind-key -T copy-mode    "$key" run-shell "$CURRENT_DIR/copycat_mode_quit.sh" \\\; send-keys -X cancel
+		tmux bind-key -T copy-mode-vi "$key" run-shell "$CURRENT_DIR/copycat_mode_quit.sh" \\\; send-keys -X cancel
+		# extend_key "$key" "$CURRENT_DIR/copycat_mode_quit.sh"
 	done
 }
 
