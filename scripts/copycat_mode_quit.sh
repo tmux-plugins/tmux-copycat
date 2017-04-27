@@ -15,6 +15,23 @@ unbind_cancel_bindings() {
 		tmux   bind-key -T copy-mode-vi "$key" send-keys -X cancel
 		# tmux unbind-key -n "$key"
 	done
+
+	# rebind original tmux yank
+	local yank_key='y'
+	local put_key='Y'
+	local yank_put_key='M-y'
+	local yank_wo_newline_key='!'
+	local copy_command='reattach-to-user-namespace pbcopy'
+	local copy_wo_newline_command="tr -d '\\n' | $copy_command"
+	tmux unbind-key -T copy-mode-vi "$yank_key"
+	tmux unbind-key -T copy-mode-vi "$put_key"
+	tmux unbind-key -T copy-mode-vi "$yank_put_key"
+	tmux unbind-key -T copy-mode-vi "$yank_wo_newline_key"
+	tmux   bind-key -T copy-mode-vi "$yank_key"            send-keys -X copy-pipe-and-cancel "$copy_command"
+	tmux   bind-key -T copy-mode-vi "$put_key"             send-keys -X copy-pipe-and-cancel "tmux paste-buffer"
+	tmux   bind-key -T copy-mode-vi "$yank_put_key"        send-keys -X copy-pipe-and-cancel "$copy_command; tmux paste-buffer"
+	tmux   bind-key -T copy-mode-vi "$yank_wo_newline_key" send-keys -X copy-pipe-and-cancel "$copy_wo_newline_command"
+
 }
 
 unbind_prev_next_bindings() {

@@ -31,6 +31,22 @@ copycat_cancel_bindings() {
 		tmux bind-key -T copy-mode-vi "$key" run-shell "$CURRENT_DIR/copycat_mode_quit.sh" \\\; send-keys -X cancel
 		# extend_key "$key" "$CURRENT_DIR/copycat_mode_quit.sh"
 	done
+
+	# rebind original tmux yank
+	local yank_key='y'
+	local put_key='Y'
+	local yank_put_key='M-y'
+	local yank_wo_newline_key='!'
+	local copy_command='reattach-to-user-namespace pbcopy'
+	local copy_wo_newline_command="tr -d '\\n' | $copy_command"
+	tmux unbind-key -T copy-mode-vi "$yank_key"
+	tmux unbind-key -T copy-mode-vi "$put_key"
+	tmux unbind-key -T copy-mode-vi "$yank_put_key"
+	tmux unbind-key -T copy-mode-vi "$yank_wo_newline_key"
+	tmux   bind-key -T copy-mode-vi "$yank_key"            send-keys -X copy-pipe "$copy_command" \\\; run-shell "$CURRENT_DIR/copycat_mode_quit.sh" \\\; send-keys -X cancel
+	tmux   bind-key -T copy-mode-vi "$put_key"             send-keys -X copy-pipe "tmux paste-buffer" \\\; run-shell "$CURRENT_DIR/copycat_mode_quit.sh" \\\; send-keys -X cancel
+	tmux   bind-key -T copy-mode-vi "$yank_put_key"        send-keys -X copy-pipe "$copy_command; tmux paste-buffer" \\\; run-shell "$CURRENT_DIR/copycat_mode_quit.sh" \\\; send-keys -X cancel
+	tmux   bind-key -T copy-mode-vi "$yank_wo_newline_key" send-keys -X copy-pipe "$copy_wo_newline_command" \\\; run-shell "$CURRENT_DIR/copycat_mode_quit.sh" \\\; send-keys -X cancel
 }
 
 copycat_mode_bindings() {
