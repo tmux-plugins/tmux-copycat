@@ -182,3 +182,4 @@ _pane_unique_id() {
 	tmux display-message -p "#{session_id}-#{window_index}-#{pane_index}" |
 		sed 's/\$//'
 }
+  
