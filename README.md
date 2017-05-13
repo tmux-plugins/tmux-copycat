@@ -46,6 +46,19 @@ Searches are case insensitive.<br/>
 
 These start "copycat mode" and jump to first match.
 
+#### Create your own predefined search
+
+To create your own predefied search, add the following to your `.tmux.conf`
+file (before importing plugins):
+```
+set-option -g @copycat_search_<binding> "<regex>"
+```
+
+For example, to bind `prefix + ctrl-q` to search for `foo`, add the following:
+```
+set-option -g @copycat_search_C-q "foo"
+```
+
 #### "Copycat mode" bindings
 
 These are enabled when you search with copycat:
