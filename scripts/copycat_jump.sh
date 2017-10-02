@@ -189,11 +189,12 @@ _copycat_go_to_line_with_jump() {
 	elif [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
 		tmux send-keys G 0 :
+		tmux send-keys "$line_number" C-m
 	else
 		# emacs copy mode
 		tmux send-keys "M->" C-a g
+		tmux send-keys "$line_number" C-m
 	fi
-	tmux send-keys "$line_number" C-m
 }
 
 # maximum line number that can be reached via tmux 'jump'
