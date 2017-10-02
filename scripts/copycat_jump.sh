@@ -114,7 +114,9 @@ _copycat_enter_mode() {
 
 # clears selection from a previous match
 _copycat_exit_select_mode() {
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	if tmux_is_at_least 2.4; then
+		tmux send-keys -X clear-selection
+	elif [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi mode
 		tmux send-keys Escape
 	else
@@ -126,7 +128,10 @@ _copycat_exit_select_mode() {
 # "manually" go up in the scrollback for a number of lines
 _copycat_manually_go_up() {
 	local line_number="$1"
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	if tmux_is_at_least 2.4; then
+		tmux send-keys -X -N "$line_number" cursor-up
+		tmux send-keys -X start-of-line
+	elif [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
 		tmux send-keys "$line_number" k 0
 	else
@@ -156,7 +161,10 @@ _copycat_create_padding_below_result() {
 		return
 	fi
 
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	if tmux_is_at_least 2.4; then
+		tmux send-keys -X -N "$padding" cursor-down
+		tmux send-keys -X -N "$padding" cursor-up
+	elif [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
 		tmux send-keys "$padding" j "$padding" k
 	else
@@ -174,7 +182,11 @@ _copycat_create_padding_below_result() {
 _copycat_go_to_line_with_jump() {
 	local line_number="$1"
 	# first jumps to the "bottom" in copy mode so that jumps are consistent
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	if tmux_is_at_least 2.4; then
+		tmux send-keys -X history-bottom
+		tmux send-keys -X start-of-line
+		tmux send-keys -X goto-line $line_number
+	elif [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
 		tmux send-keys G 0 :
 	else
@@ -234,7 +246,9 @@ _copycat_position_to_match_start() {
 	local match_line_position="$1"
 	[ "$match_line_position" -eq "0" ] && return 0
 
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	if tmux_is_at_least 2.4; then
+		tmux send-keys -X -N "$match_line_position" cursor-right
+	elif [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
 		tmux send-keys "$match_line_position" l
 	else
@@ -249,7 +263,11 @@ _copycat_position_to_match_start() {
 _copycat_select() {
 	local match="$1"
 	local length="${#match}"
-	if [ "$TMUX_COPY_MODE" == "vi" ]; then
+	if tmux_is_at_least 2.4; then
+		tmux send-keys -X begin-selection
+		tmux send-keys -X -N "$length" cursor-right
+		tmux send-keys -X cursor-left
+	elif [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
 		tmux send-keys Space "$length" l h # selection correction for 1 char
 	else
