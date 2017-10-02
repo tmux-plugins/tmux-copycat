@@ -7,9 +7,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ubuntu.vm.provision 'shell', path: 'vagrant_ubuntu_provisioning.sh'
   end
 
-  config.vm.define :ubuntu_two_four do |ubuntu|
+  config.vm.define :ubuntu_two_five do |ubuntu|
     ubuntu.vm.box = 'hashicorp/precise32'
-    ubuntu.vm.provision 'shell', path: 'vagrant_ubuntu_provisioning_two_four.sh'
+    ubuntu.vm.provision 'shell', path: 'vagrant_ubuntu_provisioning_two_five.sh'
   end
 
   config.vm.define :centos do |centos|

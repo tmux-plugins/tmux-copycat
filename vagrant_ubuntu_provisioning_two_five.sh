@@ -11,8 +11,8 @@ sudo apt-get install -y make
 sudo apt-get install -y git-core expect vim gawk
 sudo apt-get install -y python-software-properties software-properties-common
 
-# install Tmux 2.4
-VERSION=2.4
+# install Tmux 2.5
+VERSION=2.5
 sudo apt-get -y remove tmux
 sudo apt-get -y install wget tar libevent-dev libncurses-dev
 wget https://github.com/tmux/tmux/releases/download/${VERSION}/tmux-${VERSION}.tar.gz
