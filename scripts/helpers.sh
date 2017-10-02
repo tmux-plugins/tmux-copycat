@@ -150,14 +150,26 @@ copycat_prev_key() {
 
 # function expected output: 'C-c Enter q'
 copycat_quit_copy_mode_keys() {
-	local commands_that_quit_copy_mode="cancel\|copy-selection\|copy-pipe"
-	local copy_mode="$(tmux_copy_mode)-copy"
-	tmux list-keys -t "$copy_mode" |
-		\grep "$commands_that_quit_copy_mode" |
-		$AWK_CMD '{ print $4}' |
-		sort -u |
-		sed 's/C-j//g' |
-		xargs echo
+	if tmux_is_at_least 2.4; then
+		local commands_that_quit_copy_mode="cancel"
+		local copy_mode="copy-mode-$(tmux_copy_mode)"
+		tmux list-keys -T "$copy_mode" |
+			\grep "$commands_that_quit_copy_mode" |
+			$AWK_CMD '{ print $4 }' |
+			sort -u |
+			sed 's/C-j//g' |
+			xargs echo
+
+	else
+		local commands_that_quit_copy_mode="cancel\|copy-selection\|copy-pipe"
+		local copy_mode="$(tmux_copy_mode)-copy"
+		tmux list-keys -t "$copy_mode" |
+			\grep "$commands_that_quit_copy_mode" |
+			$AWK_CMD '{ print $4 }' |
+			sort -u |
+			sed 's/C-j//g' |
+			xargs echo
+	fi
 }
 
 # === 'private' functions ===

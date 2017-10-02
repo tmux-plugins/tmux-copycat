@@ -11,12 +11,19 @@ extend_key() {
 	local key="$1"
 	local script="$2"
 
-	# 1. 'key' is sent to tmux. This ensures the default key action is done.
-	# 2. Script is executed.
-	# 3. `true` command ensures an exit status 0 is returned. This ensures a
-	#	 user never gets an error msg - even if the script file from step 2 is
-	#	 deleted.
-	tmux bind-key -n "$key" run-shell "tmux send-keys '$key'; $script; true"
+	if tmux_is_at_least 2.4; then
+		# We save the previous mapping to a file in order to be able to recover
+		# the previous mapping when we unbind
+		tmux list-keys -T copy-mode-$(tmux_copy_mode) | grep -F "$key" >> /tmp/copycat_$(whoami)_recover_keys
+		tmux bind-key -T copy-mode-$(tmux_copy_mode) "$key" run-shell "$script"
+	else
+		# 1. 'key' is sent to tmux. This ensures the default key action is done.
+		# 2. Script is executed.
+		# 3. `true` command ensures an exit status 0 is returned. This ensures a
+		#	 user never gets an error msg - even if the script file from step 2 is
+		#	 deleted.
+		tmux bind-key -n "$key" run-shell "tmux send-keys '$key'; $script; true"
+	fi
 }
 
 copycat_cancel_bindings() {
