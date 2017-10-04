@@ -29,3 +29,7 @@ sudo mv tmux-${VERSION} /usr/local/src
 # clone a repo used later for tests
 git clone https://github.com/tmux-plugins/tmux-example-plugin /home/vagrant/tmux-example-plugin
 chown -R vagrant:vagrant /home/vagrant/tmux-example-plugin
+
+sudo locale-gen "en_US.UTF-8"
+sudo echo LC_ALL=en_US.UFT-8 > /etc/default/locale
+sudo echo LANG=en_US.UFT-8 >> /etc/default/locale
