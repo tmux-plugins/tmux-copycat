@@ -7,13 +7,13 @@ setup_tmux_conf() {
 	# Copy mode (vi or emacs) is automatically determined from EDITOR
 	# environment variable set in test runner file `test/run-tests-within-vm`.
 	if tmux_is_at_least 2.4; then
-		echo "bind-key -T copy-mode-vi    y copy-selection-and-cancel"  > ~/.tmux.conf
-		echo "bind-key -T copy-mode-emacs y copy-selection-and-cancel" >> ~/.tmux.conf
-		echo "run-shell './copycat.tmux'"              >> ~/.tmux.conf
+		echo "bind-key -T copy-mode-vi    y send-keys -X copy-selection-and-cancel"  > ~/.tmux.conf
+		echo "bind-key -T copy-mode y send-keys -X copy-selection-and-cancel" >> ~/.tmux.conf
+		echo "run-shell '/vagrant/copycat.tmux'"              >> ~/.tmux.conf
 	else
 		echo "bind-key -t vi-copy    y copy-selection"  > ~/.tmux.conf
 		echo "bind-key -t emacs-copy y copy-selection" >> ~/.tmux.conf
-		echo "run-shell './copycat.tmux'"              >> ~/.tmux.conf
+		echo "run-shell '/vagrant/copycat.tmux'"              >> ~/.tmux.conf
 	fi
 }
 
