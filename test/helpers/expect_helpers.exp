@@ -58,7 +58,7 @@ proc exit_irb {} {
 
 proc irb_display_text {text} {
   send "puts '$text'\r"
-  sleep 0.3
+  sleep 1.0
 }
 
 # Generates random output just to fill the screen.
