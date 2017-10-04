@@ -24,15 +24,15 @@ extend_key() {
 	if tmux_is_at_least 2.4; then
 		# We fetch the current behavior of the 'key' mapping in
 		# variable 'cmd'
-		cmd=$(tmux list-keys -T copy-mode-$(tmux_copy_mode) | $AWK_CMD '$4 == "'$key'"' | $AWK_CMD '{ $1=""; $2=""; $3=""; $4=""; sub("  ", " "); print }')
+		cmd=$(tmux list-keys -T $(tmux_copy_mode_string) | $AWK_CMD '$4 == "'$key'"' | $AWK_CMD '{ $1=""; $2=""; $3=""; $4=""; sub("  ", " "); print }')
 		# If 'cmd' is already a copycat command, we do nothing
 		if echo "$cmd" | grep -q copycat; then
 			return
 		fi
 		# We save the previous mapping to a file in order to be able to recover
 		# the previous mapping when we unbind
-		tmux list-keys -T copy-mode-$(tmux_copy_mode) | $AWK_CMD '$4 == "'$key'"' >> /tmp/copycat_$(whoami)_recover_keys
-		tmux bind-key -T copy-mode-$(tmux_copy_mode) "$key" run-shell "tmux $cmd; $script; true"
+		tmux list-keys -T $(tmux_copy_mode_string) | $AWK_CMD '$4 == "'$key'"' >> /tmp/copycat_$(whoami)_recover_keys
+		tmux bind-key -T $(tmux_copy_mode_string) "$key" run-shell "tmux $cmd; $script; true"
 	else
 		tmux bind-key -n "$key" run-shell "tmux send-keys '$key'; $script; true"
 	fi

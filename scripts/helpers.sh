@@ -41,6 +41,14 @@ tmux_copy_mode() {
 	tmux show-option -gwv mode-keys
 }
 
+tmux_copy_mode_string() {
+    if [ $(tmux_copy_mode) == 'vi' ]; then
+	echo copy-mode-vi
+    else
+	echo copy-mode
+    fi
+}
+
 # === copycat mode specific helpers ===
 
 set_copycat_mode() {
@@ -152,7 +160,7 @@ copycat_prev_key() {
 copycat_quit_copy_mode_keys() {
 	if tmux_is_at_least 2.4; then
 		local commands_that_quit_copy_mode="cancel"
-		local copy_mode="copy-mode-$(tmux_copy_mode)"
+		local copy_mode="$(tmux_copy_mode_string)"
 		tmux list-keys -T "$copy_mode" |
 			\grep "$commands_that_quit_copy_mode" |
 			$AWK_CMD '{ print $4 }' |
