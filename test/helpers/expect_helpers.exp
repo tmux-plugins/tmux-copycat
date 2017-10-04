@@ -35,7 +35,7 @@ proc clear_screen {} {
 
 proc display_text {text} {
   send "echo $text\r"
-  sleep 0.1
+  sleep 0.3
 }
 
 proc new_tmux_pane {} {
@@ -58,7 +58,7 @@ proc exit_irb {} {
 
 proc irb_display_text {text} {
   send "puts '$text'\r"
-  sleep 1.0
+  sleep 2.0
 }
 
 # Generates random output just to fill the screen.
