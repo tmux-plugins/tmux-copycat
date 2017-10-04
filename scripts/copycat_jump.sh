@@ -267,7 +267,9 @@ _copycat_select() {
 	if tmux_is_at_least 2.4; then
 		tmux send-keys -X begin-selection
 		tmux send-keys -X -N "$length" cursor-right
-		tmux send-keys -X cursor-left
+		if [ "$TMUX_COPY_MODE" == "vi" ]; then
+			tmux send-keys -X cursor-left # selection correction for 1 char
+		fi
 	elif [ "$TMUX_COPY_MODE" == "vi" ]; then
 		# vi copy mode
 		tmux send-keys Space "$length" l h # selection correction for 1 char
