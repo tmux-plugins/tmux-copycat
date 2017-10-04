@@ -31,5 +31,4 @@ git clone https://github.com/tmux-plugins/tmux-example-plugin /home/vagrant/tmux
 chown -R vagrant:vagrant /home/vagrant/tmux-example-plugin
 
 sudo locale-gen "en_US.UTF-8"
-sudo echo LC_ALL=en_US.UFT-8 > /etc/default/locale
-sudo echo LANG=en_US.UFT-8 >> /etc/default/locale
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
