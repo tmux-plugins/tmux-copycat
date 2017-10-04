@@ -127,7 +127,7 @@ exit_irb
 enter_irb
 irb_generate_output
 send "puts random string33"
-sleep 0.1
+sleep 5
 tmux_ctrl_t
 irb_assert_highlighted "random string33" "irb console, pane bottom, not beginning of line"
 exit_irb

@@ -121,7 +121,7 @@ exit_irb
 enter_irb
 irb_generate_output
 send "puts 012"
-sleep 0.1
+sleep 5.0
 tmux_ctrl_d
 irb_assert_highlighted "012" "irb console, pane bottom, not beggining of line"
 exit_irb

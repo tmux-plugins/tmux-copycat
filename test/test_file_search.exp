@@ -136,7 +136,7 @@ exit_irb
 enter_irb
 irb_generate_output
 send "puts /absolute/file/irb.rb"
-sleep 0.1
+sleep 5
 tmux_ctrl_f
 irb_assert_highlighted " /absolute/file/irb.rb" "irb console absolute path, pane bottom, not beggining of line"
 exit_irb

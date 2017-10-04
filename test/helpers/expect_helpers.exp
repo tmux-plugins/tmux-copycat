@@ -58,13 +58,13 @@ proc exit_irb {} {
 
 proc irb_display_text {text} {
   send "puts '$text'\r"
-  sleep 2.0
+  sleep 5.0
 }
 
 # Generates random output just to fill the screen.
 proc irb_generate_output {} {
   send "puts 'output\n' * 200\r"
-  sleep 0.5
+  sleep 5.0
 }
 
 proc enter_test_git_repo {} {

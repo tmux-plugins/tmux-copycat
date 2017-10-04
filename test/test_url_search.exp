@@ -180,7 +180,7 @@ exit_irb
 enter_irb
 irb_generate_output
 send "puts http://example16.com"
-sleep 0.1
+sleep 5
 tmux_ctrl_u
 irb_assert_highlighted "http://example16.com" "irb console, pane bottom, not beginning of line"
 exit_irb
