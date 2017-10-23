@@ -60,7 +60,6 @@ run_tests_on_vm() {
 
 main() {
 	run_tests_on_vm "ubuntu_two_five"
-	run_tests_on_vm "ubuntu"
 
 	exit_message "$EXIT_VALUE"
 	exit "$EXIT_VALUE"
