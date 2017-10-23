@@ -11,3 +11,4 @@ setup_tmux_conf() {
 	echo "bind-key -T copy-mode y send-keys -X copy-selection-and-cancel" >> ~/.tmux.conf
 	echo "run-shell '$BASE_DIR/copycat.tmux'"              >> ~/.tmux.conf
 }
+setup_tmux_conf
