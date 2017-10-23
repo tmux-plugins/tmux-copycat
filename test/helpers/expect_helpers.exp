@@ -14,7 +14,7 @@ proc exit_status_false {} {
 }
 
 proc sync_tmux {} {
-  sleep 1.0
+  sleep 1.5
 }
 
 proc sync_irb {} {
