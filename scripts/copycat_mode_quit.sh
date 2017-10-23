@@ -18,15 +18,10 @@ unbind_prev_next_bindings() {
 }
 
 unbind_all_bindings() {
-	if tmux_is_at_least 2.4; then
-		grep -v copycat </tmp/copycat_$(whoami)_recover_keys | while read key_cmd; do
-			tmux $key_cmd
-		done < /dev/stdin
-		rm /tmp/copycat_$(whoami)_recover_keys
-	else
-		unbind_cancel_bindings
-		unbind_prev_next_bindings
-	fi
+	grep -v copycat </tmp/copycat_$(whoami)_recover_keys | while read key_cmd; do
+		tmux $key_cmd
+	done < /dev/stdin
+	rm /tmp/copycat_$(whoami)_recover_keys
 }
 
 main() {
