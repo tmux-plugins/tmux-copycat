@@ -88,6 +88,13 @@ be able to use the plugin.
 Optional (but recommended) install `gawk` via your package manager of choice
 for better UTF-8 character support.
 
+### Installation for Tmux 2.3 and earlier
+
+Due to the changes in tmux, the latest version of this plugin doesn't support
+tmux 2.3 and earlier. It is recommended you upgrade to tmux version 2.4 or
+later. If you must continue using older version, please follow
+[these steps for installation](docs/installation_for_tmux_2.3.md).
+
 ### Limitations
 
 This plugin has some known limitations. Please read about it
