@@ -1,9 +1,12 @@
 # Changelog
 
 ### master
+
+### v3.0.0, Nov 01, 2017
 - if installed use `gawk` instead of `awk` (@metcalfc)
 - add stored search for matching git SHAs (@jbnicolai)
 - move documentation from github wiki to `docs/` folder
+- support for tmux 2.4+, not compatible with tmux 2.3 and earlier (@thalesmello)
 
 ### v2.1.0, Jan 01, 2015
 - combine send-keys calls to reduce flickering (@toupeira)
