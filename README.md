@@ -2,9 +2,6 @@
 
 [![Build Status](https://travis-ci.org/tmux-plugins/tmux-copycat.png?branch=master)](https://travis-ci.org/tmux-plugins/tmux-copycat)
 
-**NOTE**: the changes in tmux 2.4 broke this plugin. I'm working on a fix. For
-now the plugin works on tmux 2.3.
-
 This plugin enables:
 
 - regex searches

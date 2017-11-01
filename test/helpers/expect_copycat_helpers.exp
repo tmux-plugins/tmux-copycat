@@ -37,7 +37,7 @@ proc tmux_ctrl_t {} {
 
 proc search {text} {
   send "/"
-  sleep 0.2
+  sleep 0.5
   send "$text\r"
   sleep 0.7
 }
