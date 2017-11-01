@@ -12,12 +12,8 @@ Predefined searches are plugin killer feature. It speeds the workflow and
 reduces mouse usage with Tmux.
 
 It works even better when paired with
-[tmux yank](https://github.com/tmux-plugins/tmux-yank).
-
-Tested and working on Linux, OSX and Cygwin.
-
-**Note:** new version 2.0 uses extended regexes! Regex character escaping with
-backslashes `\ ` isn't required anymore.
+[tmux yank](https://github.com/tmux-plugins/tmux-yank). Tested and working on
+Linux, OSX and Cygwin.
 
 ### Screencast
 
@@ -115,9 +111,6 @@ This plugin has some known limitations. Please read about it
 - [tmux-continuum](https://github.com/tmux-plugins/tmux-continuum) - automatic
   restoring and continuous saving of tmux env
 
-You might want to follow [@brunosutic](https://twitter.com/brunosutic) on
-twitter if you want to hear about new tmux plugins or feature updates.
-
 ### Test suite
 
 This plugin has a pretty extensive integration test suite that runs on
@@ -127,8 +120,6 @@ When run locally, it depends on `vagrant`. Run it with:
 
     # within project top directory
     $ ./run-tests
-
-By default tests run in 2 vagrant VMs: ubuntu and centos.
 
 ### Contributions and new features
 
