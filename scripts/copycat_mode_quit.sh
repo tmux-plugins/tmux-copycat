@@ -19,7 +19,7 @@ unbind_prev_next_bindings() {
 
 unbind_all_bindings() {
 	grep -v copycat </tmp/copycat_$(whoami)_recover_keys | while read key_cmd; do
-		tmux $key_cmd
+		sh -c "tmux $key_cmd"
 	done < /dev/stdin
 	rm /tmp/copycat_$(whoami)_recover_keys
 }
