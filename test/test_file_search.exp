@@ -5,6 +5,7 @@ source "./test/helpers/setup.exp"
 # searches at the top of the pane
 #--------------------------------
 display_text "/top/of_the/pane/file.txt"
+sleep 0.5
 tmux_ctrl_f
 assert_highlighted "/top/of_the/pane/file.txt" "top of the pane absolute path"
 
@@ -135,7 +136,7 @@ exit_irb
 enter_irb
 irb_generate_output
 send "puts /absolute/file/irb.rb"
-sleep 0.1
+sleep 5
 tmux_ctrl_f
 irb_assert_highlighted " /absolute/file/irb.rb" "irb console absolute path, pane bottom, not beggining of line"
 exit_irb

@@ -1,6 +1,6 @@
 # Tmux copycat
 
-[![Build Status](https://travis-ci.org/tmux-plugins/tmux-copycat.png?branch=master)](https://travis-ci.org/tmux-plugins/tmux-copycat)
+[![Build Status](https://travis-ci.org/tmux-plugins/tmux-copycat.svg?branch=master)](https://travis-ci.org/tmux-plugins/tmux-copycat)
 
 This plugin enables:
 
@@ -12,12 +12,8 @@ Predefined searches are plugin killer feature. It speeds the workflow and
 reduces mouse usage with Tmux.
 
 It works even better when paired with
-[tmux yank](https://github.com/tmux-plugins/tmux-yank).
-
-Tested and working on Linux, OSX and Cygwin.
-
-**Note:** new version 2.0 uses extended regexes! Regex character escaping with
-backslashes `\ ` isn't required anymore.
+[tmux yank](https://github.com/tmux-plugins/tmux-yank). Tested and working on
+Linux, OSX and Cygwin.
 
 ### Screencast
 
@@ -92,6 +88,13 @@ be able to use the plugin.
 Optional (but recommended) install `gawk` via your package manager of choice
 for better UTF-8 character support.
 
+### Installation for Tmux 2.3 and earlier
+
+Due to the changes in tmux, the latest version of this plugin doesn't support
+tmux 2.3 and earlier. It is recommended you upgrade to tmux version 2.4 or
+later. If you must continue using older version, please follow
+[these steps for installation](docs/installation_for_tmux_2.3.md).
+
 ### Limitations
 
 This plugin has some known limitations. Please read about it
@@ -115,9 +118,6 @@ This plugin has some known limitations. Please read about it
 - [tmux-continuum](https://github.com/tmux-plugins/tmux-continuum) - automatic
   restoring and continuous saving of tmux env
 
-You might want to follow [@brunosutic](https://twitter.com/brunosutic) on
-twitter if you want to hear about new tmux plugins or feature updates.
-
 ### Test suite
 
 This plugin has a pretty extensive integration test suite that runs on
@@ -127,8 +127,6 @@ When run locally, it depends on `vagrant`. Run it with:
 
     # within project top directory
     $ ./run-tests
-
-By default tests run in 2 vagrant VMs: ubuntu and centos.
 
 ### Contributions and new features
 

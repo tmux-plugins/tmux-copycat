@@ -23,7 +23,7 @@ assert_highlighted "345" "middle of the pane, not beginning of the line"
 
 create_output
 send "456"
-sleep 0.1
+sync_tmux
 tmux_ctrl_d
 assert_highlighted "456" "middle of the pane, pane bottom"
 
@@ -121,7 +121,7 @@ exit_irb
 enter_irb
 irb_generate_output
 send "puts 012"
-sleep 0.1
+sync_tmux
 tmux_ctrl_d
 irb_assert_highlighted "012" "irb console, pane bottom, not beggining of line"
 exit_irb

@@ -31,6 +31,7 @@ generate_copycat_file() {
 	local scrollback_filename="$(get_scrollback_filename)"
 	local copycat_filename="$(get_copycat_filename)"
 	mkdir -p "$(_get_tmp_dir)"
+	chmod 0700 "$(_get_tmp_dir)"
 	capture_pane "$scrollback_filename"
 	reverse_and_create_copycat_file "$scrollback_filename" "$copycat_filename" "$grep_pattern"
 }

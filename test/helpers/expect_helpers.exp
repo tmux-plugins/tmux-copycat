@@ -13,6 +13,14 @@ proc exit_status_false {} {
   set exit_status 1
 }
 
+proc sync_tmux {} {
+  sleep 1.5
+}
+
+proc sync_irb {} {
+  sleep 5.0
+}
+
 proc teardown_and_exit {} {
   global exit_status
   _kill_tmux_server
@@ -25,84 +33,84 @@ proc create_output {} {
   sleep 0.1
   # stop `yes` command
   send ""
-  sleep 0.1
+  sync_tmux
 }
 
 proc clear_screen {} {
   send ""
-  sleep 0.1
+  sync_tmux
 }
 
 proc display_text {text} {
   send "echo $text\r"
-  sleep 0.1
+  sync_tmux
 }
 
 proc new_tmux_pane {} {
   sleep 0.3
   send "c"
-  sleep 1
+  sleep 1.0
 }
 
 proc enter_irb {} {
   send "irb\r"
-  sleep 1
+  sync_irb
 }
 
 proc exit_irb {} {
   send "\r"
-  sleep 0.1
+  sync_irb
   send "exit\r"
-  sleep 0.5
+  sync_tmux
 }
 
 proc irb_display_text {text} {
   send "puts '$text'\r"
-  sleep 0.3
+  sync_irb
 }
 
 # Generates random output just to fill the screen.
 proc irb_generate_output {} {
   send "puts 'output\n' * 200\r"
-  sleep 0.5
+  sync_irb
 }
 
 proc enter_test_git_repo {} {
-  sleep 0.2
+  sync_tmux
   send "cd ~/tmux-example-plugin\r"
-  sleep 0.1
+  sync_tmux
   send "git checkout --quiet tags/v0.0.1\r"
-  sleep 0.2
+  sync_tmux
 }
 
 proc git_status {} {
-  sleep 0.1
+  sync_tmux
   send "git status --short\r"
-  sleep 0.1
+  sync_tmux
 }
 
 proc git_log_reverse_short {} {
-  sleep 0.1
+  sync_tmux
   send "git --no-pager log --reverse --oneline -1\r"
-  sleep 0.1
+  sync_tmux
 }
 
 proc git_log_reverse {} {
-  sleep 0.1
+  sync_tmux
   send "git --no-pager log --reverse -1\r"
-  sleep 0.1
+  sync_tmux
 }
 
 proc git_checkout {} {
-  sleep 0.1
+  sync_tmux
   send "git checkout -- .\r"
-  sleep 0.1
+  sync_tmux
 }
 
 proc git_clean_fd {} {
-  sleep 0.1
+  sync_tmux
   send "git clean -f -d\r"
-  sleep 0.1
+  sync_tmux
 }
 
 proc clean_git_repo {} {
@@ -111,30 +119,31 @@ proc clean_git_repo {} {
 }
 
 proc change_file {file} {
-  sleep 0.1
+  sync_tmux
   send "echo 'change' > $file\r"
-  sleep 0.1
+  sync_tmux
 }
 
 proc create_new_file_in_repo {} {
-  sleep 0.1
+  sync_tmux
   send "echo 'text' >> new_file.txt\r"
-  sleep 0.1
+  sync_tmux
 }
 
 proc remove_test_git_repo {} {
-  sleep 0.1
+  sync_tmux
   send "cd ~\r"
-  sleep 0.1
+  sync_tmux
   send "rm -rf ~/tmux_example_plugin/\r"
-  sleep 0.1
+  sync_tmux
 }
 
 # private functions
 
 proc _kill_tmux_server {} {
   send ""
-  sleep 0.1
+  sync_tmux
   send "tmux kill-server\r"
-  sleep 0.2
+  sync_tmux
 }
+

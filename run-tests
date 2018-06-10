@@ -59,8 +59,7 @@ run_tests_on_vm() {
 }
 
 main() {
-	run_tests_on_vm "ubuntu"
-	run_tests_on_vm "centos"
+	run_tests_on_vm "ubuntu_two_five"
 
 	exit_message "$EXIT_VALUE"
 	exit "$EXIT_VALUE"

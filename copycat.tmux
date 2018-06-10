@@ -45,17 +45,19 @@ set_start_bindings() {
 }
 
 set_copycat_search_binding() {
-	local key_bindings=$(get_tmux_option "$copycat_search_option" "$default_copycat_search_key")
+	local key_bindings
+	read -r -d '' -a key_bindings <<<"$(get_tmux_option "$copycat_search_option" "$default_copycat_search_key")"
 	local key
-	for key in $key_bindings; do
+	for key in "${key_bindings[@]}"; do
 		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_search.sh"
 	done
 }
 
 set_copycat_git_special_binding() {
-	local key_bindings=$(get_tmux_option "$copycat_git_search_option" "$default_git_search_key")
+	local key_bindings
+	read -r -d '' -a key_bindings <<<"$(get_tmux_option "$copycat_git_search_option" "$default_git_search_key")"
 	local key
-	for key in $key_bindings; do
+	for key in "${key_bindings[@]}"; do
 		tmux bind-key "$key" run-shell "$CURRENT_DIR/scripts/copycat_git_special.sh #{pane_current_path}"
 	done
 }

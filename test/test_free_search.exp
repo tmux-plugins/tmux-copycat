@@ -133,6 +133,7 @@ assert_on_screen "No results!" "No results is displayed when no results"
 
 new_tmux_pane
 display_text "something2"
+sleep 5.0
 search "something\[\[:digit:]]"
 next_match
 next_match
