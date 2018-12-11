@@ -30,7 +30,7 @@ extend_key() {
 	fi
 	# We save the previous mapping to a file in order to be able to recover
 	# the previous mapping when we unbind
-	tmux list-keys -T $(tmux_copy_mode_string) | $AWK_CMD '$4 == "'$key'"' >> /tmp/copycat_$(whoami)_recover_keys
+	tmux list-keys -T $(tmux_copy_mode_string) | $AWK_CMD '$4 == "'$key'"' >> "${TMPDIR:-/tmp}/copycat_$(whoami)_recover_keys"
 	tmux bind-key -T $(tmux_copy_mode_string) "$key" run-shell "tmux $cmd; $script; true"
 }
 
