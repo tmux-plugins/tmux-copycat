@@ -15,7 +15,7 @@ set_default_stored_searches() {
 	local ip_search="$(get_tmux_option "$copycat_ip_search_option" "$default_ip_search_key")"
 
 	if stored_search_not_defined "$url_search"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${url_search}" "(https?://|git@|git://|ssh://|ftp://|file:///)[\x22\x27[:alnum:]?=%/_.:,;~@!#$&()*+-]*"
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${url_search}" "(?<=\(|([\x22\x27]))((https?://|git@|git://|ssh://|ftp://|file:///)[\x22\x27[:alnum:]?=%/_.:,;~@!#$&()*+-]*)(?=\)|\1)|(?2)"
 	fi
 	if stored_search_not_defined "$file_search"; then
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${file_search}" "(^|(?<=[[:space:]]))(\.|\.\.)?[[:alnum:]~_-]*/[][[:alnum:]_.#$%&+=/@-]*"
