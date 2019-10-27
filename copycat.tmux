@@ -24,7 +24,7 @@ set_default_stored_searches() {
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${digit_search}" "[[:digit:]]+"
 	fi
 	if stored_search_not_defined "$hash_search"; then
-		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${hash_search}" "\b([0-9a-f]{7,40}|[[:alnum:]]{52}|[0-9a-f]{62})\b"
+		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${hash_search}" "\b([0-9a-f]{7,40}|[[:alnum:]]{52}|[0-9a-f]{64})\b"
 	fi
 	if stored_search_not_defined "$ip_search"; then
 		tmux set-option -g "${COPYCAT_VAR_PREFIX}_${ip_search}" "[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}"
