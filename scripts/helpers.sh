@@ -42,11 +42,11 @@ tmux_copy_mode() {
 }
 
 tmux_copy_mode_string() {
-    if [ $(tmux_copy_mode) == 'vi' ]; then
-	echo copy-mode-vi
-    else
-	echo copy-mode
-    fi
+	if [ $(tmux_copy_mode) == 'vi' ]; then
+		echo copy-mode-vi
+	else
+		echo copy-mode
+	fi
 }
 
 # === copycat mode specific helpers ===
