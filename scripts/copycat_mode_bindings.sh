@@ -24,16 +24,16 @@ extend_key() {
 	#    a user never gets an error msg - even if the script file from step 2
 	#    is deleted.
 	tmux list-keys -T "$copy_mode" |
-	"$AWK_CMD" '
+	"$AWK_CMD" -v mode="$copy_mode" -v key="$key" -v script="$script" '
 		/copycat/ { next }
-		$3 == "'"$copy_mode"'" && $4 == "'"$key"'" {
+		$3 == mode && $4 == key {
 			$1=""
 			$2=""
 			$3=""
 			$4=""
-			gsub(";", "\\;", $0)
 			cmd=$0
-			system("tmux bind-key -T '"$copy_mode"' '"$key"' run-shell \"tmux " cmd "; '"$script"'; true\"")
+			gsub(/["\\]/, "\\\\&", cmd)
+			system("tmux bind-key -T " mode " " key " run-shell \"tmux " cmd "; " script "; true\"")
 		}'
 }
 
