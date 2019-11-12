@@ -29,10 +29,10 @@ main() {
 		reset_copycat_position
 		unset_copycat_mode
 		copycat_decrease_counter
-		# removing all bindings only if no panes are in copycat mode
-		if copycat_counter_zero; then
-			unbind_all_bindings
-		fi
+	fi
+	# removing all bindings only if no panes are in copycat mode
+	if copycat_counter_zero; then
+		unbind_all_bindings
 	fi
 }
 main
