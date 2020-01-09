@@ -14,24 +14,27 @@ fi
 extend_key() {
 	local key="$1"
 	local script="$2"
-	local cmd
+	local copy_mode
+	copy_mode=$(tmux_copy_mode_string)
 
-	# 1. 'cmd' or 'key' is sent to tmux. This ensures the default key action is done.
+	# 1. The default command for 'key' is sent to tmux. This ensures the
+	#    default key action is done.
 	# 2. Script is executed.
-	# 3. `true` command ensures an exit status 0 is returned. This ensures a
-	#	 user never gets an error msg - even if the script file from step 2 is
-	#	 deleted.
-	# We fetch the current behavior of the 'key' mapping in
-	# variable 'cmd'
-	cmd=$(tmux list-keys -T $(tmux_copy_mode_string) | $AWK_CMD '$4 == "'$key'"' | $AWK_CMD '{ $1=""; $2=""; $3=""; $4=""; sub("  ", " "); print }')
-	# If 'cmd' is already a copycat command, we do nothing
-	if echo "$cmd" | grep -q copycat; then
-		return
-	fi
-	# We save the previous mapping to a file in order to be able to recover
-	# the previous mapping when we unbind
-	tmux list-keys -T $(tmux_copy_mode_string) | $AWK_CMD '$4 == "'$key'"' >> "${TMPDIR:-/tmp}/copycat_$(whoami)_recover_keys"
-	tmux bind-key -T $(tmux_copy_mode_string) "$key" run-shell "tmux $cmd; $script; true"
+	# 3. `true` command ensures an exit status 0 is returned. This ensures
+	#    a user never gets an error msg - even if the script file from step 2
+	#    is deleted.
+	tmux list-keys -T "$copy_mode" |
+	"$AWK_CMD" -v mode="$copy_mode" -v key="$key" -v script="$script" '
+		/copycat/ { next }
+		$3 == mode && $4 == key {
+			$1=""
+			$2=""
+			$3=""
+			$4=""
+			cmd=$0
+			gsub(/["\\]/, "\\\\&", cmd)
+			system("tmux bind-key -T " mode " " key " run-shell \"tmux " cmd "; " script "; true\"")
+		}'
 }
 
 copycat_cancel_bindings() {

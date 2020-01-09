@@ -62,9 +62,14 @@ set_copycat_git_special_binding() {
 	done
 }
 
+set_copycat_mode_bindings() {
+	"$CURRENT_DIR/scripts/copycat_mode_bindings.sh"
+}
+
 main() {
 	set_start_bindings
 	set_copycat_search_binding
 	set_copycat_git_special_binding
+	set_copycat_mode_bindings
 }
 main
