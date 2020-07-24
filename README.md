@@ -2,9 +2,13 @@
 
 [![Build Status](https://travis-ci.org/tmux-plugins/tmux-copycat.svg?branch=master)](https://travis-ci.org/tmux-plugins/tmux-copycat)
 
+**NOTE: [tmux 3.1 adds support for native regex searches](https://raw.githubusercontent.com/tmux/tmux/3.1/CHANGES).
+This is great news because it means a big part of 'tmux-copycat' is now
+available natively! Use this plugin only if you need its other features.**
+
 This plugin enables:
 
-- regex searches
+- regex searches (native support added in tmux 3.1)
 - search result highlighting
 - predefined searches
 
