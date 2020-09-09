@@ -62,6 +62,10 @@ display_text "file:///foo/bar/file.txt"
 tmux_ctrl_u
 assert_highlighted "file:///foo/bar/file.txt" "middle of the pane, file url"
 
+display_text "nrepl://127.0.0.1:40252"
+tmux_ctrl_u
+assert_highlighted "nrepl://127.0.0.1:40252" "middle of the pane, nrepl url"
+
 # urls with parameters
 #---------------------
 new_tmux_pane
