@@ -14,11 +14,9 @@ fi
 extend_key() {
 	local key="$1"
 	local script="$2"
-	local copy_mode
-	copy_mode=$(tmux_copy_mode_string)
+	local cmd
 
-	# 1. The default command for 'key' is sent to tmux. This ensures the
-	#    default key action is done.
+	# 1. 'cmd' or 'key' is sent to tmux. This ensures the default key action is done.
 	# 2. Script is executed.
 	# 3. `true` command ensures an exit status 0 is returned. This ensures
 	#    a user never gets an error msg - even if the script file from step 2
