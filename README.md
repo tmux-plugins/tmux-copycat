@@ -10,7 +10,7 @@ This plugin enables:
 
 - regex searches (native support added in tmux 3.1)
 - search result highlighting
-- predefined searches
+- predefined searches`
 
 Predefined searches are plugin killer feature. It speeds the workflow and
 reduces mouse usage with Tmux.
@@ -45,6 +45,12 @@ Searches are case insensitive.<br/>
 - `prefix + alt-i` - *i*p address search
 
 These start "copycat mode" and jump to first match.
+
+You can define [your own custom searches](/docs/defining_new_stored_searches.md) as well. Here's an example:
+
+```shell
+set -g @copycat_search_C-l '[a-zA-Z0-9_./-]+$'
+```
 
 #### "Copycat mode" bindings
 
